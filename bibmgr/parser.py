@@ -1,3 +1,8 @@
+
+import re
+import yaml
+
+
 class Parser:
 
     def __init__(self):
@@ -5,6 +10,7 @@ class Parser:
             'authors': [],
             'title': None,
             'year': None,
+            'type': None,
             'publisher': {},
             'venue': {},
             'doi': None,
@@ -18,29 +24,37 @@ class Parser:
         }
         self.nextItem = None
         self.nextKey = None
-        self.info = []
+        self.info = {}
+
+    def parse_bib_key(self, key):
+        self.nextKey = ""
+        self.nextItem = self.template.copy()
+
+    def parse_bib_type(self, btype):
+        self.nextItem['type'] = btype
 
     def parse_bib_authors(self, authors):
         first_names = []
         last_names = []
-        self.nextItem['author'] = authors
         for name in names.split(" and "):
             name_list = name.strip().split(",")
             if len(name_list) <= 1:
                 name_list = name.strip().split()
-                self.nextItem['author'].append(
-                    (" ".join(name_list[:-1]), name_list[-1])
+                self.nextItem['authors'].append(
+                    (" ".join(name_list[:-1]).strip(), name_list[-1].strip())
                 )
             else:
-                self.nextItem['author'].append(
-                    (" ".join(name_list[1:]), name_list[0])
+                self.nextItem['authors'].append(
+                    (" ".join(name_list[1:]).strip(), name_list[0].strip())
                 )
+        self.nextKey = self.nextItem['authors'][0][1]
 
     def parse_bib_title(self, title):
         self.nextItem['title'] = title
 
     def parse_bib_year(self, year):
         self.nextItem['year'] = year
+        self.nextKey += str(year)
 
     def parse_bib_publisher(self, publisher):
         self.nextItem['publisher'] = publisher
@@ -71,6 +85,9 @@ class Parser:
 
     def add_tag(self, tag):
         self.nextItem['tags'].append(tag)
+
+    def add_item(self):
+        self.info[self.nextKey] = self.nextItem
 
     def read_yaml(self, filename):
         with open(filename, "r") as fp:

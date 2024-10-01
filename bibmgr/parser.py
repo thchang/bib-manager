@@ -1,7 +1,7 @@
 
+import jinja
 import re
 import yaml
-
 
 class Parser:
 
@@ -92,6 +92,36 @@ class Parser:
     def read_yaml(self, filename):
         with open(filename, "r") as fp:
             self.info = yaml.safe_load(fp)
+
+    def read_bibtex(self, filename):
+        fullitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)},")
+        fullitem2 = re.compile("(\w+)[ ]*=[ ]*{(.+)}")
+        fullitem3 = re.compile('(\w+)[ ]*=[ ]*"(.+)",')
+        fullitem4 = re.compile('(\w+)[ ]*=[ ]*"(.+)"')
+        startitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)")
+        startitem2 = re.compile('(\w+)[ ]*=[ ]*"(.+)')
+        enditem1 = re.compile("(.+)},")
+        enditem2 = re.compile('(.+)",')
+        with open(filename, "r") as fp:
+            for line in fp:
+                if m := fullitem1.match(line):
+                    pass # TODO
+                elif m := fullitem2.match(line):
+                    pass # TODO
+                elif m := fullitem3.match(line):
+                    pass # TODO
+                elif m := fullitem4.match(line):
+                    pass # TODO
+                elif m := startitem1.match(line):
+                    pass # TODO
+                elif m := startitem2.match(line):
+                    pass # TODO
+                elif m := enditem1.match(line):
+                    pass # TODO
+                elif m := enditem2.match(line):
+                    pass # TODO
+                else:
+                    pass # TODO
 
     def write_yaml(self, filename):
         with open(filename, "w") as fp:

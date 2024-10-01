@@ -21,7 +21,20 @@ class Parser:
         self.info = []
 
     def parse_bib_authors(self, authors):
+        first_names = []
+        last_names = []
         self.nextItem['author'] = authors
+        for name in names.split(" and "):
+            name_list = name.strip().split(",")
+            if len(name_list) <= 1:
+                name_list = name.strip().split()
+                self.nextItem['author'].append(
+                    (" ".join(name_list[:-1]), name_list[-1])
+                )
+            else:
+                self.nextItem['author'].append(
+                    (" ".join(name_list[1:]), name_list[0])
+                )
 
     def parse_bib_title(self, title):
         self.nextItem['title'] = title

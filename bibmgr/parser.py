@@ -11,9 +11,13 @@ class Parser:
             'title': None,
             'year': None,
             'type': None,
-            'publisher': None,
             'venue': None,
             'series': None,
+            'volume': None,
+            'number': None,
+            'articleno': None,
+            'pages': None,
+            'publisher': None,
             'address': None,
             'doi': None,
             'url': None,
@@ -38,7 +42,7 @@ class Parser:
     def parse_bib_authors(self, authors):
         first_names = []
         last_names = []
-        for name in names.split(" and "):
+        for name in authors.split(" and "):
             name_list = name.strip().split(",")
             if len(name_list) <= 1:
                 name_list = name.strip().split()
@@ -55,18 +59,33 @@ class Parser:
         self.nextItem['title'] = title
 
     def parse_bib_year(self, year):
-        self.nextItem['year'] = year
+        self.nextItem['year'] = int(year)
         self.nextKey += str(year)
-
-    def parse_bib_publisher(self, publisher):
-        if 'publisher' not in self.nextItem:
-            self.nextItem['publisher'] = publisher
 
     def parse_bib_venue(self, venue):
         self.nextItem['venue'] = venue
 
     def parse_bib_series(self, series):
         self.nextItem['series'] = series
+
+    def parse_bib_volume(self, volume):
+        self.nextItem['volume'] = int(volume)
+
+    def parse_bib_number(self, number):
+        self.nextItem['number'] = number
+
+    def parse_bib_articleno(self, number):
+        self.nextItem['articleno'] = int(number)
+
+    def parse_bib_pages(self, pages):
+        self.nextItem['pages'] = []
+        for page in pages.split('-'):
+            if page != '':
+                self.nextItem['pages'].append(int(page))
+
+    def parse_bib_publisher(self, publisher):
+        if 'publisher' not in self.nextItem:
+            self.nextItem['publisher'] = publisher
 
     def parse_bib_address(self, address):
         location_re1 = re.compile(
@@ -108,10 +127,18 @@ class Parser:
         elif key.strip().lower() in ['type', 'howpublished']:
             self.parse_bib_type(value)
         elif key.strip().lower() in ['publisher', 'institution',
-                                     'organization']:
+                                     'organization', 'school']:
             self.parse_bib_publisher(value)
         elif key.strip().lower() in ['journal', 'booktitle']:
             self.parse_bib_venue(value)
+        elif key.strip().lower() in ['volume']:
+            self.parse_bib_volume(value)
+        elif key.strip().lower() in ['number']:
+            self.parse_bib_number(value)
+        elif key.strip().lower() in ['articleno']:
+            self.parse_bib_articleno(value)
+        elif key.strip().lower() in ['pages', 'numpages']:
+            self.parse_bib_pages(value)
         elif key.strip().lower() == 'series':
             self.parse_bib_series(value)
         elif key.strip().lower() in ['address', 'location']:
@@ -168,16 +195,17 @@ class Parser:
             self.info = yaml.safe_load(fp)
 
     def read_bibtex(self, filename):
-        newentry = re.compile("\\(\\w+),")
-        comment = re.compile("\\% .+")
-        fullitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)},")
-        fullitem2 = re.compile("(\\w+)[ ]*=[ ]*{(.+)}")
-        fullitem3 = re.compile('(\\w+)[ ]*=[ ]*"(.+)",')
-        fullitem4 = re.compile('(\\w+)[ ]*=[ ]*"(.+)"')
-        startitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)")
-        startitem2 = re.compile('(\\w+)[ ]*=[ ]*"(.+)')
+        newentry = re.compile("@(\w+),")
+        comment = re.compile("\% .+")
+        fullitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)},")
+        fullitem2 = re.compile("(\w+)[ ]*=[ ]*{(.+)}")
+        fullitem3 = re.compile('(\w+)[ ]*=[ ]*"(.+)",')
+        fullitem4 = re.compile('(\w+)[ ]*=[ ]*"(.+)"')
+        startitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)")
+        startitem2 = re.compile('(\w+)[ ]*=[ ]*"(.+)')
         enditem1 = re.compile("(.+)},")
         enditem2 = re.compile('(.+)",')
+        self.nextItem = self.template.copy()
         with open(filename, "r") as fp:
             nextKey = ""
             nextValue = ""
@@ -215,10 +243,10 @@ class Parser:
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                 elif m := enditem1.match(line.strip()):
-                    nextValue += m.group(2)
+                    nextValue += m.group(1)
                     self.parse_item(nextKey, nextValue)
                 elif m := enditem2.match(line.strip()):
-                    nextValue += m.group(2)
+                    nextValue += m.group(1)
                     self.parse_item(nextKey, nextValue)
                 else:
                     pass
@@ -239,4 +267,5 @@ if __name__ == "__main__":
     tester = Parser()
     tester.read_bibtex("test.bib")
     for item in tester.info:
-        print(item)
+        print(f"{item}: ")
+        print(tester.info[item])

@@ -1,5 +1,6 @@
 
 #import jinja
+import copy
 import re
 import yaml
 
@@ -34,7 +35,7 @@ class Parser:
 
     def parse_bib_key(self):
         self.nextKey = ""
-        self.nextItem = self.template.copy()
+        self.nextItem = copy.deepcopy(self.template)
 
     def parse_bib_type(self, btype):
         self.nextItem['type'] = btype
@@ -47,13 +48,13 @@ class Parser:
             if len(name_list) <= 1:
                 name_list = name.strip().split()
                 self.nextItem['authors'].append(
-                    (" ".join(name_list[:-1]).strip(), name_list[-1].strip())
+                    [" ".join(name_list[:-1]).strip(), name_list[-1].strip()]
                 )
             else:
                 self.nextItem['authors'].append(
-                    (" ".join(name_list[1:]).strip(), name_list[0].strip())
+                    [" ".join(name_list[1:]).strip(), name_list[0].strip()]
                 )
-        self.nextKey = self.nextItem['authors'][0][1]
+        self.nextKey = self.nextItem['authors'][0][1].lower()
 
     def parse_bib_title(self, title):
         self.nextItem['title'] = title
@@ -195,24 +196,24 @@ class Parser:
             self.info = yaml.safe_load(fp)
 
     def read_bibtex(self, filename):
-        newentry = re.compile("@(\w+),")
-        comment = re.compile("\% .+")
-        fullitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)},")
-        fullitem2 = re.compile("(\w+)[ ]*=[ ]*{(.+)}")
-        fullitem3 = re.compile('(\w+)[ ]*=[ ]*"(.+)",')
-        fullitem4 = re.compile('(\w+)[ ]*=[ ]*"(.+)"')
-        startitem1 = re.compile("(\w+)[ ]*=[ ]*{(.+)")
-        startitem2 = re.compile('(\w+)[ ]*=[ ]*"(.+)')
+        newentry = re.compile("\\@(\\w+){(.+),")
+        comment = re.compile("\\% .+")
+        fullitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)},")
+        fullitem2 = re.compile("(\\w+)[ ]*=[ ]*{(.+)}")
+        fullitem3 = re.compile('(\\w+)[ ]*=[ ]*"(.+)",')
+        fullitem4 = re.compile('(\\w+)[ ]*=[ ]*"(.+)"')
+        startitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)")
+        startitem2 = re.compile('(\\w+)[ ]*=[ ]*"(.+)')
         enditem1 = re.compile("(.+)},")
         enditem2 = re.compile('(.+)",')
-        self.nextItem = self.template.copy()
+        self.nextItem = copy.deepcopy(self.template)
         with open(filename, "r") as fp:
             nextKey = ""
             nextValue = ""
             nextDescrip = ""
             for line in fp:
                 if m:= newentry.match(line.strip()):
-                    if self.nextItem is not None:
+                    if self.nextKey is not None:
                         self.add_item()
                     self.parse_bib_key()
                     self.parse_bib_type(m.group(1))
@@ -250,7 +251,7 @@ class Parser:
                     self.parse_item(nextKey, nextValue)
                 else:
                     pass
-        if self.nextItem is not None:
+        if self.nextKey is not None:
             self.add_item()
 
     def write_yaml(self, filename):
@@ -264,8 +265,11 @@ class Parser:
 
 
 if __name__ == "__main__":
-    tester = Parser()
-    tester.read_bibtex("test.bib")
-    for item in tester.info:
-        print(f"{item}: ")
-        print(tester.info[item])
+    tester1 = Parser()
+    tester1.read_bibtex("test.bib")
+    #tester1.write_yaml("test2.yaml")
+    tester2 = Parser()
+    tester2.read_yaml("test.yaml")
+    for item in tester1.info:
+        for key in tester1.info[item]:
+            assert tester2.info[item][key] == tester1.info[item][key]

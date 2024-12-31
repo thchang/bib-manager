@@ -1,7 +1,7 @@
 
 import yaml
 
-from bib_parser import BibParser
+from bibmgr.bib_parser import BibParser
 
 class DbMgr(BibParser):
 
@@ -33,3 +33,18 @@ class DbMgr(BibParser):
         with open(filename, "w") as fp:
             for key in self.info:
                 self.info[key]
+
+if __name__ == "__main__":
+    dbmgr = DbMgr()
+    dbmgr.read_bibtex("test.bib")
+    print("{")
+    for key1 in dbmgr.info:
+        print(f"\t{key1}: {{")
+        item1 = dbmgr.info[key1]
+        for key2 in item1:
+            if isinstance(item1[key2], str):
+                print(f"\t\t{key2}: '{item1[key2]}',")
+            else:
+                print(f"\t\t{key2}: {item1[key2]},")
+        print("\t},")
+    print("}")

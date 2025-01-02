@@ -1,7 +1,7 @@
-
 import yaml
 
 from bibmgr.bib_parser import BibParser
+
 
 class DbMgr(BibParser):
 
@@ -31,12 +31,26 @@ class DbMgr(BibParser):
 
     def write_bibtex(self, filename):
         with open(filename, "w") as fp:
-            for key in self.info:
-                self.info[key]
+            for key1 in self.info:
+                item1 = self.info[key1]
+                if 'type' in item1 and item1['type'] in [
+                    'article', 'book', 'booklet', 'conference', 'inbook',
+                    'incollection', 'inproceedings', 'manual', 'mastersthesis',
+                    'misc', 'phdthesis', 'proceedings', 'techreport',
+                    'unpublished'
+                ]:
+                    fp.write(f"@{item1['type']}{{{key1},\n")
+                else:
+                    fp.write(f"@misc{{{key1},\n")
+                for key2 in item1:
+                    fp.write(f"\t{key2} = {{{item1[key2]}}},\n")
+                fp.write("}\n\n")
+
 
 if __name__ == "__main__":
     dbmgr = DbMgr()
-    dbmgr.read_bibtex("test.bib")
+    dbmgr.read_bibtex("bibmgr/tests/data/test.bib")
+    dbmgr.write_yaml("bibmgr/test.yaml")
     print("{")
     for key1 in dbmgr.info:
         print(f"\t{key1}: {{")

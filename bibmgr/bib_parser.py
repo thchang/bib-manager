@@ -1,6 +1,7 @@
 import copy
 import re
 
+
 class BibParser:
     """ Class for parsing bibtex entries.
 
@@ -67,8 +68,6 @@ class BibParser:
     def _parse_bib_authors(self, authors):
         """ Sets the author list for the next item. """
 
-        first_names = []
-        last_names = []
         for name in authors.split(" and "):
             name_list = name.strip().split(",")
             if len(name_list) <= 1:
@@ -146,7 +145,7 @@ class BibParser:
         """ Sets the doi for the next item. """
 
         self.nextItem['doi'] = doi.replace("https://doi.org/",
-                "").replace("doi.org/", "")
+                                           "").replace("doi.org/", "")
 
     def _parse_bib_url(self, url):
         """ Sets the url for the next item. """
@@ -219,7 +218,7 @@ class BibParser:
         elif key.strip().lower() == 'series':
             self._parse_bib_series(value)
         elif key.strip().lower() in ['address', 'location']:
-             self._parse_bib_address(value)
+            self._parse_bib_address(value)
         elif key.strip().lower() == 'doi':
             self._parse_bib_doi(value)
         elif key.strip().lower() == 'url':
@@ -279,7 +278,7 @@ class BibParser:
         """
 
         newentry = re.compile("\\@(\\w+){(.+),")
-        comment = re.compile("\\% .+")
+        comment = re.compile("\\% (.+)")
         fullitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)},")
         fullitem2 = re.compile("(\\w+)[ ]*=[ ]*{(.+)}")
         fullitem3 = re.compile('(\\w+)[ ]*=[ ]*"(.+)",')
@@ -294,7 +293,7 @@ class BibParser:
             nextValue = ""
             nextDescrip = ""
             for line in fp:
-                if m:= newentry.match(line.strip()):
+                if m := newentry.match(line.strip()):
                     if self.nextKey is not None:
                         self.add_bib_item()
                     self._parse_bib_key()
@@ -302,7 +301,8 @@ class BibParser:
                     self._parse_bib_descrip(nextDescrip.strip())
                     nextDescrip = ""
                 elif m := comment.match(line.strip()):
-                    nextDescrip += " " + m.group(1)
+                    if m.group(1) != "":
+                        nextDescrip = " ".join([nextDescrip, m.group(1)])
                 elif m := fullitem1.match(line.strip()):
                     nextKey = m.group(1)
                     nextValue = m.group(2)

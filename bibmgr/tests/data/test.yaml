@@ -4,7 +4,8 @@ chang2015:
   authors:
   - - Tyler H.
     - Chang
-  descrip: ''
+  descrip: This was my first writing for a summer internship. It's just an abstract
+    in the minisymposium booklet, but the booklet was published online.
   doi: null
   git: null
   isbn: null
@@ -16,7 +17,7 @@ chang2015:
   tags: []
   title: Implementing the Optimal Control-Based Obstacle Avoidance {(OCOA)} Algorithm
     in Compiled Code
-  type: techreport
+  type: inproceedings
   url: https://apps.dtic.mil/sti/pdfs/AD1000355.pdf
   venue: ARL Summer Student Research Symposium Compendium of Abstracts
   volume: 2
@@ -242,7 +243,7 @@ chang2020b:
     - Cameron
   - - Yili
     - Hong
-  descrip: ''
+  descrip: This is probably my 'best work'
   doi: 10.1145/3422818
   git: null
   isbn: null
@@ -252,7 +253,10 @@ chang2020b:
   - 20
   publisher: null
   series: null
-  tags: []
+  tags:
+  - software
+  - algorithms
+  - delaunay triangulation
   title: 'Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse subset of
     the {D}elaunay triangulation in medium to high dimensions'
   type: article
@@ -366,7 +370,8 @@ chang2023a:
     - Chaudhuri
   - - Joseph A.
     - Libera
-  descrip: ''
+  descrip: This is my favorite application that I've worked on (using my ParMOO software,
+    listed below)
   doi: null
   git: null
   isbn: null
@@ -395,7 +400,9 @@ chang2023b:
     - Wild
   - - Hyrum
     - Dickinson
-  descrip: ''
+  descrip: These are just the readthedocs pages for my ParMOO software, but there
+    are features in here that are not publication worthy so there may be reasons to
+    cite the docs over the paper itself.
   doi: null
   git: null
   isbn: null
@@ -420,7 +427,9 @@ chang2023c:
     - Chang
   - - Stefan M.
     - Wild
-  descrip: ''
+  descrip: This is my best piece of software, which I invested the most time into
+    out of all my research projects.  However, there is no description of the underlying
+    algorithms in this paper.
   doi: 10.21105/joss.04468
   git: null
   isbn: null
@@ -430,7 +439,10 @@ chang2023c:
   - 5
   publisher: null
   series: null
-  tags: []
+  tags:
+  - software
+  - simulation optimization
+  - multiobjective optimization
   title: '{ParMOO}: A {P}ython library for parallel multiobjective simulation optimization'
   type: article
   url: null
@@ -474,7 +486,8 @@ changb:
     - Chang
   - - Stefan M.
     - Wild
-  descrip: ''
+  descrip: This is the paper corresponding to the ParMOO software itself. This version
+    of the paper may be outdated...
   doi: null
   git: null
   isbn: null

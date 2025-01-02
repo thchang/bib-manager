@@ -62,7 +62,7 @@ soln = {
         'git': None,
         'web': None,
         'note': 'Submitted Jul 2023. Preprint: \\url{https://arxiv.org/abs/2304.06881}',
-        'descrip': '',
+        'descrip': 'This is the paper corresponding to the ParMOO software itself. This version of the paper may be outdated...',
         'tags': [],
     },
     'changc': {
@@ -150,7 +150,7 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': '',
+        'descrip': 'This is my favorite application that I\'ve worked on (using my ParMOO software, listed below)',
         'tags': [],
     },
     'chang2023b': {
@@ -172,7 +172,7 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': '',
+        'descrip': 'These are just the readthedocs pages for my ParMOO software, but there are features in here that are not publication worthy so there may be reasons to cite the docs over the paper itself.',
         'tags': [],
     },
     'lux2023': {
@@ -216,8 +216,9 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': '',
-        'tags': [],
+        'descrip': 'This is my best piece of software, which I invested the most time into out of all my research projects.  However, there is no description of the underlying algorithms in this paper.',
+        'tags': ['software', 'simulation optimization',
+                 'multiobjective optimization'],
     },
     'neveu2023': {
         'authors': [['Nicole', 'Neveu'], ['Tyler H.', 'Chang'], ['Paris', 'Franz'], ['Stephen', 'Hudson'], ['Jeffrey', 'Larson']],
@@ -370,8 +371,8 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': '',
-        'tags': [],
+        'descrip': 'This is probably my \'best work\'',
+        'tags': ['software', 'algorithms', 'delaunay triangulation'],
     },
     'gillette2020': {
         'authors': [['Andrew K.', 'Gillette'], ['Tyler H.', 'Chang']],
@@ -729,7 +730,7 @@ soln = {
         'authors': [['Tyler H.', 'Chang']],
         'title': 'Implementing the Optimal Control-Based Obstacle Avoidance {(OCOA)} Algorithm in Compiled Code',
         'year': 2015,
-        'type': 'techreport',
+        'type': 'inproceedings',
         'venue': 'ARL Summer Student Research Symposium Compendium of Abstracts',
         'series': None,
         'volume': 2,
@@ -744,7 +745,7 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': '',
+        'descrip': 'This was my first writing for a summer internship. It\'s just an abstract in the minisymposium booklet, but the booklet was published online.',
         'tags': [],
     },
 }

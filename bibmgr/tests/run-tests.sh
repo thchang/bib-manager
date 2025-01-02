@@ -85,5 +85,5 @@ fi;
 
 # Show coverage
 if [ $LIST_COV_REPORT == true ]; then
-  coverage report -m;
+  python3 -m coverage report -m;
 fi;

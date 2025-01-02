@@ -235,6 +235,7 @@ class BibParser:
             self._parse_bib_descrip(value)
         elif key.strip().lower() == 'keywords':
             for tag in value.strip().split(","):
+                print(tag)
                 self._parse_bib_keyword(tag.strip())
         else:
             raise ValueError(f"'{key}' with value '{value}' is not a "
@@ -283,10 +284,13 @@ class BibParser:
         fullitem2 = re.compile("(\\w+)[ ]*=[ ]*{(.+)}")
         fullitem3 = re.compile('(\\w+)[ ]*=[ ]*"(.+)",')
         fullitem4 = re.compile('(\\w+)[ ]*=[ ]*"(.+)"')
-        startitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)")
-        startitem2 = re.compile('(\\w+)[ ]*=[ ]*"(.+)')
-        enditem1 = re.compile("(.+)},")
-        enditem2 = re.compile('(.+)",')
+        startitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.*)")
+        startitem2 = re.compile('(\\w+)[ ]*=[ ]*"(.*)')
+        enditem1 = re.compile("(.*)},")
+        enditem2 = re.compile('(.*)",')
+        enditem3 = re.compile("(.*)}")
+        enditem4 = re.compile('(.*)"')
+        miditem = re.compile("(.+)")
         self.nextItem = copy.deepcopy(self.template)
         with open(filename, "r") as fp:
             nextKey = ""
@@ -307,18 +311,26 @@ class BibParser:
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
                 elif m := fullitem2.match(line.strip()):
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
                 elif m := fullitem3.match(line.strip()):
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
                 elif m := fullitem4.match(line.strip()):
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
                 elif m := startitem1.match(line.strip()):
                     nextKey = m.group(1)
                     nextValue = m.group(2)
@@ -326,11 +338,34 @@ class BibParser:
                     nextKey = m.group(1)
                     nextValue = m.group(2)
                 elif m := enditem1.match(line.strip()):
-                    nextValue += m.group(1)
+                    if m.group(1) != "":
+                        nextValue = " ".join([nextValue, m.group(1)])
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
                 elif m := enditem2.match(line.strip()):
-                    nextValue += m.group(1)
+                    if m.group(1) != "":
+                        nextValue = " ".join([nextValue, m.group(1)])
                     self.parse_bib_line(nextKey, nextValue)
+                    nextKey = ""
+                    nextValue = ""
+                elif m := enditem3.match(line.strip()):
+                    if m.group(1) != "":
+                        nextValue = " ".join([nextValue, m.group(1)])
+                    if nextKey != "":
+                        self.parse_bib_line(nextKey, nextValue)
+                        nextKey = ""
+                        nextValue = ""
+                elif m := enditem4.match(line.strip()):
+                    if m.group(1) != "":
+                        nextValue = " ".join([nextValue, m.group(1)])
+                    if nextKey != "":
+                        self.parse_bib_line(nextKey, nextValue)
+                        nextKey = ""
+                        nextValue = ""
+                elif m := miditem.match(line.strip()):
+                    if m.group(1) != "":
+                        nextValue = " ".join([nextValue, m.group(1)])
                 else:
                     pass
         if self.nextKey is not None:

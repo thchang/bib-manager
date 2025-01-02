@@ -23,6 +23,13 @@ class TestDbMgr:
         self.tester.read_yaml("bibmgr/tests/data/test.yaml")
         self.check_results()
 
+    def test_write_bibtex(self):
+        self.tester.write_bibtex("bibmgr/tests/data/test2.bib")
+        assert os.path.exists("bibmgr/tests/data/test2.bib")
+        assert filecmp.cmp("bibmgr/tests/data/written_test.bib",
+                           "bibmgr/tests/data/test2.bib")
+        os.remove("bibmgr/tests/data/test2.bib")
+
     def test_write_yaml(self):
         self.tester.write_yaml("bibmgr/tests/data/test2.yaml")
         assert os.path.exists("bibmgr/tests/data/test2.yaml")

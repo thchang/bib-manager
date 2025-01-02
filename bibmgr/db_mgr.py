@@ -45,20 +45,3 @@ class DbMgr(BibParser):
                 for key2 in item1:
                     fp.write(f"\t{key2} = {{{item1[key2]}}},\n")
                 fp.write("}\n\n")
-
-
-if __name__ == "__main__":
-    dbmgr = DbMgr()
-    dbmgr.read_bibtex("bibmgr/tests/data/test.bib")
-    dbmgr.write_yaml("bibmgr/test.yaml")
-    print("{")
-    for key1 in dbmgr.info:
-        print(f"\t{key1}: {{")
-        item1 = dbmgr.info[key1]
-        for key2 in item1:
-            if isinstance(item1[key2], str):
-                print(f"\t\t{key2}: '{item1[key2]}',")
-            else:
-                print(f"\t\t{key2}: {item1[key2]},")
-        print("\t},")
-    print("}")

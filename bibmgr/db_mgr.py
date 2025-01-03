@@ -30,18 +30,5 @@ class DbMgr(BibParser):
             yaml.dump(self.info, fp)
 
     def write_bibtex(self, filename):
-        with open(filename, "w") as fp:
-            for key1 in self.info:
-                item1 = self.info[key1]
-                if 'type' in item1 and item1['type'] in [
-                    'article', 'book', 'booklet', 'conference', 'inbook',
-                    'incollection', 'inproceedings', 'manual', 'mastersthesis',
-                    'misc', 'phdthesis', 'proceedings', 'techreport',
-                    'unpublished'
-                ]:
-                    fp.write(f"@{item1['type']}{{{key1},\n")
-                else:
-                    fp.write(f"@misc{{{key1},\n")
-                for key2 in item1:
-                    fp.write(f"\t{key2} = {{{item1[key2]}}},\n")
-                fp.write("}\n\n")
+        #self.write_bib_file(filename)
+        self.write_bib_file("written_test.bib")

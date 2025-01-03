@@ -11,6 +11,7 @@ class BibParser:
      - `add_bib_item()` adds the next item into the internal database and
        resolves key conflicts; and
      - `parse_bib_file(filename)` parses an entire BibTex file.
+     - `write_bib_file(filename)` writes an entire BibTex file.
 
     """
 
@@ -235,7 +236,6 @@ class BibParser:
             self._parse_bib_descrip(value)
         elif key.strip().lower() == 'keywords':
             for tag in value.strip().split(","):
-                print(tag)
                 self._parse_bib_keyword(tag.strip())
         else:
             raise ValueError(f"'{key}' with value '{value}' is not a "
@@ -275,6 +275,9 @@ class BibParser:
     def parse_bib_file(self, filename):
         """ Parse an entire BibTex (.bib) file, and store in the internal
         database.
+
+        Args:
+            filename (str, path-like object): The path to the file to parse.
 
         """
 
@@ -370,3 +373,67 @@ class BibParser:
                     pass
         if self.nextKey is not None:
             self.add_bib_item()
+
+    def write_bib_file(self, filename):
+        """ Write an entire BibTex (.bib) file from the internal database.
+
+        Args:
+            filename (str, path-like object): The path to the file to write.
+
+        """
+
+        with open(filename, "w") as fp:
+            for key1 in self.info:
+                item1 = self.info[key1]
+                ttype = None
+                if 'type' in item1 and item1['type'] in [
+                    'article', 'book', 'booklet', 'conference', 'inbook',
+                    'incollection', 'inproceedings', 'manual', 'mastersthesis',
+                    'misc', 'phdthesis', 'proceedings', 'techreport',
+                    'unpublished'
+                ]:
+                    ttype = item1['type']
+                    fp.write(f"@{item1['type']}{{{key1},\n")
+                else:
+                    ttype = 'misc'
+                    fp.write(f"@misc{{{key1},\n")
+                for key2 in item1:
+                    if key2 == 'authors':
+                        fp.write("\tauthor = {"
+                                 f"{' and '.join(item1[key2])}}},\n")
+                    elif key2 == 'venue':
+                        if ttype == 'article':
+                            fp.write(f"\tjournal = {{{item1[key2]}}},\n")
+                        else:
+                            fp.write(f"\tbooktitle = {{{item1[key2]}}},\n")
+                    elif key2 == 'type':
+                        if ttype == 'misc':
+                            fp.write(f"\thowpublished = {{{item1[key2]}}},\n")
+                    elif key2 == 'pages':
+                        if len(item1[key2]) > 1:
+                            fp.write("\tpages = {"
+                                     f"{'--'.join(item1[key2])}}},\n")
+                        elif len(item1[key2]) > 0:
+                            fp.write(f"\tnumpages = {{{item1[key2][0]}}},\n")
+                    elif key2 == 'publisher':
+                        if ttype in ['conference', 'inproceedings',
+                                     'proceedings']:
+                            fp.write(f"\torganization = {{{item1[key2]}}},\n")
+                        elif ttype in ['manual', 'techreport']:
+                            fp.write(f"\tinstitution = {{{item1[key2]}}},\n")
+                        elif ttype in ['mastersthesis', 'phdthesis']:
+                            fp.write(f"\tschool = {{{item1[key2]}}},\n")
+                        else:
+                            fp.write(f"\tpublisher = {{{item1[key2]}}},\n")
+                    elif key2 == 'address':
+                        if ttype in ['conference', 'inproceedings',
+                                     'proceedings']:
+                            fp.write(f"\tlocation = {{{item1[key2]}}},\n")
+                        else:
+                            fp.write(f"\taddress = {{{item1[key2]}}},\n")
+                    elif key2 == 'tags':
+                        fp.write("\tkeywords = {"
+                                 f"{', '.join(item1[key2])}}},\n")
+                    else:
+                        fp.write(f"\t{key2} = {{{item1[key2]}}},\n")
+                fp.write("}\n\n")

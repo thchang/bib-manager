@@ -129,7 +129,7 @@ class BibParser:
     def _parse_bib_publisher(self, publisher):
         """ Sets the publisher name for the next item. """
 
-        if 'publisher' not in self.nextItem:
+        if self.nextItem['publisher'] is None:
             self.nextItem['publisher'] = publisher
 
     def _parse_bib_address(self, address):
@@ -138,7 +138,7 @@ class BibParser:
         location_re1 = re.compile(
                 "[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+")
         location_re2 = re.compile("[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+")
-        if 'address' not in self.nextItem or \
+        if self.nextItem['address'] is None or \
                 location_re1.match(address) or location_re2.match(address):
             self.nextItem['address'] = address
 
@@ -398,9 +398,13 @@ class BibParser:
                     ttype = 'misc'
                     fp.write(f"@misc{{{key1},\n")
                 for key2 in item1:
-                    if key2 == 'authors':
+                    if item1[key2] is None:
+                        continue
+                    elif key2 == 'authors':
+                        author_names = [f"{last}, {first}"
+                                        for [first, last] in item1[key2]]
                         fp.write("\tauthor = {"
-                                 f"{' and '.join(item1[key2])}}},\n")
+                                 f"{' and '.join(author_names)}}},\n")
                     elif key2 == 'venue':
                         if ttype == 'article':
                             fp.write(f"\tjournal = {{{item1[key2]}}},\n")
@@ -411,8 +415,8 @@ class BibParser:
                             fp.write(f"\thowpublished = {{{item1[key2]}}},\n")
                     elif key2 == 'pages':
                         if len(item1[key2]) > 1:
-                            fp.write("\tpages = {"
-                                     f"{'--'.join(item1[key2])}}},\n")
+                            pages = [str(pp) for pp in item1[key2]]
+                            fp.write(f"\tpages = {{{'--'.join(pages)}}},\n")
                         elif len(item1[key2]) > 0:
                             fp.write(f"\tnumpages = {{{item1[key2][0]}}},\n")
                     elif key2 == 'publisher':

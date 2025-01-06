@@ -18,7 +18,6 @@ class BibParser:
     __slots__ = [
         'template',
         'nextItem',
-        'nextKey',
         'info'
     ]
 
@@ -52,14 +51,7 @@ class BibParser:
             'tags': [],
         }
         self.nextItem = None
-        self.nextKey = None
         self.info = {}
-
-    def _parse_bib_key(self):
-        """ Resets the next key and entry for the internal database. """
-
-        self.nextKey = ""
-        self.nextItem = copy.deepcopy(self.template)
 
     def _parse_bib_type(self, btype):
         """ Sets the entry type for the next item. """
@@ -80,7 +72,6 @@ class BibParser:
                 self.nextItem['authors'].append(
                     [" ".join(name_list[1:]).strip(), name_list[0].strip()]
                 )
-        self.nextKey = self.nextItem['authors'][0][1].lower()
 
     def _parse_bib_title(self, title):
         """ Sets the article title for the next item. """
@@ -91,7 +82,6 @@ class BibParser:
         """ Sets the publication year for the next item. """
 
         self.nextItem['year'] = int(year)
-        self.nextKey += str(year)
 
     def _parse_bib_venue(self, venue):
         """ Sets the publication venue for the next item. """
@@ -250,26 +240,27 @@ class BibParser:
 
         """
 
-        if self.nextKey not in self.info and (self.nextKey + "a") not in \
-                self.info:
-            self.info[self.nextKey] = self.nextItem
-        elif self.nextKey in self.info and (
-                self.info[self.nextKey]['title'] == self.nextItem['title']):
-            pass
+        last_name = self.nextItem['authors'][0][-1].lower()
+        year = self.nextItem['year']
+        first_word = ""
+        for word in self.nextItem['title'].split():
+            word = word.replace("-", "").replace(":", "")
+            word = word.replace("{", "").replace("}", "")
+            if len(word) > 2 and word.lower() not in [
+                'a', 'an', 'the', 'that', 'than',
+                'and', 'but', 'or', 'nor', 'for', 'so', 'yet',
+                'at', 'above', 'in', 'into', 'like', 'near',
+                'of', 'off', 'on', 'once', 'onto', 'over',
+                'past', 'under', 'upon',
+                'when', 'whence', 'with',
+            ]:
+                first_word = word.lower()
+                break
+        nextKey = f"{last_name}{year}{first_word}"
+        if nextKey not in self.info:
+            self.info[nextKey] = self.nextItem
         else:
-            if self.nextKey in self.info:
-                self.info[self.nextKey + "a"] = self.info[self.nextKey]
-                self.info.pop(self.nextKey)
-            nextLetter = "a"
-            toAdd = True
-            while (self.nextKey + nextLetter) in self.info:
-                if (self.info[self.nextKey + nextLetter]['title'] ==
-                        self.nextItem['title']):
-                    toAdd = False
-                    break
-                nextLetter = chr(ord(nextLetter) + 1)
-            if toAdd:
-                self.info[self.nextKey + nextLetter] = self.nextItem
+            pass  # TBD implement key collision policy in the future
         self.nextItem = None
 
     def parse_bib_file(self, filename):
@@ -281,97 +272,56 @@ class BibParser:
 
         """
 
-        newentry = re.compile("\\@(\\w+){(.+),")
-        comment = re.compile("\\% (.+)")
-        fullitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.+)},")
-        fullitem2 = re.compile("(\\w+)[ ]*=[ ]*{(.+)}")
-        fullitem3 = re.compile('(\\w+)[ ]*=[ ]*"(.+)",')
-        fullitem4 = re.compile('(\\w+)[ ]*=[ ]*"(.+)"')
-        startitem1 = re.compile("(\\w+)[ ]*=[ ]*{(.*)")
-        startitem2 = re.compile('(\\w+)[ ]*=[ ]*"(.*)')
-        enditem1 = re.compile("(.*)},")
-        enditem2 = re.compile('(.*)",')
-        enditem3 = re.compile("(.*)}")
-        enditem4 = re.compile('(.*)"')
-        miditem = re.compile("(.+)")
-        self.nextItem = copy.deepcopy(self.template)
+        next_item = (
+            r'\@(?P<type>\w+){[\w-]+,|'
+            r'\%[ ]*(?P<comment>[^\n]+)\n|'
+            r'(?P<fullkey>\w+)\s*=\s*(?P<value>'
+            r'"(?:\\"|[^"])*"|\w+),?|'
+            r'(?P<halfkey>\w+)\s*=\s*{'
+        )
+        re_next_item = re.compile(next_item)
+
         with open(filename, "r") as fp:
-            nextKey = ""
-            nextValue = ""
-            nextDescrip = ""
-            for line in fp:
-                if m := newentry.match(line.strip()):
-                    if self.nextKey is not None:
-                        self.add_bib_item()
-                    self._parse_bib_key()
-                    self._parse_bib_type(m.group(1))
-                    self._parse_bib_descrip(nextDescrip.strip())
-                    nextDescrip = ""
-                elif m := comment.match(line.strip()):
-                    if m.group(1) != "":
-                        nextDescrip = " ".join([nextDescrip, m.group(1)])
-                elif m := fullitem1.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := fullitem2.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := fullitem3.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := fullitem4.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := startitem1.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                elif m := startitem2.match(line.strip()):
-                    nextKey = m.group(1)
-                    nextValue = m.group(2)
-                elif m := enditem1.match(line.strip()):
-                    if m.group(1) != "":
-                        nextValue = " ".join([nextValue, m.group(1)])
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := enditem2.match(line.strip()):
-                    if m.group(1) != "":
-                        nextValue = " ".join([nextValue, m.group(1)])
-                    self.parse_bib_line(nextKey, nextValue)
-                    nextKey = ""
-                    nextValue = ""
-                elif m := enditem3.match(line.strip()):
-                    if m.group(1) != "":
-                        nextValue = " ".join([nextValue, m.group(1)])
-                    if nextKey != "":
-                        self.parse_bib_line(nextKey, nextValue)
-                        nextKey = ""
-                        nextValue = ""
-                elif m := enditem4.match(line.strip()):
-                    if m.group(1) != "":
-                        nextValue = " ".join([nextValue, m.group(1)])
-                    if nextKey != "":
-                        self.parse_bib_line(nextKey, nextValue)
-                        nextKey = ""
-                        nextValue = ""
-                elif m := miditem.match(line.strip()):
-                    if m.group(1) != "":
-                        nextValue = " ".join([nextValue, m.group(1)])
-                else:
-                    pass
-        if self.nextKey is not None:
+            bib_data = fp.read()
+
+        next_descrip = ""
+        pos = 0
+
+        while m := re_next_item.search(bib_data, pos):
+            if m.group('type'):
+                if self.nextItem is not None:
+                    self.add_bib_item()
+                self.nextItem = copy.deepcopy(self.template)
+                self._parse_bib_type(m.group('type').strip())
+                self._parse_bib_descrip(next_descrip.strip())
+                next_descrip = ""
+                pos = m.end()
+            elif m.group('comment'):
+                next_descrip = " ".join([next_descrip, m.group('comment')])
+                pos = m.end()
+            elif m.group('fullkey') and m.group('value'):
+                key = m.group('fullkey').strip()
+                value = " ".join(m.group('value').strip().split())
+                self.parse_bib_line(key, value)
+                pos = m.end()
+            elif m.group('halfkey'):
+                # Parse nested braces manually
+                start = m.end()
+                brace_count = 1
+                end = start
+                while brace_count > 0 and end < len(bib_data):
+                    if bib_data[end] == '{':
+                        brace_count += 1
+                    elif bib_data[end] == '}':
+                        brace_count -= 1
+                    end += 1
+                key = m.group('halfkey').strip()
+                value = " ".join(bib_data[start:end - 1].strip().split())
+                self.parse_bib_line(key, value)
+                pos = end
+            else:
+                print("here")
+        if self.nextItem is not None:
             self.add_bib_item()
 
     def write_bib_file(self, filename):
@@ -387,10 +337,10 @@ class BibParser:
                 item1 = self.info[key1]
                 ttype = None
                 if 'type' in item1 and item1['type'] in [
-                    'article', 'book', 'booklet', 'conference', 'inbook',
-                    'incollection', 'inproceedings', 'manual', 'mastersthesis',
-                    'misc', 'phdthesis', 'proceedings', 'techreport',
-                    'unpublished'
+                   'article', 'book', 'booklet', 'conference', 'inbook',
+                   'incollection', 'inproceedings', 'manual', 'mastersthesis',
+                   'misc', 'phdthesis', 'proceedings', 'techreport',
+                   'unpublished'
                 ]:
                     ttype = item1['type']
                     fp.write(f"@{item1['type']}{{{key1},\n")

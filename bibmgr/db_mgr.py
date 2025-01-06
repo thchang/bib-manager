@@ -30,5 +30,4 @@ class DbMgr(BibParser):
             yaml.dump(self.info, fp)
 
     def write_bibtex(self, filename):
-        #self.write_bib_file(filename)
-        self.write_bib_file("written_test.bib")
+        self.write_bib_file(filename)

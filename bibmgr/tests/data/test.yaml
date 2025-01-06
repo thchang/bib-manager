@@ -1,4 +1,4 @@
-chang2015:
+chang2015implementing:
   address: Adelphi, MD, USA
   articleno: null
   authors:
@@ -12,7 +12,7 @@ chang2015:
   note: null
   number: ARL-TM-2015A
   pages: null
-  publisher: null
+  publisher: US Army Research Laboratory
   series: null
   tags: []
   title: Implementing the Optimal Control-Based Obstacle Avoidance {(OCOA)} Algorithm
@@ -23,7 +23,7 @@ chang2015:
   volume: 2
   web: null
   year: 2015
-chang2016:
+chang2016gpu:
   address: Virginia Beach, VA, USA
   articleno: null
   authors:
@@ -36,7 +36,7 @@ chang2016:
   note: null
   number: null
   pages: null
-  publisher: null
+  publisher: Department of Computer Science, Virginia Wesleyan University
   series: null
   tags: []
   title: '{GPU} Saturation for Multiple Matrix-Vector Multiplications'
@@ -46,8 +46,8 @@ chang2016:
   volume: null
   web: null
   year: 2016
-chang2018a:
-  address: null
+chang2018computing:
+  address: St. Petersburg, FL, USA
   articleno: null
   authors:
   - - Tyler H.
@@ -76,7 +76,7 @@ chang2018a:
   number: null
   pages:
   - 8
-  publisher: null
+  publisher: Institute of Electrical and Electronics Engineers
   series: null
   tags: []
   title: Computing the umbrella neighbourhood of a vertex in the {D}elaunay triangulation
@@ -87,7 +87,46 @@ chang2018a:
   volume: null
   web: null
   year: 2018
-chang2018b:
+chang2018polynomial:
+  address: Richmond, KY, USA
+  articleno: 12
+  authors:
+  - - Tyler H.
+    - Chang
+  - - Layne T.
+    - Watson
+  - - Thomas C. H.
+    - Lux
+  - - Bo
+    - Li
+  - - Li
+    - Xu
+  - - Ali R.
+    - Butt
+  - - Kirk W.
+    - Cameron
+  - - Yili
+    - Hong
+  descrip: ''
+  doi: 10.1145/3190645.3190680
+  git: null
+  isbn: null
+  note: null
+  number: null
+  pages:
+  - 8
+  publisher: Association of Computing Machinery
+  series: null
+  tags: []
+  title: A polynomial time algorithm for multivariate interpolation in arbitrary dimension
+    via the {D}elaunay triangulation
+  type: inproceedings
+  url: null
+  venue: Proc. 2018 ACM Southeast Conference (ACMSE '18)
+  volume: null
+  web: null
+  year: 2018
+chang2018predicting:
   address: Baltimore, MD, USA
   articleno: 2
   authors:
@@ -119,7 +158,7 @@ chang2018b:
   number: null
   pages:
   - 12
-  publisher: null
+  publisher: Society for Computer Simulation International
   series: null
   tags: []
   title: Predicting system performance by interpolation using a high-dimensional {D}elaunay
@@ -130,46 +169,7 @@ chang2018b:
   volume: null
   web: null
   year: 2018
-chang2018c:
-  address: Richmond, KY, USA
-  articleno: 12
-  authors:
-  - - Tyler H.
-    - Chang
-  - - Layne T.
-    - Watson
-  - - Thomas C. H.
-    - Lux
-  - - Bo
-    - Li
-  - - Li
-    - Xu
-  - - Ali R.
-    - Butt
-  - - Kirk W.
-    - Cameron
-  - - Yili
-    - Hong
-  descrip: ''
-  doi: 10.1145/3190645.3190680
-  git: null
-  isbn: null
-  note: null
-  number: null
-  pages:
-  - 8
-  publisher: null
-  series: null
-  tags: []
-  title: A polynomial time algorithm for multivariate interpolation in arbitrary dimension
-    via the {D}elaunay triangulation
-  type: inproceedings
-  url: null
-  venue: Proc. 2018 ACM Southeast Conference (ACMSE '18)
-  volume: null
-  web: null
-  year: 2018
-chang2019:
+chang2019leastsquares:
   address: null
   articleno: 374
   authors:
@@ -187,7 +187,7 @@ chang2019:
   number: '12'
   pages:
   - 17
-  publisher: null
+  publisher: Springer
   series: null
   tags: []
   title: Least-squares solutions to polynomial systems of equations with quantum annealing
@@ -197,7 +197,100 @@ chang2019:
   volume: 18
   web: null
   year: 2019
-chang2020a:
+chang2020algorithm:
+  address: null
+  articleno: 38
+  authors:
+  - - Tyler H.
+    - Chang
+  - - Layne T.
+    - Watson
+  - - Thomas C. H.
+    - Lux
+  - - Ali R.
+    - Butt
+  - - Kirk W.
+    - Cameron
+  - - Yili
+    - Hong
+  descrip: This is probably my 'best work'
+  doi: 10.1145/3422818
+  git: null
+  isbn: null
+  note: null
+  number: '4'
+  pages:
+  - 20
+  publisher: Association of Computing Machinery
+  series: null
+  tags:
+  - software
+  - algorithms
+  - delaunay triangulation
+  title: 'Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse subset of
+    the {D}elaunay triangulation in medium to high dimensions'
+  type: article
+  url: null
+  venue: ACM Transactions on Mathematical Software
+  volume: 46
+  web: null
+  year: 2020
+chang2020managing:
+  address: Fairfax, VA, USA
+  articleno: 31
+  authors:
+  - - Tyler H.
+    - Chang
+  - - Jeffrey
+    - Larson
+  - - Layne T.
+    - Watson
+  - - Thomas C. H.
+    - Lux
+  descrip: ''
+  doi: 10.22360/springsim.2020.hpc.001
+  git: null
+  isbn: null
+  note: null
+  number: null
+  pages:
+  - 12
+  publisher: Society for Computer Simulation International
+  series: null
+  tags: []
+  title: Managing computationally expensive blackbox multiobjective optimization problems
+    with lib{E}nsemble
+  type: inproceedings
+  url: null
+  venue: Proc. 2020 Spring Simulation Conference (SpringSim '20)
+  volume: null
+  web: null
+  year: 2020
+chang2020mathematical:
+  address: Blacksburg, VA, USA
+  articleno: null
+  authors:
+  - - Tyler H.
+    - Chang
+  descrip: ''
+  doi: null
+  git: null
+  isbn: null
+  note: '{\bf Dept. of Computer Science Nominee for Outstanding Dissertation Award}'
+  number: null
+  pages: null
+  publisher: Department of Computer Science, Virginia Polytechnic Institute and State
+    University (Virginia Tech)
+  series: null
+  tags: []
+  title: Mathematical Software for Multiobjective Optimization Problems
+  type: phdthesis
+  url: http://hdl.handle.net/10919/98915
+  venue: null
+  volume: null
+  web: null
+  year: 2020
+chang2020multiobjective:
   address: Orlando, FL, USA
   articleno: null
   authors:
@@ -227,99 +320,7 @@ chang2020a:
   volume: null
   web: null
   year: 2020
-chang2020b:
-  address: null
-  articleno: 38
-  authors:
-  - - Tyler H.
-    - Chang
-  - - Layne T.
-    - Watson
-  - - Thomas C. H.
-    - Lux
-  - - Ali R.
-    - Butt
-  - - Kirk W.
-    - Cameron
-  - - Yili
-    - Hong
-  descrip: This is probably my 'best work'
-  doi: 10.1145/3422818
-  git: null
-  isbn: null
-  note: null
-  number: '4'
-  pages:
-  - 20
-  publisher: null
-  series: null
-  tags:
-  - software
-  - algorithms
-  - delaunay triangulation
-  title: 'Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse subset of
-    the {D}elaunay triangulation in medium to high dimensions'
-  type: article
-  url: null
-  venue: ACM Transactions on Mathematical Software
-  volume: 46
-  web: null
-  year: 2020
-chang2020c:
-  address: Fairfax, VA, USA
-  articleno: 31
-  authors:
-  - - Tyler H.
-    - Chang
-  - - Jeffrey
-    - Larson
-  - - Layne T.
-    - Watson
-  - - Thomas C. H.
-    - Lux
-  descrip: ''
-  doi: 10.22360/springsim.2020.hpc.001
-  git: null
-  isbn: null
-  note: null
-  number: null
-  pages:
-  - 12
-  publisher: null
-  series: null
-  tags: []
-  title: Managing computationally expensive blackbox multiobjective optimization problems
-    with lib{E}nsemble
-  type: inproceedings
-  url: null
-  venue: Proc. 2020 Spring Simulation Conference (SpringSim '20)
-  volume: null
-  web: null
-  year: 2020
-chang2020d:
-  address: Blacksburg, VA, USA
-  articleno: null
-  authors:
-  - - Tyler H.
-    - Chang
-  descrip: ''
-  doi: null
-  git: null
-  isbn: null
-  note: '{\bf Dept. of Computer Science Nominee for Outstanding Dissertation Award}'
-  number: null
-  pages: null
-  publisher: null
-  series: null
-  tags: []
-  title: Mathematical Software for Multiobjective Optimization Problems
-  type: phdthesis
-  url: http://hdl.handle.net/10919/98915
-  venue: null
-  volume: null
-  web: null
-  year: 2020
-chang2022:
+chang2022algorithm:
   address: null
   articleno: 36
   authors:
@@ -345,7 +346,7 @@ chang2022:
   number: '3'
   pages:
   - 34
-  publisher: null
+  publisher: Association of Computing Machinery
   series: null
   tags: []
   title: 'Algorithm 1028: {VTMOP}: {S}olver for blackbox multiobjective optimization
@@ -356,7 +357,7 @@ chang2022:
   volume: 48
   web: null
   year: 2022
-chang2023a:
+chang2023framework:
   address: Kigali, Rwanda
   articleno: null
   authors:
@@ -390,36 +391,7 @@ chang2023a:
   volume: null
   web: null
   year: 2023
-chang2023b:
-  address: Lemont, Illinois, USA
-  articleno: null
-  authors:
-  - - Tyler H.
-    - Chang
-  - - Stefan M.
-    - Wild
-  - - Hyrum
-    - Dickinson
-  descrip: These are just the readthedocs pages for my ParMOO software, but there
-    are features in here that are not publication worthy so there may be reasons to
-    cite the docs over the paper itself.
-  doi: null
-  git: null
-  isbn: null
-  note: null
-  number: Version 0.3.1
-  pages: null
-  publisher: null
-  series: null
-  tags: []
-  title: '{ParMOO}: {P}ython library for parallel multiobjective simulation optimization'
-  type: techreport
-  url: https://parmoo.readthedocs.io/_/downloads/en/latest/pdf/
-  venue: null
-  volume: null
-  web: null
-  year: 2023
-chang2023c:
+chang2023parmoo:
   address: null
   articleno: 4468
   authors:
@@ -450,7 +422,63 @@ chang2023c:
   volume: 8
   web: null
   year: 2023
-changa:
+chang2024parmoo:
+  address: Lemont, Illinois, USA
+  articleno: null
+  authors:
+  - - Tyler H.
+    - Chang
+  - - Stefan M.
+    - Wild
+  - - Hyrum
+    - Dickinson
+  descrip: These are just the readthedocs pages for my ParMOO software, but there
+    are features in here that are not publication worthy so there may be reasons to
+    cite the docs over the paper itself.
+  doi: null
+  git: null
+  isbn: null
+  note: null
+  number: Version 0.4.1
+  pages: null
+  publisher: Argonne National Laboratory
+  series: null
+  tags: []
+  title: '{ParMOO}: {P}ython library for parallel multiobjective simulation optimization'
+  type: techreport
+  url: https://parmoo.readthedocs.io/_/downloads/en/latest/pdf/
+  venue: null
+  volume: null
+  web: null
+  year: 2024
+changNonedesigning:
+  address: null
+  articleno: null
+  authors:
+  - - Tyler H.
+    - Chang
+  - - Stefan M.
+    - Wild
+  descrip: This is the paper corresponding to the ParMOO software itself. This version
+    of the paper may be outdated...
+  doi: null
+  git: null
+  isbn: null
+  note: 'Submitted Jul 2023. Preprint: \url{https://arxiv.org/abs/2304.06881}'
+  number: null
+  pages: null
+  publisher: null
+  series: null
+  tags: []
+  title: Designing a Framework for Solving Multiobjective Simulation Optimization
+    Problems
+  type: Submitted
+  url: null
+  venue: null
+  volume: null
+  web: null
+  year: null
+changNoneleveraging:
   address: null
   articleno: null
   authors:
@@ -478,34 +506,7 @@ changa:
   volume: null
   web: null
   year: null
-changb:
-  address: null
-  articleno: null
-  authors:
-  - - Tyler H.
-    - Chang
-  - - Stefan M.
-    - Wild
-  descrip: This is the paper corresponding to the ParMOO software itself. This version
-    of the paper may be outdated...
-  doi: null
-  git: null
-  isbn: null
-  note: 'Submitted Jul 2023. Preprint: \url{https://arxiv.org/abs/2304.06881}'
-  number: null
-  pages: null
-  publisher: null
-  series: null
-  tags: []
-  title: Designing a Framework for Solving Multiobjective Simulation Optimization
-    Problems
-  type: Submitted
-  url: null
-  venue: null
-  volume: null
-  web: null
-  year: null
-changc:
+changNoneremark:
   address: null
   articleno: null
   authors:
@@ -537,8 +538,8 @@ changc:
   volume: null
   web: null
   year: null
-chen2023:
-  address: Orlando, FL, USA
+chen2023integrated:
+  address: San Antonio, TX, USA
   articleno: null
   authors:
   - - Gongxiaohui
@@ -569,7 +570,7 @@ chen2023:
   volume: null
   web: null
   year: 2023
-egele:
+egeleNoneparallel:
   address: null
   articleno: null
   authors:
@@ -601,8 +602,8 @@ egele:
   volume: null
   web: null
   year: null
-garg2023:
-  address: Orlando, FL, USA
+garg2023sfsfd:
+  address: San Antonio, TX, USA
   articleno: null
   authors:
   - - Manisha
@@ -631,7 +632,7 @@ garg2023:
   volume: null
   web: null
   year: 2023
-gillette2020:
+gillette2020algorithms:
   address: Livermore, California, USA
   articleno: null
   authors:
@@ -646,7 +647,7 @@ gillette2020:
   note: null
   number: LLNL-CONF-814930
   pages: null
-  publisher: null
+  publisher: Lawrence Livermore National Laboratory
   series: null
   tags: []
   title: '{ALGORITHMS}: Assessing Latent Space Dimension by {Delaunay} Loss'
@@ -656,8 +657,8 @@ gillette2020:
   volume: null
   web: null
   year: 2020
-lux2018a:
-  address: null
+lux2018nonparametric:
+  address: St. Petersburg, FL, USA
   articleno: null
   authors:
   - - Thomas C. H.
@@ -692,7 +693,7 @@ lux2018a:
   number: null
   pages:
   - 7
-  publisher: null
+  publisher: Institute of Electrical and Electronics Engineers
   series: null
   tags: []
   title: Nonparametric distribution models for predicting and managing computational
@@ -703,50 +704,7 @@ lux2018a:
   volume: null
   web: null
   year: 2018
-lux2018b:
-  address: Baltimore, MD, USA
-  articleno: 8
-  authors:
-  - - Thomas C. H.
-    - Lux
-  - - Layne T.
-    - Watson
-  - - Tyler H.
-    - Chang
-  - - Jon
-    - Bernard
-  - - Bo
-    - Li
-  - - Li
-    - Xu
-  - - Godmar
-    - Back
-  - - Ali R.
-    - Butt
-  - - Kirk W.
-    - Cameron
-  - - Yili
-    - Hong
-  descrip: ''
-  doi: 10.22360/springsim.2018.hpc.009
-  git: null
-  isbn: null
-  note: null
-  number: null
-  pages:
-  - 10
-  publisher: null
-  series: null
-  tags: []
-  title: Predictive modeling of {I/O} characteristics in high performance computing
-    systems
-  type: inproceedings
-  url: null
-  venue: Proc. 2018 Spring Simulation Conference (SpringSim '18)
-  volume: null
-  web: null
-  year: 2018
-lux2018c:
+lux2018novel:
   address: Richmond, KY, USA
   articleno: 13
   authors:
@@ -782,7 +740,7 @@ lux2018c:
   number: null
   pages:
   - 7
-  publisher: null
+  publisher: Association of Computing Machinery
   series: null
   tags: []
   title: Novel meshes for multivariate interpolation and approximation
@@ -792,7 +750,50 @@ lux2018c:
   volume: null
   web: null
   year: 2018
-lux2020a:
+lux2018predictive:
+  address: Baltimore, MD, USA
+  articleno: 8
+  authors:
+  - - Thomas C. H.
+    - Lux
+  - - Layne T.
+    - Watson
+  - - Tyler H.
+    - Chang
+  - - Jon
+    - Bernard
+  - - Bo
+    - Li
+  - - Li
+    - Xu
+  - - Godmar
+    - Back
+  - - Ali R.
+    - Butt
+  - - Kirk W.
+    - Cameron
+  - - Yili
+    - Hong
+  descrip: ''
+  doi: 10.22360/springsim.2018.hpc.009
+  git: null
+  isbn: null
+  note: null
+  number: null
+  pages:
+  - 10
+  publisher: Society for Computer Simulation International
+  series: null
+  tags: []
+  title: Predictive modeling of {I/O} characteristics in high performance computing
+    systems
+  type: inproceedings
+  url: null
+  venue: Proc. 2018 Spring Simulation Conference (SpringSim '18)
+  volume: null
+  web: null
+  year: 2018
+lux2020algorithm:
   address: Fairfax, VA, USA
   articleno: 33
   authors:
@@ -816,7 +817,7 @@ lux2020a:
   number: null
   pages:
   - 12
-  publisher: null
+  publisher: Society for Computer Simulation International
   series: null
   tags: []
   title: An algorithm for constructing monotone quintic interpolating splines
@@ -826,7 +827,7 @@ lux2020a:
   volume: null
   web: null
   year: 2020
-lux2020b:
+lux2020analytic:
   address: Raleigh, NC, USA
   articleno: null
   authors:
@@ -842,7 +843,7 @@ lux2020b:
   number: null
   pages:
   - 8
-  publisher: null
+  publisher: Institute of Electrical and Electronics Engineers
   series: null
   tags: []
   title: Analytic test functions for generalizable evaluation of convex optimization
@@ -853,7 +854,7 @@ lux2020b:
   volume: null
   web: null
   year: 2020
-lux2020c:
+lux2020effective:
   address: Raleigh, NC, USA
   articleno: null
   authors:
@@ -881,7 +882,7 @@ lux2020c:
   number: null
   pages:
   - 6
-  publisher: null
+  publisher: Institute of Electrical and Electronics Engineers
   series: null
   tags: []
   title: Effective nonparametric distribution modeling for distribution approximation
@@ -892,7 +893,7 @@ lux2020c:
   volume: null
   web: null
   year: 2020
-lux2021:
+lux2021interpolation:
   address: null
   articleno: null
   authors:
@@ -925,7 +926,7 @@ lux2021:
   pages:
   - 281
   - 313
-  publisher: null
+  publisher: Springer
   series: null
   tags: []
   title: Interpolation of sparse high-dimensional data
@@ -935,7 +936,7 @@ lux2021:
   volume: 88
   web: null
   year: 2021
-lux2023:
+lux2023algorithm:
   address: null
   articleno: 6
   authors:
@@ -955,7 +956,7 @@ lux2023:
   number: '1'
   pages:
   - 17
-  publisher: null
+  publisher: Association of Computing Machinery
   series: null
   tags: []
   title: 'Algorithm 1031: {MQSI}---{M}onotone quintic spline interpolation'
@@ -965,7 +966,7 @@ lux2023:
   volume: 49
   web: null
   year: 2023
-neveu2023:
+neveu2023comparison:
   address: null
   articleno: 108566
   authors:
@@ -997,7 +998,7 @@ neveu2023:
   volume: 283
   web: null
   year: 2023
-raghunath2017:
+raghunath2017global:
   address: Virginia Beach, VA, USA
   articleno: 7
   authors:
@@ -1021,7 +1022,7 @@ raghunath2017:
   number: null
   pages:
   - 12
-  publisher: null
+  publisher: Society for Computer Simulation International
   series: null
   tags: []
   title: Global deterministic and stochastic optimization in a service oriented architecture
@@ -1031,7 +1032,7 @@ raghunath2017:
   volume: null
   web: null
   year: 2017
-wang2023:
+wang2023design:
   address: null
   articleno: null
   authors:
@@ -1062,7 +1063,7 @@ wang2023:
   pages:
   - 88
   - 103
-  publisher: null
+  publisher: Taylor \& Francis
   series: null
   tags: []
   title: Design strategies and approximation methods for high-performance computing
@@ -1073,7 +1074,7 @@ wang2023:
   volume: 55
   web: null
   year: 2023
-xu2020:
+xu2020modeling:
   address: null
   articleno: null
   authors:
@@ -1104,7 +1105,7 @@ xu2020:
   pages:
   - 87
   - 98
-  publisher: null
+  publisher: Elsevier
   series: null
   tags: []
   title: Modeling {I/O} performance variability in high-performance computing systems
@@ -1115,7 +1116,7 @@ xu2020:
   volume: 139
   web: null
   year: 2020
-xu2021:
+xu2021prediction:
   address: null
   articleno: null
   authors:
@@ -1146,7 +1147,7 @@ xu2021:
   pages:
   - 318
   - 334
-  publisher: null
+  publisher: Taylor \& Francis
   series: null
   tags: []
   title: Prediction of High-Performance Computing Input/Output Variability and its

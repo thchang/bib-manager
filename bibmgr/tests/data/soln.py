@@ -1,5 +1,5 @@
 soln = {
-    'egele': {
+    'egeleNoneparallel': {
         'authors': [['Romain', 'Egele'], ['Tyler H.', 'Chang'], ['Yixuan', 'Sun'], ['Venkatram', 'Vishwanath'], ['Prasanna', 'Balaprakash']],
         'title': 'Parallel multi-objective hyperparameter optimization with uniform normalization and bounded objectives',
         'year': None,
@@ -21,7 +21,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'changa': {
+    'changNoneleveraging': {
         'authors': [['Tyler H.', 'Chang'], ['Andrew K.', 'Gillette'], ['Romit', 'Maulik']],
         'title': 'Leveraging Interpolation Models and Error Bounds for Verifiable Scientific Machine Learning',
         'year': None,
@@ -43,7 +43,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'changb': {
+    'changNonedesigning': {
         'authors': [['Tyler H.', 'Chang'], ['Stefan M.', 'Wild']],
         'title': 'Designing a Framework for Solving Multiobjective Simulation Optimization Problems',
         'year': None,
@@ -65,7 +65,7 @@ soln = {
         'descrip': 'This is the paper corresponding to the ParMOO software itself. This version of the paper may be outdated...',
         'tags': [],
     },
-    'changc': {
+    'changNoneremark': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Sven', 'Leyffer'], ['Thomas C. H.', 'Lux'], ['Hussain M. J.', 'Almohri']],
         'title': 'Remark on {Algorithm} 1012: Computing projections with large data sets',
         'year': None,
@@ -87,7 +87,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chen2023': {
+    'chen2023integrated': {
         'authors': [['Gongxiaohui', 'Chen'], ['Tyler H.', 'Chang'], ['John', 'Power'], ['Chungunag', 'Jing']],
         'title': 'An Integrated Multi-Physics Optimization Framework for Particle Accelerator Design',
         'year': 2023,
@@ -99,7 +99,7 @@ soln = {
         'articleno': None,
         'pages': [2],
         'publisher': None,
-        'address': 'Orlando, FL, USA',
+        'address': 'San Antonio, TX, USA',
         'doi': '10.48550/arXiv.2311.09415',
         'url': None,
         'isbn': None,
@@ -109,7 +109,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'garg2023': {
+    'garg2023sfsfd': {
         'authors': [['Manisha', 'Garg'], ['Tyler H.', 'Chang'], ['Krishnan', 'Raghavan']],
         'title': '{SF-SFD}: {S}tochastic optimization of {F}ourier coefficients for space-filling designs',
         'year': 2023,
@@ -121,7 +121,7 @@ soln = {
         'articleno': None,
         'pages': [3636, 3646],
         'publisher': None,
-        'address': 'Orlando, FL, USA',
+        'address': 'San Antonio, TX, USA',
         'doi': '10.1109/WSC60868.2023.10408245',
         'url': None,
         'isbn': None,
@@ -131,7 +131,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2023a': {
+    'chang2023framework': {
         'authors': [['Tyler H.', 'Chang'], ['Jakob R.', 'Elias'], ['Stefan M.', 'Wild'], ['Santanu', 'Chaudhuri'], ['Joseph A.', 'Libera']],
         'title': 'A framework for fully autonomous design of materials via multiobjective optimization and active learning: challenges and next steps',
         'year': 2023,
@@ -153,18 +153,18 @@ soln = {
         'descrip': 'This is my favorite application that I\'ve worked on (using my ParMOO software, listed below)',
         'tags': [],
     },
-    'chang2023b': {
+    'chang2024parmoo': {
         'authors': [['Tyler H.', 'Chang'], ['Stefan M.', 'Wild'], ['Hyrum', 'Dickinson']],
         'title': '{ParMOO}: {P}ython library for parallel multiobjective simulation optimization',
-        'year': 2023,
+        'year': 2024,
         'type': 'techreport',
         'venue': None,
         'series': None,
         'volume': None,
-        'number': 'Version 0.3.1',
+        'number': 'Version 0.4.1',
         'articleno': None,
         'pages': None,
-        'publisher': None,
+        'publisher': 'Argonne National Laboratory',
         'address': 'Lemont, Illinois, USA',
         'doi': None,
         'url': 'https://parmoo.readthedocs.io/_/downloads/en/latest/pdf/',
@@ -175,7 +175,7 @@ soln = {
         'descrip': 'These are just the readthedocs pages for my ParMOO software, but there are features in here that are not publication worthy so there may be reasons to cite the docs over the paper itself.',
         'tags': [],
     },
-    'lux2023': {
+    'lux2023algorithm': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['William I.', 'Thacker']],
         'title': 'Algorithm 1031: {MQSI}---{M}onotone quintic spline interpolation',
         'year': 2023,
@@ -186,7 +186,7 @@ soln = {
         'number': '1',
         'articleno': 6,
         'pages': [17],
-        'publisher': None,
+        'publisher': 'Association of Computing Machinery',
         'address': None,
         'doi': '10.1145/3570157',
         'url': None,
@@ -197,7 +197,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2023c': {
+    'chang2023parmoo': {
         'authors': [['Tyler H.', 'Chang'], ['Stefan M.', 'Wild']],
         'title': '{ParMOO}: A {P}ython library for parallel multiobjective simulation optimization',
         'year': 2023,
@@ -220,7 +220,7 @@ soln = {
         'tags': ['software', 'simulation optimization',
                  'multiobjective optimization'],
     },
-    'neveu2023': {
+    'neveu2023comparison': {
         'authors': [['Nicole', 'Neveu'], ['Tyler H.', 'Chang'], ['Paris', 'Franz'], ['Stephen', 'Hudson'], ['Jeffrey', 'Larson']],
         'title': 'Comparison of multiobjective optimization methods for the {LCLS-II} photoinjector',
         'year': 2023,
@@ -242,7 +242,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'wang2023': {
+    'wang2023design': {
         'authors': [['Yueyao', 'Wang'], ['Li', 'Xu'], ['Yili', 'Hong'], ['Rong', 'Pan'], ['Tyler H.', 'Chang'], ['Thomas C. H.', 'Lux'], ['Jon', 'Bernard'], ['Layne T.', 'Watson'], ['Kirk W.', 'Cameron']],
         'title': 'Design strategies and approximation methods for high-performance computing variability management',
         'year': 2023,
@@ -253,7 +253,7 @@ soln = {
         'number': '1',
         'articleno': None,
         'pages': [88, 103],
-        'publisher': None,
+        'publisher': 'Taylor \\& Francis',
         'address': None,
         'doi': '10.1080/00224065.2022.2035285',
         'url': None,
@@ -264,7 +264,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2022': {
+    'chang2022algorithm': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Jeffrey', 'Larson'], ['Nicole', 'Neveu'], ['William I.', 'Thacker'], ['Shubhangi', 'Deshpande'], ['Thomas C. H.', 'Lux']],
         'title': 'Algorithm 1028: {VTMOP}: {S}olver for blackbox multiobjective optimization problems',
         'year': 2022,
@@ -275,7 +275,7 @@ soln = {
         'number': '3',
         'articleno': 36,
         'pages': [34],
-        'publisher': None,
+        'publisher': 'Association of Computing Machinery',
         'address': None,
         'doi': '10.1145/3529258',
         'url': None,
@@ -286,7 +286,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'xu2021': {
+    'xu2021prediction': {
         'authors': [['Li', 'Xu'], ['Thomas C. H.', 'Lux'], ['Tyler H.', 'Chang'], ['Bo', 'Li'], ['Yili', 'Hong'], ['Layne T.', 'Watson'], ['Ali R.', 'Butt'], ['Danfeng', 'Yao'], ['Kirk W.', 'Cameron']],
         'title': 'Prediction of High-Performance Computing Input/Output Variability and its Application to Optimization for System Configurations',
         'year': 2021,
@@ -297,7 +297,7 @@ soln = {
         'number': '2',
         'articleno': None,
         'pages': [318, 334],
-        'publisher': None,
+        'publisher': 'Taylor \\& Francis',
         'address': None,
         'doi': '10.1080/08982112.2020.1866203',
         'url': None,
@@ -308,7 +308,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2021': {
+    'lux2021interpolation': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Li', 'Xu'], ['Godmar', 'Back'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'Interpolation of sparse high-dimensional data',
         'year': 2021,
@@ -319,7 +319,7 @@ soln = {
         'number': '1',
         'articleno': None,
         'pages': [281, 313],
-        'publisher': None,
+        'publisher': 'Springer',
         'address': None,
         'doi': '10.1007/s11075-020-01040-2',
         'url': None,
@@ -330,7 +330,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2020a': {
+    'chang2020multiobjective': {
         'authors': [['Tyler H.', 'Chang'], ['Jeffrey', 'Larson'], ['Layne T.', 'Watson']],
         'title': 'Multiobjective Optimization of the Variability of the High-Performance {L}inpack Solver',
         'year': 2020,
@@ -352,7 +352,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2020b': {
+    'chang2020algorithm': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Thomas C. H.', 'Lux'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse subset of the {D}elaunay triangulation in medium to high dimensions',
         'year': 2020,
@@ -363,7 +363,7 @@ soln = {
         'number': '4',
         'articleno': 38,
         'pages': [20],
-        'publisher': None,
+        'publisher': 'Association of Computing Machinery',
         'address': None,
         'doi': '10.1145/3422818',
         'url': None,
@@ -374,7 +374,7 @@ soln = {
         'descrip': 'This is probably my \'best work\'',
         'tags': ['software', 'algorithms', 'delaunay triangulation'],
     },
-    'gillette2020': {
+    'gillette2020algorithms': {
         'authors': [['Andrew K.', 'Gillette'], ['Tyler H.', 'Chang']],
         'title': '{ALGORITHMS}: Assessing Latent Space Dimension by {Delaunay} Loss',
         'year': 2020,
@@ -385,7 +385,7 @@ soln = {
         'number': 'LLNL-CONF-814930',
         'articleno': None,
         'pages': None,
-        'publisher': None,
+        'publisher': 'Lawrence Livermore National Laboratory',
         'address': 'Livermore, California, USA',
         'doi': None,
         'url': 'https://www.osti.gov/servlets/purl/1756748',
@@ -396,7 +396,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'xu2020': {
+    'xu2020modeling': {
         'authors': [['Li', 'Xu'], ['Yueyao', 'Wang'], ['Thomas C. H.', 'Lux'], ['Tyler H.', 'Chang'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Yili', 'Hong'], ['Kirk W.', 'Cameron'], ['Layne T.', 'Watson']],
         'title': 'Modeling {I/O} performance variability in high-performance computing systems using mixture distributions',
         'year': 2020,
@@ -407,7 +407,7 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': [87, 98],
-        'publisher': None,
+        'publisher': 'Elsevier',
         'address': None,
         'doi': '10.1016/j.jpdc.2020.01.005',
         'url': None,
@@ -418,7 +418,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2020c': {
+    'chang2020managing': {
         'authors': [['Tyler H.', 'Chang'], ['Jeffrey', 'Larson'], ['Layne T.', 'Watson'], ['Thomas C. H.', 'Lux']],
         'title': 'Managing computationally expensive blackbox multiobjective optimization problems with lib{E}nsemble',
         'year': 2020,
@@ -429,7 +429,7 @@ soln = {
         'number': None,
         'articleno': 31,
         'pages': [12],
-        'publisher': None,
+        'publisher': 'Society for Computer Simulation International',
         'address': 'Fairfax, VA, USA',
         'doi': '10.22360/springsim.2020.hpc.001',
         'url': None,
@@ -440,7 +440,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2020d': {
+    'chang2020mathematical': {
         'authors': [['Tyler H.', 'Chang']],
         'title': 'Mathematical Software for Multiobjective Optimization Problems',
         'year': 2020,
@@ -451,7 +451,7 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': None,
-        'publisher': None,
+        'publisher': 'Department of Computer Science, Virginia Polytechnic Institute and State University (Virginia Tech)',
         'address': 'Blacksburg, VA, USA',
         'doi': None,
         'url': 'http://hdl.handle.net/10919/98915',
@@ -462,7 +462,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2020a': {
+    'lux2020algorithm': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Li', 'Xu'], ['Yueyao', 'Wang'], ['Yili', 'Hong']],
         'title': 'An algorithm for constructing monotone quintic interpolating splines',
         'year': 2020,
@@ -473,7 +473,7 @@ soln = {
         'number': None,
         'articleno': 33,
         'pages': [12],
-        'publisher': None,
+        'publisher': 'Society for Computer Simulation International',
         'address': 'Fairfax, VA, USA',
         'doi': '10.22360/springsim.2020.hpc.003',
         'url': None,
@@ -484,7 +484,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2020b': {
+    'lux2020analytic': {
         'authors': [['Thomas C. H.', 'Lux'], ['Tyler H.', 'Chang']],
         'title': 'Analytic test functions for generalizable evaluation of convex optimization techniques',
         'year': 2020,
@@ -495,7 +495,7 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': [8],
-        'publisher': None,
+        'publisher': 'Institute of Electrical and Electronics Engineers',
         'address': 'Raleigh, NC, USA',
         'doi': '10.1109/SoutheastCon44009.2020.9368254',
         'url': None,
@@ -506,7 +506,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2020c': {
+    'lux2020effective': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Li', 'Xu'], ['Yueyao', 'Wang'], ['Jon', 'Bernard'], ['Yili', 'Hong'], ['Kirk W.', 'Cameron']],
         'title': 'Effective nonparametric distribution modeling for distribution approximation applications',
         'year': 2020,
@@ -517,7 +517,7 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': [6],
-        'publisher': None,
+        'publisher': 'Institute of Electrical and Electronics Engineers',
         'address': 'Raleigh, NC, USA',
         'doi': '10.1109/SoutheastCon44009.2020.9368295',
         'url': None,
@@ -528,7 +528,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2019': {
+    'chang2019leastsquares': {
         'authors': [['Tyler H.', 'Chang'], ['Thomas C. H.', 'Lux'], ['Sai Sindhura', 'Tipirneni']],
         'title': 'Least-squares solutions to polynomial systems of equations with quantum annealing',
         'year': 2019,
@@ -539,7 +539,7 @@ soln = {
         'number': '12',
         'articleno': 374,
         'pages': [17],
-        'publisher': None,
+        'publisher': 'Springer',
         'address': None,
         'doi': '10.1007/s11128-019-2489-x',
         'url': None,
@@ -550,7 +550,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2018a': {
+    'chang2018computing': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Thomas C. H.', 'Lux'], ['Sharath', 'Raghvendra'], ['Bo', 'Li'], ['Li', 'Xu'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'Computing the umbrella neighbourhood of a vertex in the {D}elaunay triangulation and a single {V}oronoi cell in arbitrary dimension',
         'year': 2018,
@@ -561,8 +561,8 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': [8],
-        'publisher': None,
-        'address': None,
+        'publisher': 'Institute of Electrical and Electronics Engineers',
+        'address': 'St. Petersburg, FL, USA',
         'doi': '10.1109/SECON.2018.8479003',
         'url': None,
         'isbn': None,
@@ -572,7 +572,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2018b': {
+    'chang2018predicting': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Thomas C. H.', 'Lux'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Li', 'Xu'], ['Godmar', 'Back'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'Predicting system performance by interpolation using a high-dimensional {D}elaunay triangulation',
         'year': 2018,
@@ -583,7 +583,7 @@ soln = {
         'number': None,
         'articleno': 2,
         'pages': [12],
-        'publisher': None,
+        'publisher': 'Society for Computer Simulation International',
         'address': 'Baltimore, MD, USA',
         'doi': '10.22360/springsim.2018.hpc.003',
         'url': None,
@@ -594,7 +594,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2018a': {
+    'lux2018nonparametric': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Xiaodong', 'Yu'], ['Li', 'Xu'], ['Godmar', 'Back'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong'], ['Danfeng', 'Yao']],
         'title': 'Nonparametric distribution models for predicting and managing computational performance variability',
         'year': 2018,
@@ -605,8 +605,8 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': [7],
-        'publisher': None,
-        'address': None,
+        'publisher': 'Institute of Electrical and Electronics Engineers',
+        'address': 'St. Petersburg, FL, USA',
         'doi': '10.1109/SECON.2018.8478814',
         'url': None,
         'isbn': None,
@@ -616,7 +616,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2018b': {
+    'lux2018predictive': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Li', 'Xu'], ['Godmar', 'Back'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'Predictive modeling of {I/O} characteristics in high performance computing systems',
         'year': 2018,
@@ -627,7 +627,7 @@ soln = {
         'number': None,
         'articleno': 8,
         'pages': [10],
-        'publisher': None,
+        'publisher': 'Society for Computer Simulation International',
         'address': 'Baltimore, MD, USA',
         'doi': '10.22360/springsim.2018.hpc.009',
         'url': None,
@@ -638,7 +638,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2018c': {
+    'chang2018polynomial': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Thomas C. H.', 'Lux'], ['Bo', 'Li'], ['Li', 'Xu'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Yili', 'Hong']],
         'title': 'A polynomial time algorithm for multivariate interpolation in arbitrary dimension via the {D}elaunay triangulation',
         'year': 2018,
@@ -649,7 +649,7 @@ soln = {
         'number': None,
         'articleno': 12,
         'pages': [8],
-        'publisher': None,
+        'publisher': 'Association of Computing Machinery',
         'address': 'Richmond, KY, USA',
         'doi': '10.1145/3190645.3190680',
         'url': None,
@@ -660,7 +660,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'lux2018c': {
+    'lux2018novel': {
         'authors': [['Thomas C. H.', 'Lux'], ['Layne T.', 'Watson'], ['Tyler H.', 'Chang'], ['Jon', 'Bernard'], ['Bo', 'Li'], ['Xiadong', 'Yu'], ['Li', 'Xu'], ['Godmar', 'Back'], ['Ali R.', 'Butt'], ['Kirk W.', 'Cameron'], ['Danfeng', 'Yao'], ['Yili', 'Hong']],
         'title': 'Novel meshes for multivariate interpolation and approximation',
         'year': 2018,
@@ -671,7 +671,7 @@ soln = {
         'number': None,
         'articleno': 13,
         'pages': [7],
-        'publisher': None,
+        'publisher': 'Association of Computing Machinery',
         'address': 'Richmond, KY, USA',
         'doi': '10.1145/3190645.3190687',
         'url': None,
@@ -682,7 +682,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'raghunath2017': {
+    'raghunath2017global': {
         'authors': [['Chaitra', 'Raghunath'], ['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Mohamed', 'Jrad'], ['Rakesh K.', 'Kapania'], ['Raymond M.', 'Kolonay']],
         'title': 'Global deterministic and stochastic optimization in a service oriented architecture',
         'year': 2017,
@@ -693,7 +693,7 @@ soln = {
         'number': None,
         'articleno': 7,
         'pages': [12],
-        'publisher': None,
+        'publisher': 'Society for Computer Simulation International',
         'address': 'Virginia Beach, VA, USA',
         'doi': '10.22360/springsim.2017.hpc.023',
         'url': None,
@@ -704,7 +704,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2016': {
+    'chang2016gpu': {
         'authors': [['Tyler H.', 'Chang']],
         'title': '{GPU} Saturation for Multiple Matrix-Vector Multiplications',
         'year': 2016,
@@ -715,7 +715,7 @@ soln = {
         'number': None,
         'articleno': None,
         'pages': None,
-        'publisher': None,
+        'publisher': 'Department of Computer Science, Virginia Wesleyan University',
         'address': 'Virginia Beach, VA, USA',
         'doi': None,
         'url': None,
@@ -726,7 +726,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'chang2015': {
+    'chang2015implementing': {
         'authors': [['Tyler H.', 'Chang']],
         'title': 'Implementing the Optimal Control-Based Obstacle Avoidance {(OCOA)} Algorithm in Compiled Code',
         'year': 2015,
@@ -737,7 +737,7 @@ soln = {
         'number': 'ARL-TM-2015A',
         'articleno': None,
         'pages': None,
-        'publisher': None,
+        'publisher': 'US Army Research Laboratory',
         'address': 'Adelphi, MD, USA',
         'doi': None,
         'url': 'https://apps.dtic.mil/sti/pdfs/AD1000355.pdf',

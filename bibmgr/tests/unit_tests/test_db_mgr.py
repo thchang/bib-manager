@@ -1,8 +1,8 @@
-import os
 import filecmp
+import os
 
 from bibmgr.db_mgr import DbMgr
-from bibmgr.tests.data.soln import soln
+from bibmgr.tests.unit_tests.common import check_results
 
 
 class TestDbMgr:
@@ -10,18 +10,13 @@ class TestDbMgr:
     def setup_class(self):
         self.tester = DbMgr()
 
-    def check_results(self):
-        for item in self.tester.info:
-            for key in self.tester.info[item]:
-                assert soln[item][key] == self.tester.info[item][key]
-
     def test_read_bibtex(self):
         self.tester.read_bibtex("bibmgr/tests/data/test.bib")
-        self.check_results()
+        check_results(self.tester)
 
     def test_read_yaml(self):
         self.tester.read_yaml("bibmgr/tests/data/test.yaml")
-        self.check_results()
+        check_results(self.tester)
 
     def test_write_bibtex(self):
         self.tester.read_bibtex("bibmgr/tests/data/test.bib")

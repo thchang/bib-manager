@@ -76,37 +76,37 @@ class BibParser:
     def _parse_bib_title(self, title):
         """ Sets the article title for the next item. """
 
-        self.nextItem['title'] = title
+        self.nextItem['title'] = title.strip()
 
     def _parse_bib_year(self, year):
         """ Sets the publication year for the next item. """
 
-        self.nextItem['year'] = int(year)
+        self.nextItem['year'] = int(year.strip())
 
     def _parse_bib_venue(self, venue):
         """ Sets the publication venue for the next item. """
 
-        self.nextItem['venue'] = venue
+        self.nextItem['venue'] = venue.strip()
 
     def _parse_bib_series(self, series):
         """ Sets the publisher series for the next item. """
 
-        self.nextItem['series'] = series
+        self.nextItem['series'] = series.strip()
 
     def _parse_bib_volume(self, volume):
         """ Sets the publication volume for the next item. """
 
-        self.nextItem['volume'] = int(volume)
+        self.nextItem['volume'] = int(volume.strip())
 
     def _parse_bib_number(self, number):
         """ Sets the publication number for the next item. """
 
-        self.nextItem['number'] = number
+        self.nextItem['number'] = number.strip()
 
     def _parse_bib_articleno(self, number):
         """ Sets the article number for the next item. """
 
-        self.nextItem['articleno'] = int(number)
+        self.nextItem['articleno'] = int(number.strip())
 
     def _parse_bib_pages(self, pages):
         """ Sets the page number(s) for the next item. """
@@ -114,23 +114,20 @@ class BibParser:
         self.nextItem['pages'] = []
         for page in pages.split('-'):
             if page != '':
-                self.nextItem['pages'].append(int(page))
+                self.nextItem['pages'].append(int(page.strip()))
 
     def _parse_bib_publisher(self, publisher):
         """ Sets the publisher name for the next item. """
 
         if self.nextItem['publisher'] is None:
-            self.nextItem['publisher'] = publisher
+            self.nextItem['publisher'] = publisher.strip()
 
     def _parse_bib_address(self, address):
         """ Sets the publisher address for the next item. """
 
-        location_re1 = re.compile(
-                "[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+")
-        location_re2 = re.compile("[a-zA-Z\\,': ]+,[ ]*[a-zA-Z\\,': ]+")
-        if self.nextItem['address'] is None or \
-                location_re1.match(address) or location_re2.match(address):
-            self.nextItem['address'] = address
+        location_re = re.compile(r"[^,]+,\s*[^,]+,(\s*[^,]+)*")
+        if self.nextItem['address'] is None or location_re.match(address):
+            self.nextItem['address'] = address.strip()
 
     def _parse_bib_doi(self, doi):
         """ Sets the doi for the next item. """
@@ -185,6 +182,7 @@ class BibParser:
 
         """
 
+        value = " ".join(value.strip().split())
         if key.strip().lower() == 'author':
             self._parse_bib_authors(value)
         elif key.strip().lower() == 'title':
@@ -264,8 +262,7 @@ class BibParser:
         self.nextItem = None
 
     def parse_bib_file(self, filename):
-        """ Parse an entire BibTex (.bib) file, and store in the internal
-        database.
+        """ Parse an entire .bib file, and store in the internal database.
 
         Args:
             filename (str, path-like object): The path to the file to parse.
@@ -300,9 +297,12 @@ class BibParser:
                 next_descrip = " ".join([next_descrip, m.group('comment')])
                 pos = m.end()
             elif m.group('fullkey') and m.group('value'):
-                key = m.group('fullkey').strip()
-                value = " ".join(m.group('value').strip().split())
-                self.parse_bib_line(key, value)
+                # Drop the opening/closing quotes from the match
+                if m.group('value')[0] == '"' and m.group('value')[-1] == '"':
+                    value = m.group('value')[1:-1]
+                else:
+                    value = m.group('value')
+                self.parse_bib_line(m.group('fullkey'), value)
                 pos = m.end()
             elif m.group('halfkey'):
                 # Parse nested braces manually
@@ -315,12 +315,10 @@ class BibParser:
                     elif bib_data[end] == '}':
                         brace_count -= 1
                     end += 1
-                key = m.group('halfkey').strip()
-                value = " ".join(bib_data[start:end - 1].strip().split())
-                self.parse_bib_line(key, value)
+                self.parse_bib_line(m.group('halfkey'), bib_data[start:end-1])
                 pos = end
             else:
-                print("here")
+                raise RuntimeError(f"Unmatched expression: {m}")
         if self.nextItem is not None:
             self.add_bib_item()
 

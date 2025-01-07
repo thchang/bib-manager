@@ -270,14 +270,14 @@ class BibParser:
 
         """
 
-        next_item = (
+        str_next_item = (
             r'\@(?P<type>\w+){[\w-]+,|'
             r'\%[ ]*(?P<comment>[^\n]+)\n|'
             r'(?P<fullkey>\w+)\s*=\s*(?P<value>'
             r'"(?:\\"|[^"])*"|\w+),?|'
             r'(?P<halfkey>\w+)\s*=\s*{'
         )
-        re_next_item = re.compile(next_item)
+        re_next_item = re.compile(str_next_item)
 
         with open(filename, "r") as fp:
             bib_data = fp.read()

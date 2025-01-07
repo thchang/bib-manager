@@ -16,7 +16,7 @@ class DbMgr(BibParser):
         super().__init__()
 
     def add_tag(self, tag):
-        self._parse_bib_item(tag)
+        self._parse_bib_keyword(tag)
 
     def read_yaml(self, filename):
         with open(filename, "r") as fp:

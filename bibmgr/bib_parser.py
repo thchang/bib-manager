@@ -258,7 +258,8 @@ class BibParser:
         if nextKey not in self.info:
             self.info[nextKey] = self.nextItem
         else:
-            pass  # TBD implement key collision policy in the future
+            # TBD implement key collision policy in the future
+            print(f"Warning: duplicate item '{nextKey}' not added...")
         self.nextItem = None
 
     def parse_bib_file(self, filename):

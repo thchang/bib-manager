@@ -125,6 +125,9 @@ class BibEntry:
             authors (list of str, list of list of str): The author(s) to add
                 for this entry.
 
+        Raises:
+            TypeError: If 'authors' does not match the expected type.
+
         """
 
         if not isinstance(authors, list):
@@ -148,6 +151,9 @@ class BibEntry:
         Args:
             title (str): The type for this bib entry.
 
+        Raises:
+            TypeError: If 'title' does not match the expected type.
+
         """
 
         if not isinstance(title, str):
@@ -160,6 +166,9 @@ class BibEntry:
 
         Args:
             year (str or int): The year for this bib entry.
+
+        Raises:
+            TypeError: If 'year' does not match the expected type.
 
         """
 
@@ -174,6 +183,9 @@ class BibEntry:
         Args:
             btype (str): The type for this bib entry.
 
+        Raises:
+            TypeError: If 'btype' does not match the expected type.
+
         """
 
         if not isinstance(btype, str):
@@ -186,6 +198,9 @@ class BibEntry:
 
         Args:
             venue (str): The venue for this bib entry.
+
+        Raises:
+            TypeError: If 'venue' does not match the expected type.
 
         """
 
@@ -200,6 +215,9 @@ class BibEntry:
         Args:
             series (str): The series for this bib entry.
 
+        Raises:
+            TypeError: If 'series' does not match the expected type.
+
         """
 
         if not isinstance(series, str):
@@ -212,6 +230,9 @@ class BibEntry:
 
         Args:
             volume (str or int): The volume for this bib entry.
+
+        Raises:
+            TypeError: If 'volume' does not match the expected type.
 
         """
 
@@ -226,6 +247,9 @@ class BibEntry:
         Args:
             number (str or int): The number for this bib entry.
 
+        Raises:
+            TypeError: If 'number' does not match the expected type.
+
         """
 
         if not isinstance(number, str) and not isinstance(number, int):
@@ -238,6 +262,9 @@ class BibEntry:
 
         Args:
             articleno (str or int): The article articleno for this bib entry.
+
+        Raises:
+            TypeError: If 'articleno' does not match the expected type.
 
         """
 
@@ -252,6 +279,9 @@ class BibEntry:
         Args:
             pages (list of ints): The page numbers (if applicable) or number of
                 pages for this bib entry.
+
+        Raises:
+            TypeError: If 'pages' does not match the expected type.
 
         """
 
@@ -275,6 +305,9 @@ class BibEntry:
             publisher (str): The publisher or associated org for this bib
                 entry.
 
+        Raises:
+            TypeError: If 'publisher' does not match the expected type.
+
         """
 
         if not isinstance(publisher, str):
@@ -288,6 +321,9 @@ class BibEntry:
         Args:
             address (str): The address or location for this bib entry.
 
+        Raises:
+            TypeError: If 'address' does not match the expected type.
+
         """
 
         if not isinstance(address, str):
@@ -300,6 +336,9 @@ class BibEntry:
 
         Args:
             doi (str): The doi for this bib entry.
+
+        Raises:
+            TypeError: If 'doi' does not match the expected type.
 
         """
 
@@ -323,6 +362,9 @@ class BibEntry:
         Args:
             url (str): The url for this bib entry.
 
+        Raises:
+            TypeError: If 'url' does not match the expected type.
+
         """
 
         if not isinstance(url, str):
@@ -335,6 +377,9 @@ class BibEntry:
 
         Args:
             isbn (str): The ISBN for this bib entry.
+
+        Raises:
+            TypeError: If 'isbn' does not match the expected type.
 
         """
 
@@ -349,6 +394,9 @@ class BibEntry:
         Args:
             git (str): The Git repo web address for this bib entry.
 
+        Raises:
+            TypeError: If 'git' does not match the expected type.
+
         """
 
         if not isinstance(git, str):
@@ -362,6 +410,9 @@ class BibEntry:
         Args:
             web (str): The web for this bib entry.
 
+        Raises:
+            TypeError: If 'web' does not match the expected type.
+
         """
 
         if not isinstance(web, str):
@@ -374,6 +425,9 @@ class BibEntry:
 
         Args:
             note (str): Any notes on this bib entry.
+
+        Raises:
+            TypeError: If 'note' does not match the expected type.
 
         """
 
@@ -389,6 +443,9 @@ class BibEntry:
             descrip (str): Any descriptions or personal reading notes on this
                 bib entry.
 
+        Raises:
+            TypeError: If 'descrip' does not match the expected type.
+
         """
 
         if not isinstance(descrip, str):
@@ -401,6 +458,9 @@ class BibEntry:
 
         Args:
             tag (str): Any keywords or tags for this bib entry.
+
+        Raises:
+            TypeError: If 'tag' does not match the expected type.
 
         """
 
@@ -422,6 +482,11 @@ class BibEntry:
 
         Returns:
             str: The proposed bibliography entry key.
+
+        Raises:
+            ValueError: If it is not possible to generate a valid key for the
+                current bib entry due to lack of required information (at least
+                one author or publisher information).
 
         """
 

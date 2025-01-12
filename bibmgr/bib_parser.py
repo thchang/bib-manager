@@ -8,10 +8,10 @@ class BibParser:
 
     Contains the following public methods:
 
-     - `parse_bib_line(key, value)` parses a single line from a BibTex file;
+     - `parse_line(key, value)` parses a single line from a BibTex file;
        resolves key conflicts; and
-     - `parse_bib_file(filename)` parses an entire BibTex file.
-     - `write_bib_file(filename)` writes an entire BibTex file.
+     - `parse_file(filename)` parses an entire BibTex file.
+     - `write_file(filename)` writes an entire BibTex file.
 
     """
 
@@ -20,7 +20,7 @@ class BibParser:
     ]
 
     def __init__(self):
-        """ Constructor for BibParser class.
+        """ Constructor for the BibParser class.
 
         Initializes all slots for the BibParser class.
 
@@ -28,15 +28,17 @@ class BibParser:
 
         self.next_item = None
 
-    def parse_bib_line(self, key, value):
-        """ Parse a single line of a bib file and attach the appropriate
-        attributes to the next item.
+    def parse_line(self, key, value):
+        """ Parse a (key, value) pair BibTex entry and update the next entry.
 
         Args:
-            key (str): The key that was extracted by the parser.
+            key (str): A BibTex key that was extracted by the parser.
 
             value (int, str, list, dict): The corresponding value that was
                 extracted by the parser.
+
+        Raises:
+            ValueError: If 'key' is not a supported / recognized BibTex key.
 
         """
 
@@ -110,14 +112,19 @@ class BibParser:
             raise ValueError(f"'{key}' with value '{value}' is not a "
                              "recognized key at this time")
 
-    def parse_bib_file(self, filename):
-        """ Iterator that parses a .bib file and yields the entries.
+    def parse_file(self, filename):
+        """ Iterator that parses a BibTex file and yields the entries.
 
         Args:
-            filename (str, path-like object): The path to the file to parse.
+            filename (str, path-like object): The path to the BibTex file.
 
         Yields:
             BibEntry: The next entry in the file.
+
+        Raises:
+            RuntimeError: If a line in the input file could not be parsed.
+            This likely indicates an illegal or irregular syntax in the BibTex
+            file.
 
         """
 
@@ -141,8 +148,8 @@ class BibParser:
                 if self.next_item is not None:
                     yield self.next_item
                     self.next_item = None
-                self.parse_bib_line('type', m.group('type').strip())
-                self.parse_bib_line('descrip', next_descrip.strip())
+                self.parse_line('type', m.group('type').strip())
+                self.parse_line('descrip', next_descrip.strip())
                 next_descrip = ""
                 pos = m.end()
             elif m.group('comment'):
@@ -154,7 +161,7 @@ class BibParser:
                     value = m.group('value')[1:-1]
                 else:
                     value = m.group('value')
-                self.parse_bib_line(m.group('fullkey'), value)
+                self.parse_line(m.group('fullkey'), value)
                 pos = m.end()
             elif m.group('halfkey'):
                 # Parse nested braces manually
@@ -167,7 +174,7 @@ class BibParser:
                     elif bib_data[end] == '}':
                         brace_count -= 1
                     end += 1
-                self.parse_bib_line(m.group('halfkey'), bib_data[start:end-1])
+                self.parse_line(m.group('halfkey'), bib_data[start:end-1])
                 pos = end
             else:
                 raise RuntimeError(f"Unmatched expression: {m}")
@@ -175,11 +182,12 @@ class BibParser:
             yield self.next_item
             self.next_item = None
 
-    def write_bib_file(self, filename, info):
-        """ Write an entire BibTex (.bib) file from the internal database.
+    def write_file(self, filename, info):
+        """ Write an entire BibTex file from a dictionary representation.
 
         Args:
             filename (str or path-like object): The path to the file to write.
+
             info (dict[BibEntry]): A dictionary of bibliography entries.
 
         """

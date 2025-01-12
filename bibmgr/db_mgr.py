@@ -19,7 +19,7 @@ class DbMgr:
             self.info = yaml.safe_load(fp)
 
     def read_bibtex(self, filename):
-        for entry in self.bib_parser.parse_bib_file(filename):
+        for entry in self.bib_parser.parse_file(filename):
             next_key = entry.get_key()
             if next_key not in self.info:
                 self.info[next_key] = entry.to_dict()
@@ -32,4 +32,4 @@ class DbMgr:
             yaml.dump(self.info, fp)
 
     def write_bibtex(self, filename):
-        self.bib_parser.write_bib_file(filename, self.info)
+        self.bib_parser.write_file(filename, self.info)

@@ -1,5 +1,6 @@
-import copy
 import re
+
+from bibmgr.bib_entry import BibEntry
 
 
 class BibParser:
@@ -16,8 +17,7 @@ class BibParser:
     """
 
     __slots__ = [
-        'template',
-        'nextItem',
+        'next_item',
         'info'
     ]
 
@@ -28,147 +28,8 @@ class BibParser:
 
         """
 
-        self.template = {
-            'authors': [],
-            'title': None,
-            'year': None,
-            'type': None,
-            'venue': None,
-            'series': None,
-            'volume': None,
-            'number': None,
-            'articleno': None,
-            'pages': None,
-            'publisher': None,
-            'address': None,
-            'doi': None,
-            'url': None,
-            'isbn': None,
-            'git': None,
-            'web': None,
-            'note': None,
-            'descrip': None,
-            'tags': [],
-        }
-        self.nextItem = None
+        self.next_item = None
         self.info = {}
-
-    def _parse_bib_type(self, btype):
-        """ Sets the entry type for the next item. """
-
-        self.nextItem['type'] = btype
-
-    def _parse_bib_authors(self, authors):
-        """ Sets the author list for the next item. """
-
-        for name in authors.split(" and "):
-            name_list = name.strip().split(",")
-            if len(name_list) <= 1:
-                name_list = name.strip().split()
-                self.nextItem['authors'].append(
-                    [" ".join(name_list[:-1]).strip(), name_list[-1].strip()]
-                )
-            else:
-                self.nextItem['authors'].append(
-                    [" ".join(name_list[1:]).strip(), name_list[0].strip()]
-                )
-
-    def _parse_bib_title(self, title):
-        """ Sets the article title for the next item. """
-
-        self.nextItem['title'] = title.strip()
-
-    def _parse_bib_year(self, year):
-        """ Sets the publication year for the next item. """
-
-        self.nextItem['year'] = int(year.strip())
-
-    def _parse_bib_venue(self, venue):
-        """ Sets the publication venue for the next item. """
-
-        self.nextItem['venue'] = venue.strip()
-
-    def _parse_bib_series(self, series):
-        """ Sets the publisher series for the next item. """
-
-        self.nextItem['series'] = series.strip()
-
-    def _parse_bib_volume(self, volume):
-        """ Sets the publication volume for the next item. """
-
-        self.nextItem['volume'] = int(volume.strip())
-
-    def _parse_bib_number(self, number):
-        """ Sets the publication number for the next item. """
-
-        self.nextItem['number'] = number.strip()
-
-    def _parse_bib_articleno(self, number):
-        """ Sets the article number for the next item. """
-
-        self.nextItem['articleno'] = int(number.strip())
-
-    def _parse_bib_pages(self, pages):
-        """ Sets the page number(s) for the next item. """
-
-        self.nextItem['pages'] = []
-        for page in pages.split('-'):
-            if page != '':
-                self.nextItem['pages'].append(int(page.strip()))
-
-    def _parse_bib_publisher(self, publisher):
-        """ Sets the publisher name for the next item. """
-
-        if self.nextItem['publisher'] is None:
-            self.nextItem['publisher'] = publisher.strip()
-
-    def _parse_bib_address(self, address):
-        """ Sets the publisher address for the next item. """
-
-        location_re = re.compile(r"[^,]+,\s*[^,]+,(\s*[^,]+)*")
-        if self.nextItem['address'] is None or location_re.match(address):
-            self.nextItem['address'] = address.strip()
-
-    def _parse_bib_doi(self, doi):
-        """ Sets the doi for the next item. """
-
-        self.nextItem['doi'] = doi.replace("https://doi.org/",
-                                           "").replace("doi.org/", "")
-
-    def _parse_bib_url(self, url):
-        """ Sets the url for the next item. """
-
-        self.nextItem['url'] = url
-
-    def _parse_bib_isbn(self, isbn):
-        """ Sets the ISBN for the next item. """
-
-        self.nextItem['isbn'] = isbn
-
-    def _parse_bib_git(self, git):
-        """ Sets the Git repo for the next item. """
-
-        self.nextItem['git'] = git
-
-    def _parse_bib_web(self, web):
-        """ Sets an additional web address for the next item. """
-
-        self.nextItem['web'] = web
-
-    def _parse_bib_note(self, note):
-        """ Adds any publication notes for the next item. """
-
-        self.nextItem['note'] = note
-
-    def _parse_bib_descrip(self, descrip):
-        """ Adds my personal description of the next item. """
-
-        self.nextItem['descrip'] = descrip
-
-    def _parse_bib_keyword(self, tag):
-        """ Attaches keywords to the next item for easy lookup. """
-
-        self.nextItem['tags'].append(tag)
 
     def parse_bib_line(self, key, value):
         """ Parse a single line of a bib file and attach the appropriate
@@ -183,48 +44,71 @@ class BibParser:
         """
 
         value = " ".join(value.strip().split())
+        if self.next_item is None:
+            self.next_item = BibEntry()
         if key.strip().lower() == 'author':
-            self._parse_bib_authors(value)
+            for author in value.split(" and "):
+                names = author.strip().split(",")
+                if len(names) <= 1:
+                    names = author.strip().split()
+                    self.next_item.add_authors(
+                        [" ".join(names[:-1]).strip(), names[-1].strip()]
+                    )
+                else:
+                    self.next_item.add_authors(
+                        [" ".join(names[1:]).strip(), names[0].strip()]
+                    )
         elif key.strip().lower() == 'title':
-            self._parse_bib_title(value)
+            self.next_item.set_title(value)
         elif key.strip().lower() == 'year':
-            self._parse_bib_year(value)
+            self.next_item.set_year(value)
         elif key.strip().lower() in ['type', 'howpublished']:
-            self._parse_bib_type(value)
+            self.next_item.set_type(value)
         elif key.strip().lower() in ['publisher', 'institution',
                                      'organization', 'school']:
-            self._parse_bib_publisher(value)
+            if (
+                self.next_item.get_publisher() is None or
+                key.strip().lower() in ['institution', 'organization',
+                                        'school']
+            ):
+                self.next_item.set_publisher(value)
         elif key.strip().lower() in ['journal', 'booktitle']:
-            self._parse_bib_venue(value)
+            self.next_item.set_venue(value)
         elif key.strip().lower() in ['volume']:
-            self._parse_bib_volume(value)
+            self.next_item.set_volume(value)
         elif key.strip().lower() in ['number']:
-            self._parse_bib_number(value)
+            self.next_item.set_number(value)
         elif key.strip().lower() in ['articleno']:
-            self._parse_bib_articleno(value)
+            self.next_item.set_articleno(value)
         elif key.strip().lower() in ['pages', 'numpages']:
-            self._parse_bib_pages(value)
+            pages = [pp for pp in value.replace('--', '-').split('-')
+                     if pp.strip() != ""]
+            self.next_item.set_pages(pages)
         elif key.strip().lower() == 'series':
-            self._parse_bib_series(value)
+            self.next_item.set_series(value)
         elif key.strip().lower() in ['address', 'location']:
-            self._parse_bib_address(value)
+            if (
+                self.next_item.get_address() is None or
+                key.strip().lower() == 'location'
+            ):
+                self.next_item.set_address(value)
         elif key.strip().lower() == 'doi':
-            self._parse_bib_doi(value)
+            self.next_item.set_doi(value)
         elif key.strip().lower() == 'url':
-            self._parse_bib_url(value)
+            self.next_item.set_url(value)
         elif key.strip().lower() == 'isbn':
-            self._parse_bib_isbn(value)
+            self.next_item.set_isbn(value)
         elif key.strip().lower() == 'git':
-            self._parse_bib_git(value)
+            self.next_item.set_git(value)
         elif key.strip().lower() == 'web':
-            self._parse_bib_web(value)
+            self.next_item.set_web(value)
         elif key.strip().lower() == 'note':
-            self._parse_bib_note(value)
+            self.next_item.set_note(value)
         elif key.strip().lower() in ['descrip', 'summary']:
-            self._parse_bib_descrip(value)
+            self.next_item.set_descrip(value)
         elif key.strip().lower() == 'keywords':
             for tag in value.strip().split(","):
-                self._parse_bib_keyword(tag.strip())
+                self.next_item.add_keyword(tag)
         else:
             raise ValueError(f"'{key}' with value '{value}' is not a "
                              "recognized key at this time")
@@ -238,29 +122,13 @@ class BibParser:
 
         """
 
-        last_name = self.nextItem['authors'][0][-1].lower()
-        year = self.nextItem['year']
-        first_word = ""
-        for word in self.nextItem['title'].split():
-            word = word.replace("-", "").replace(":", "")
-            word = word.replace("{", "").replace("}", "")
-            if len(word) > 2 and word.lower() not in [
-                'a', 'an', 'the', 'that', 'than',
-                'and', 'but', 'or', 'nor', 'for', 'so', 'yet',
-                'at', 'above', 'in', 'into', 'like', 'near',
-                'of', 'off', 'on', 'once', 'onto', 'over',
-                'past', 'under', 'upon',
-                'when', 'whence', 'with',
-            ]:
-                first_word = word.lower()
-                break
-        nextKey = f"{last_name}{year}{first_word}"
+        nextKey = self.next_item.get_key()
         if nextKey not in self.info:
-            self.info[nextKey] = self.nextItem
+            self.info[nextKey] = self.next_item.to_dict()
         else:
             # TBD implement key collision policy in the future
             print(f"Warning: duplicate item '{nextKey}' not added...")
-        self.nextItem = None
+        self.next_item = None
 
     def parse_bib_file(self, filename):
         """ Parse an entire .bib file, and store in the internal database.
@@ -287,11 +155,10 @@ class BibParser:
 
         while m := re_next_item.search(bib_data, pos):
             if m.group('type'):
-                if self.nextItem is not None:
+                if self.next_item is not None:
                     self.add_bib_item()
-                self.nextItem = copy.deepcopy(self.template)
-                self._parse_bib_type(m.group('type').strip())
-                self._parse_bib_descrip(next_descrip.strip())
+                self.parse_bib_line('type', m.group('type').strip())
+                self.parse_bib_line('descrip', next_descrip.strip())
                 next_descrip = ""
                 pos = m.end()
             elif m.group('comment'):
@@ -320,7 +187,7 @@ class BibParser:
                 pos = end
             else:
                 raise RuntimeError(f"Unmatched expression: {m}")
-        if self.nextItem is not None:
+        if self.next_item is not None:
             self.add_bib_item()
 
     def write_bib_file(self, filename):
@@ -332,61 +199,7 @@ class BibParser:
         """
 
         with open(filename, "w") as fp:
-            for key1 in self.info:
-                item1 = self.info[key1]
-                ttype = None
-                if 'type' in item1 and item1['type'] in [
-                   'article', 'book', 'booklet', 'conference', 'inbook',
-                   'incollection', 'inproceedings', 'manual', 'mastersthesis',
-                   'misc', 'phdthesis', 'proceedings', 'techreport',
-                   'unpublished'
-                ]:
-                    ttype = item1['type']
-                    fp.write(f"@{item1['type']}{{{key1},\n")
-                else:
-                    ttype = 'misc'
-                    fp.write(f"@misc{{{key1},\n")
-                for key2 in item1:
-                    if item1[key2] is None:
-                        continue
-                    elif key2 == 'authors':
-                        author_names = [f"{last}, {first}"
-                                        for [first, last] in item1[key2]]
-                        fp.write("\tauthor = {"
-                                 f"{' and '.join(author_names)}}},\n")
-                    elif key2 == 'venue':
-                        if ttype == 'article':
-                            fp.write(f"\tjournal = {{{item1[key2]}}},\n")
-                        else:
-                            fp.write(f"\tbooktitle = {{{item1[key2]}}},\n")
-                    elif key2 == 'type':
-                        if ttype == 'misc':
-                            fp.write(f"\thowpublished = {{{item1[key2]}}},\n")
-                    elif key2 == 'pages':
-                        if len(item1[key2]) > 1:
-                            pages = [str(pp) for pp in item1[key2]]
-                            fp.write(f"\tpages = {{{'--'.join(pages)}}},\n")
-                        elif len(item1[key2]) > 0:
-                            fp.write(f"\tnumpages = {{{item1[key2][0]}}},\n")
-                    elif key2 == 'publisher':
-                        if ttype in ['conference', 'inproceedings',
-                                     'proceedings']:
-                            fp.write(f"\torganization = {{{item1[key2]}}},\n")
-                        elif ttype in ['manual', 'techreport']:
-                            fp.write(f"\tinstitution = {{{item1[key2]}}},\n")
-                        elif ttype in ['mastersthesis', 'phdthesis']:
-                            fp.write(f"\tschool = {{{item1[key2]}}},\n")
-                        else:
-                            fp.write(f"\tpublisher = {{{item1[key2]}}},\n")
-                    elif key2 == 'address':
-                        if ttype in ['conference', 'inproceedings',
-                                     'proceedings']:
-                            fp.write(f"\tlocation = {{{item1[key2]}}},\n")
-                        else:
-                            fp.write(f"\taddress = {{{item1[key2]}}},\n")
-                    elif key2 == 'tags':
-                        fp.write("\tkeywords = {"
-                                 f"{', '.join(item1[key2])}}},\n")
-                    else:
-                        fp.write(f"\t{key2} = {{{item1[key2]}}},\n")
-                fp.write("}\n\n")
+            for key in self.info:
+                self.next_item = BibEntry(self.info[key])
+                fp.write(self.next_item.to_bib())
+                fp.write("\n\n")

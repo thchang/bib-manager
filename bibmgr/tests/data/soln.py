@@ -1,5 +1,5 @@
 soln = {
-    'egeleNoneparallel': {
+    'egele2025parallel': {
         'authors': [['Romain', 'Egele'], ['Tyler H.', 'Chang'], ['Yixuan', 'Sun'], ['Venkatram', 'Vishwanath'], ['Prasanna', 'Balaprakash']],
         'title': 'Parallel multi-objective hyperparameter optimization with uniform normalization and bounded objectives',
         'year': None,
@@ -21,7 +21,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'changNoneleveraging': {
+    'chang2025leveraging': {
         'authors': [['Tyler H.', 'Chang'], ['Andrew K.', 'Gillette'], ['Romit', 'Maulik']],
         'title': 'Leveraging Interpolation Models and Error Bounds for Verifiable Scientific Machine Learning',
         'year': None,
@@ -43,7 +43,7 @@ soln = {
         'descrip': '',
         'tags': [],
     },
-    'changNonedesigning': {
+    'chang2025designing': {
         'authors': [['Tyler H.', 'Chang'], ['Stefan M.', 'Wild']],
         'title': 'Designing a Framework for Solving Multiobjective Simulation Optimization Problems',
         'year': None,
@@ -65,7 +65,7 @@ soln = {
         'descrip': 'This is the paper corresponding to the ParMOO software itself. This version of the paper may be outdated...',
         'tags': [],
     },
-    'changNoneremark': {
+    'chang2025remark': {
         'authors': [['Tyler H.', 'Chang'], ['Layne T.', 'Watson'], ['Sven', 'Leyffer'], ['Thomas C. H.', 'Lux'], ['Hussain M. J.', 'Almohri']],
         'title': 'Remark on {Algorithm} 1012: Computing projections with large data sets',
         'year': None,
@@ -216,7 +216,7 @@ soln = {
         'git': None,
         'web': None,
         'note': None,
-        'descrip': 'This is my best piece of software, which I invested the most time into out of all my research projects.  However, there is no description of the underlying algorithms in this paper.',
+        'descrip': 'This is my best piece of software, which I invested the most time into out of all my research projects. However, there is no description of the underlying algorithms in this paper.',
         'tags': ['software', 'simulation optimization',
                  'multiobjective optimization'],
     },

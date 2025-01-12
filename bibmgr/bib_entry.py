@@ -6,30 +6,50 @@ class BibEntry:
 
     Contains the following "setter" methods:
 
-     - `add_bib_authors(authors)`,
-     - `set_bib_title(title)`,
-     - `set_bib_year(year)`,
-     - `set_bib_type(type)`,
-     - `set_bib_venue(venue)`,
-     - `set_bib_series(series)`,
-     - `set_bib_volume(volume)`,
-     - `set_bib_number(number)`,
-     - `set_bib_articleno(articleno)`,
-     - `set_bib_pages(pages)`,
-     - `set_bib_publisher(publisher)`,
-     - `set_bib_address(address)`,
-     -  `set_bib_doi(doi)`,
-     -  `set_bib_url(url)`,
-     -  `set_bib_isbn(isbn)`,
-     -  `set_bib_git(git)`,
-     -  `set_bib_web(web)`,
-     -  `set_bib_note(note)`,
-     -  `set_bib_descrip(descrip)`, and
-     -  `add_bib_keyword(tags)`,
+     - `add_authors(authors)`,
+     - `set_title(title)`,
+     - `set_year(year)`,
+     - `set_type(type)`,
+     - `set_venue(venue)`,
+     - `set_series(series)`,
+     - `set_volume(volume)`,
+     - `set_number(number)`,
+     - `set_articleno(articleno)`,
+     - `set_pages(pages)`,
+     - `set_publisher(publisher)`,
+     - `set_address(address)`,
+     - `set_doi(doi)`,
+     - `set_url(url)`,
+     - `set_isbn(isbn)`,
+     - `set_git(git)`,
+     - `set_web(web)`,
+     - `set_note(note)`,
+     - `set_descrip(descrip)`, and
+     - `add_keyword(tags)`,
 
     and the following "getter" methods:
 
-     - `get_bib_key()`,
+     - `get_authors(authors)`,
+     - `get_title(title)`,
+     - `get_year(year)`,
+     - `get_type(type)`,
+     - `get_venue(venue)`,
+     - `get_series(series)`,
+     - `get_volume(volume)`,
+     - `get_number(number)`,
+     - `get_articleno(articleno)`,
+     - `get_pages(pages)`,
+     - `get_publisher(publisher)`,
+     - `get_address(address)`,
+     - `get_doi(doi)`,
+     - `get_url(url)`,
+     - `get_isbn(isbn)`,
+     - `get_git(git)`,
+     - `get_web(web)`,
+     - `get_note(note)`,
+     - `get_descrip(descrip)`,
+     - `get_keyword(tags)`, and
+     - `get_key()`,
 
     and the following converter methods:
 
@@ -98,7 +118,7 @@ class BibEntry:
                 if key in self.__slots__:
                     setattr(self, key, dict_rep[key])
 
-    def add_bib_authors(self, authors):
+    def add_authors(self, authors):
         """ Adds the author to the bib item.
 
         Args:
@@ -122,7 +142,7 @@ class BibEntry:
             raise TypeError("expected a list of authors or names, got:"
                             f" list of {type(authors[0])}")
 
-    def set_bib_title(self, title):
+    def set_title(self, title):
         """ Sets the article title for the bib item.
 
         Args:
@@ -135,7 +155,7 @@ class BibEntry:
                             f" {type(title)}")
         self.title = title.strip()
 
-    def set_bib_year(self, year):
+    def set_year(self, year):
         """ Sets the publication year for the bib item.
 
         Args:
@@ -148,7 +168,7 @@ class BibEntry:
                             f" got: {type(year)}")
         self.year = int(str(year).strip())
 
-    def set_bib_type(self, btype):
+    def set_type(self, btype):
         """ Sets the entry type for the bib item.
 
         Args:
@@ -161,7 +181,7 @@ class BibEntry:
                             f" {type(btype)}")
         self.type = btype.strip()
 
-    def set_bib_venue(self, venue):
+    def set_venue(self, venue):
         """ Sets the publication venue for the bib item.
 
         Args:
@@ -174,7 +194,7 @@ class BibEntry:
                             f" {type(venue)}")
         self.venue = venue.strip()
 
-    def set_bib_series(self, series):
+    def set_series(self, series):
         """ Sets the publisher series for the bib item.
 
         Args:
@@ -187,7 +207,7 @@ class BibEntry:
                             f" {type(series)}")
         self.series = series.strip()
 
-    def set_bib_volume(self, volume):
+    def set_volume(self, volume):
         """ Sets the publication volume for the bib item.
 
         Args:
@@ -200,7 +220,7 @@ class BibEntry:
                             f" got: {type(volume)}")
         self.volume = int(str(volume).strip())
 
-    def set_bib_number(self, number):
+    def set_number(self, number):
         """ Sets the publication number for the bib item.
 
         Args:
@@ -213,7 +233,7 @@ class BibEntry:
                             f" got: {type(number)}")
         self.number = str(number).strip()
 
-    def set_bib_articleno(self, articleno):
+    def set_articleno(self, articleno):
         """ Sets the article number for the bib item.
 
         Args:
@@ -226,7 +246,7 @@ class BibEntry:
                             f"number, got: {type(articleno)}")
         self.articleno = int(str(articleno).strip())
 
-    def set_bib_pages(self, pages):
+    def set_pages(self, pages):
         """ Sets the page number(s) for the bib item.
 
         Args:
@@ -248,7 +268,7 @@ class BibEntry:
         for page in pages:
             self.pages.append(int(str(page).strip()))
 
-    def set_bib_publisher(self, publisher):
+    def set_publisher(self, publisher):
         """ Sets the publisher name for the bib item.
 
         Args:
@@ -262,7 +282,7 @@ class BibEntry:
                             f" {type(publisher)}")
         self.publisher = publisher.strip()
 
-    def set_bib_address(self, address):
+    def set_address(self, address):
         """ Sets the publisher address for the bib item.
 
         Args:
@@ -275,7 +295,7 @@ class BibEntry:
                             f" {type(address)}")
         self.address = address.strip()
 
-    def set_bib_doi(self, doi):
+    def set_doi(self, doi):
         """ Sets the doi for the bib item.
 
         Args:
@@ -297,7 +317,7 @@ class BibEntry:
             ""
         )
 
-    def set_bib_url(self, url):
+    def set_url(self, url):
         """ Sets the url for the bib item.
 
         Args:
@@ -310,7 +330,7 @@ class BibEntry:
                             f" {type(url)}")
         self.url = url.strip()
 
-    def set_bib_isbn(self, isbn):
+    def set_isbn(self, isbn):
         """ Sets the ISBN for the bib item.
 
         Args:
@@ -323,7 +343,7 @@ class BibEntry:
                             f" {type(isbn)}")
         self.isbn = isbn.strip()
 
-    def set_bib_git(self, git):
+    def set_git(self, git):
         """ Sets the Git repo for the bib item.
 
         Args:
@@ -336,7 +356,7 @@ class BibEntry:
                             f" {type(git)}")
         self.git = git.strip()
 
-    def set_bib_web(self, web):
+    def set_web(self, web):
         """ Sets an additional web address for the bib item.
 
         Args:
@@ -349,7 +369,7 @@ class BibEntry:
                             f" {type(web)}")
         self.web = web.strip()
 
-    def set_bib_note(self, note):
+    def set_note(self, note):
         """ Adds any publication notes for the bib item.
 
         Args:
@@ -362,7 +382,7 @@ class BibEntry:
                             f" {type(note)}")
         self.note = note.strip()
 
-    def set_bib_descrip(self, descrip):
+    def set_descrip(self, descrip):
         """ My personal description/reading notes for this bib item.
 
         Args:
@@ -376,7 +396,7 @@ class BibEntry:
                             f"got: {type(descrip)}")
         self.descrip = descrip.strip()
 
-    def add_bib_keyword(self, tag):
+    def add_keyword(self, tag):
         """ Attaches relevant tags/keywords to the bib item for easy lookup.
 
         Args:
@@ -397,7 +417,7 @@ class BibEntry:
             raise TypeError("expected a list or string specifying the "
                             f"keyword(s), got: {type(tag)}")
 
-    def get_bib_key(self):
+    def get_key(self):
         """ Create a key for this entry of form: LastNameYearFirstWordOfTitle.
 
         Returns:
@@ -436,6 +456,206 @@ class BibEntry:
                 break
         return f"{last_name}{year}{first_word}"
 
+    def get_authors(self):
+        """ Gets the authors of the publication.
+
+        Returns:
+            list[list[str]]: A list of lists, where each inner list represents
+                an author (first name, last name).
+
+        """
+
+        return self.authors
+
+    def get_title(self):
+        """ Gets the title of the publication.
+
+        Returns:
+            str: The title of the publication.
+
+        """
+        return self.title
+
+    def get_year(self):
+        """ Gets the year of the publication.
+
+        Returns:
+            int: The year of the publication.
+
+        """
+
+        return self.year
+
+    def get_type(self):
+        """ Gets the type of the publication.
+
+        Returns:
+            str: The type of the publication.
+
+        """
+
+        return self.type
+
+    def get_venue(self):
+        """ Gets the venue of the publication.
+
+        Returns:
+            str: The venue of the publication.
+
+        """
+
+        return self.venue
+
+    def get_series(self):
+        """ Gets the series of the publication.
+
+        Returns:
+            str: The series of the publication.
+
+        """
+
+        return self.series
+
+    def get_volume(self):
+        """ Gets the volume of the publication.
+
+        Returns:
+            int: The volume of the publication.
+
+        """
+
+        return self.volume
+
+    def get_number(self):
+        """ Gets the issue number of the publication.
+
+        Returns:
+            str: The number of the publication.
+
+        """
+
+        return self.number
+
+    def get_articleno(self):
+        """ Gets the article number of the publication.
+
+        Returns:
+            int: The article number of the publication.
+
+        """
+
+        return self.articleno
+
+    def get_pages(self):
+        """ Gets the pages of the publication.
+
+        Returns:
+            list[int]: A list of integers representing the pages.
+
+        """
+
+        return self.pages
+
+    def get_publisher(self):
+        """ Gets the publisher of the publication.
+
+        Returns:
+            str: The publisher of the publication.
+
+        """
+
+        return self.publisher
+
+    def get_address(self):
+        """ Gets the address of the publication.
+
+        Returns:
+            str: The address of the publication.
+
+        """
+
+        return self.address
+
+    def get_doi(self):
+        """ Gets the DOI (Digital Object Identifier) of the publication.
+
+        Returns:
+            str: The DOI of the publication.
+
+        """
+
+        return self.doi
+
+    def get_url(self):
+        """ Gets the URL of the publication.
+
+        Returns:
+            str: The URL of the publication.
+
+        """
+
+        return self.url
+
+    def get_isbn(self):
+        """ Gets the ISBN of the publication.
+
+        Returns:
+            str: The ISBN of the publication.
+
+        """
+
+        return self.isbn
+
+    def get_git(self):
+        """ Gets the Git repository URL of the publication.
+
+        Returns:
+            str: The Git repository URL of the publication.
+
+        """
+
+        return self.git
+
+    def get_web(self):
+        """ Gets the web link of the publication.
+
+        Returns:
+            str: The web link of the publication.
+
+        """
+
+        return self.web
+
+    def get_note(self):
+        """ Gets the note associated with the publication.
+
+        Returns:
+            str: The note of the publication.
+
+        """
+
+        return self.note
+
+    def get_descrip(self):
+        """ Gets the description of the publication.
+
+        Returns:
+            str: The description of the publication.
+
+        """
+
+        return self.descrip
+
+    def get_tags(self):
+        """ Gets the tags associated with the publication.
+
+        Returns:
+            list[str]: A list of tags.
+
+        """
+
+        return self.tags
+
     def to_dict(self):
         """ Convert this bib entry into a Python dict format.
 
@@ -449,3 +669,116 @@ class BibEntry:
         for key in self.__slots__:
             dict_rep[key] = getattr(self, key)
         return dict_rep
+
+    def to_bib(self):
+        """ Convert this bib entry into a BibTex format.
+
+        Returns:
+            str: A BibTex entry with a key for each present attribute.
+
+        """
+
+        return self.__str__()
+
+    def __str__(self):
+        """ Generates a BibTex string representation of this entry.
+
+        Returns:
+            str: A BibTex-style entry.
+
+        """
+
+        bib_str = []
+        # Get the type
+        bib_type = None
+        if (
+            self.type is not None and
+            self.type in [
+                'article', 'book', 'booklet', 'conference', 'inbook',
+                'incollection', 'inproceedings', 'manual', 'mastersthesis',
+                'misc', 'phdthesis', 'proceedings', 'techreport', 'unpublished'
+            ]
+        ):
+            bib_type = self.type
+        else:
+            bib_type = 'misc'
+        bib_str.append(f"@{bib_type}{{{self.get_key()},")
+        # Get the author names
+        if len(self.authors) > 0:
+            names = [f"{last}, {first}" for [first, last] in self.authors]
+            bib_str.append(f"\tauthor = {{{' and '.join(names)}}},")
+        # Get the title
+        if self.title is not None:
+            bib_str.append(f"\ttitle = {{{self.title}}},")
+        # Get the year
+        if self.year is not None:
+            bib_str.append(f"\tyear = {{{self.year}}},")
+        # Get the howpublished
+        if bib_type == 'misc' and self.type != 'misc':
+            bib_str.append(f"\thowpublished = {{{self.type}}},")
+        # Get the venue
+        if self.venue is not None:
+            if bib_type == 'article':
+                bib_str.append(f"\tjournal = {{{self.venue}}},")
+            else:
+                bib_str.append(f"\tbooktitle = {{{self.venue}}},")
+        # Get the series
+        if self.series is not None:
+            bib_str.append(f"\tseries = {{{self.series}}},")
+        # Get the volume
+        if self.volume is not None:
+            bib_str.append(f"\tvolume = {{{self.volume}}},")
+        # Get the issue number
+        if self.number is not None:
+            bib_str.append(f"\tnumber = {{{self.number}}},")
+        # Get the article number
+        if self.articleno is not None:
+            bib_str.append(f"\tarticleno = {{{self.articleno}}},")
+        # Get the page numbers
+        if self.pages is not None:
+            pages = [str(pp) for pp in self.pages]
+            if len(self.pages) > 1:
+                bib_str.append(f"\tpages = {{{'--'.join(pages)}}},")
+            elif len(self.pages) > 0:
+                bib_str.append(f"\tnumpages = {{{pages[0]}}},")
+        # Get the publisher info
+        if self.publisher is not None:
+            if bib_type in ['conference', 'inproceedings', 'proceedings']:
+                bib_str.append(f"\torganization = {{{self.publisher}}},")
+            elif bib_type in ['manual', 'techreport']:
+                bib_str.append(f"\tinstitution = {{{self.publisher}}},")
+            elif bib_type in ['mastersthesis', 'phdthesis']:
+                bib_str.append(f"\tschool = {{{self.publisher}}},")
+            else:
+                bib_str.append(f"\tpublisher = {{{self.publisher}}},")
+        # Get the publisher address
+        if self.address is not None:
+            if bib_type in ['conference', 'inproceedings', 'proceedings']:
+                bib_str.append(f"\tlocation = {{{self.address}}},")
+            else:
+                bib_str.append(f"\taddress = {{{self.address}}},")
+        # Get the DOI
+        if self.doi is not None:
+            bib_str.append(f"\tdoi = {{{self.doi}}},")
+        # Get the URL
+        if self.url is not None:
+            bib_str.append(f"\turl = {{{self.url}}},")
+        # Get the ISBN
+        if self.isbn is not None:
+            bib_str.append(f"\tisbn = {{{self.isbn}}},")
+        # Get the Git address
+        if self.git is not None:
+            bib_str.append(f"\tgit = {{{self.git}}},")
+        # Get additional web address
+        if self.git is not None:
+            bib_str.append(f"\tweb = {{{self.web}}},")
+        # Get any notes
+        if self.note is not None:
+            bib_str.append(f"\tnote = {{{self.note}}},")
+        # Add any description
+        if self.descrip is not None and self.descrip != "":
+            bib_str.append(f"\tdescrip = {{{self.descrip}}},")
+        # Add any keywords / tags
+        if len(self.tags) > 0:
+            bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
+        return "\n".join(bib_str) + "\n}"

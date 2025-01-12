@@ -400,7 +400,7 @@ chang2023parmoo:
   - - Stefan M.
     - Wild
   descrip: This is my best piece of software, which I invested the most time into
-    out of all my research projects.  However, there is no description of the underlying
+    out of all my research projects. However, there is no description of the underlying
     algorithms in this paper.
   doi: 10.21105/joss.04468
   git: null
@@ -451,7 +451,7 @@ chang2024parmoo:
   volume: null
   web: null
   year: 2024
-changNonedesigning:
+chang2025designing:
   address: null
   articleno: null
   authors:
@@ -478,7 +478,7 @@ changNonedesigning:
   volume: null
   web: null
   year: null
-changNoneleveraging:
+chang2025leveraging:
   address: null
   articleno: null
   authors:
@@ -506,7 +506,7 @@ changNoneleveraging:
   volume: null
   web: null
   year: null
-changNoneremark:
+chang2025remark:
   address: null
   articleno: null
   authors:
@@ -570,7 +570,7 @@ chen2023integrated:
   volume: null
   web: null
   year: 2023
-egeleNoneparallel:
+egele2025parallel:
   address: null
   articleno: null
   authors:

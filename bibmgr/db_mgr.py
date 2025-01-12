@@ -15,9 +15,6 @@ class DbMgr(BibParser):
     def __init__(self):
         super().__init__()
 
-    def add_tag(self, tag):
-        self._parse_bib_keyword(tag)
-
     def read_yaml(self, filename):
         with open(filename, "r") as fp:
             self.info = yaml.safe_load(fp)

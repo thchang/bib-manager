@@ -9,7 +9,6 @@ class BibParser:
     Contains the following public methods:
 
      - `parse_bib_line(key, value)` parses a single line from a BibTex file;
-     - `add_bib_item()` adds the next item into the internal database and
        resolves key conflicts; and
      - `parse_bib_file(filename)` parses an entire BibTex file.
      - `write_bib_file(filename)` writes an entire BibTex file.
@@ -18,7 +17,6 @@ class BibParser:
 
     __slots__ = [
         'next_item',
-        'info'
     ]
 
     def __init__(self):
@@ -29,7 +27,6 @@ class BibParser:
         """
 
         self.next_item = None
-        self.info = {}
 
     def parse_bib_line(self, key, value):
         """ Parse a single line of a bib file and attach the appropriate
@@ -113,28 +110,14 @@ class BibParser:
             raise ValueError(f"'{key}' with value '{value}' is not a "
                              "recognized key at this time")
 
-    def add_bib_item(self):
-        """ Add the current "next item" under construction into the internal
-        database.
-
-        Constructs the key for this item from the author and year (if
-        applicable) and resolves key conflicts as needed.
-
-        """
-
-        nextKey = self.next_item.get_key()
-        if nextKey not in self.info:
-            self.info[nextKey] = self.next_item.to_dict()
-        else:
-            # TBD implement key collision policy in the future
-            print(f"Warning: duplicate item '{nextKey}' not added...")
-        self.next_item = None
-
     def parse_bib_file(self, filename):
-        """ Parse an entire .bib file, and store in the internal database.
+        """ Iterator that parses a .bib file and yields the entries.
 
         Args:
             filename (str, path-like object): The path to the file to parse.
+
+        Yields:
+            BibEntry: The next entry in the file.
 
         """
 
@@ -156,7 +139,8 @@ class BibParser:
         while m := re_next_item.search(bib_data, pos):
             if m.group('type'):
                 if self.next_item is not None:
-                    self.add_bib_item()
+                    yield self.next_item
+                    self.next_item = None
                 self.parse_bib_line('type', m.group('type').strip())
                 self.parse_bib_line('descrip', next_descrip.strip())
                 next_descrip = ""
@@ -188,18 +172,20 @@ class BibParser:
             else:
                 raise RuntimeError(f"Unmatched expression: {m}")
         if self.next_item is not None:
-            self.add_bib_item()
+            yield self.next_item
+            self.next_item = None
 
-    def write_bib_file(self, filename):
+    def write_bib_file(self, filename, info):
         """ Write an entire BibTex (.bib) file from the internal database.
 
         Args:
-            filename (str, path-like object): The path to the file to write.
+            filename (str or path-like object): The path to the file to write.
+            info (dict[BibEntry]): A dictionary of bibliography entries.
 
         """
 
         with open(filename, "w") as fp:
-            for key in self.info:
-                self.next_item = BibEntry(self.info[key])
+            for key in info:
+                self.next_item = BibEntry(info[key])
                 fp.write(self.next_item.to_bib())
                 fp.write("\n\n")

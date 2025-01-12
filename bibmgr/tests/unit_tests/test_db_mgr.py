@@ -1,6 +1,7 @@
 import filecmp
 import os
 
+from bibmgr.bib_entry import BibEntry
 from bibmgr.db_mgr import DbMgr
 from bibmgr.tests.unit_tests.common import check_results, soln
 
@@ -10,12 +11,14 @@ class TestDbMgr:
     def test_read_bibtex(self):
         tester = DbMgr()
         tester.read_bibtex("bibmgr/tests/data/test.bib")
-        check_results(tester)
+        for key in tester.info:
+            check_results(BibEntry(tester.info[key]))
 
     def test_read_yaml(self):
         tester = DbMgr()
         tester.read_yaml("bibmgr/tests/data/test.yaml")
-        check_results(tester)
+        for key in tester.info:
+            check_results(BibEntry(tester.info[key]))
 
     def test_write_bibtex(self):
         tester = DbMgr()

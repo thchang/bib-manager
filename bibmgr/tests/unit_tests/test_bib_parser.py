@@ -153,50 +153,18 @@ class TestBibParser(unittest.TestCase):
             self.tester.parse_bib_line("keywords", tag)
         assert self.tester.next_item.get_tags() == test_tags
 
-    def test_add_bib_item(self):
-        # Add an item with a complicated name
-        self.tester = BibParser()
-        self.tester.parse_bib_line("author", " Tyler H. Chang and Chang, TH")
-        self.tester.parse_bib_line("title", " The For when {TEST}:\n tough")
-        self.tester.parse_bib_line("year", "2025")
-        self.tester.parse_bib_line("booktitle", "Proc. Testing 2")
-        self.tester.parse_bib_line("git", "github.com/thchang/bib-manager")
-        test_copy = self.tester.next_item.to_dict()
-        self.tester.add_bib_item()
-        assert 'chang2025test' in self.tester.info
-        for key in self.tester.info['chang2025test']:
-            assert key in test_copy
-            assert self.tester.info['chang2025test'][key] == test_copy[key]
-        for key in test_copy:
-            assert key in self.tester.info['chang2025test']
-            assert self.tester.info['chang2025test'][key] == test_copy[key]
-        # Try to add a duplicate with a different venue
-        self.tester.parse_bib_line("author", " Tyler H. Chang and Chang, TH")
-        self.tester.parse_bib_line("title", " The For when {TEST}:\n tough")
-        self.tester.parse_bib_line("year", "2025")
-        self.tester.parse_bib_line("booktitle", "Proc. Testing 2")  # changed
-        self.tester.parse_bib_line("git", "github.com/thchang/bib-manager")
-        self.tester.add_bib_item()
-        for key in self.tester.info['chang2025test']:
-            assert key in test_copy
-            assert self.tester.info['chang2025test'][key] == test_copy[key]
-        for key in test_copy:
-            assert key in self.tester.info['chang2025test']
-            assert self.tester.info['chang2025test'][key] == test_copy[key]
-
     def test_parse_bib_line(self):
         with self.assertRaises(ValueError):
             self.tester.parse_bib_line("bad_key", "oopsie!")
 
     def test_parse_bib_file(self):
         self.tester = BibParser()
-        self.tester.parse_bib_file("bibmgr/tests/data/test.bib")
-        check_results(self.tester)
+        for entry in self.tester.parse_bib_file("bibmgr/tests/data/test.bib"):
+            check_results(entry)
 
     def test_write_bib_file(self):
         self.tester = BibParser()
-        self.tester.info = soln
-        self.tester.write_bib_file("bibmgr/tests/data/test2.bib")
+        self.tester.write_bib_file("bibmgr/tests/data/test2.bib", soln)
         assert os.path.exists("bibmgr/tests/data/test2.bib")
         assert filecmp.cmp("bibmgr/tests/data/written_test.bib",
                            "bibmgr/tests/data/test2.bib")

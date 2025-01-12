@@ -6,9 +6,7 @@ from bibmgr.bib_parser import BibParser
 class DbMgr(BibParser):
 
     __slots__ = [
-        'template',
-        'nextItem',
-        'nextKey',
+        'next_item',
         'info'
     ]
 

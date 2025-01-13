@@ -43,6 +43,9 @@ class TestBibEntry(unittest.TestCase):
         tester.add_authors([["Tyler H.", "Chang"], ["TH", "Chang"]])
         for i, itemi in enumerate(tester.get_authors()):
             assert itemi == expected_result[i]
+        tester.add_authors(expected_result[0], reset=True)
+        assert len(tester.get_authors()) == 1
+        assert tester.get_authors()[0] == expected_result[0]
 
     def test_set_get_title(self):
         test_title = "The {TEST}: A title worthy of testing"
@@ -232,6 +235,8 @@ class TestBibEntry(unittest.TestCase):
         tester.add_keyword(test_tags[0])
         tester.add_keyword(test_tags[1:])
         assert tester.get_tags() == test_tags
+        tester.add_keyword(test_tags[0], reset=True)
+        assert tester.get_tags()[0] == test_tags[0]
 
     def test_get_key(self):
         test_key = "chang2025test"

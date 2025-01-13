@@ -10,8 +10,8 @@ class BibParser:
 
      - `parse_line(key, value)` parses a single line from a BibTex file;
        resolves key conflicts; and
-     - `parse_file(filename)` parses an entire BibTex file.
-     - `write_file(filename)` writes an entire BibTex file.
+     - `parse_file(fp)` parses an entire BibTex file.
+     - `write_file(entry, fp)` writes an entry to a BibTex file.
 
     """
 
@@ -28,7 +28,7 @@ class BibParser:
 
         self.next_item = None
 
-    def parse_line(self, key, value):
+    def parse_line(self, key, value, overwrite=False):
         """ Parse a (key, value) pair BibTex entry and update the next entry.
 
         Args:
@@ -36,6 +36,10 @@ class BibParser:
 
             value (int, str, list, dict): The corresponding value that was
                 extracted by the parser.
+
+            overwrite (bool, optional): Overwrite any existing entries for
+                "updatable" entries such as authors and keywords, when True.
+                Defaults to False.
 
         Raises:
             ValueError: If 'key' is not a supported / recognized BibTex key.
@@ -51,11 +55,13 @@ class BibParser:
                 if len(names) <= 1:
                     names = author.strip().split()
                     self.next_item.add_authors(
-                        [" ".join(names[:-1]).strip(), names[-1].strip()]
+                        [" ".join(names[:-1]).strip(), names[-1].strip()],
+                        reset=overwrite
                     )
                 else:
                     self.next_item.add_authors(
-                        [" ".join(names[1:]).strip(), names[0].strip()]
+                        [" ".join(names[1:]).strip(), names[0].strip()],
+                        reset=overwrite
                     )
         elif key.strip().lower() == 'title':
             self.next_item.set_title(value)
@@ -67,8 +73,10 @@ class BibParser:
                                      'organization', 'school']:
             if (
                 self.next_item.get_publisher() is None or
-                key.strip().lower() in ['institution', 'organization',
-                                        'school']
+                key.strip().lower() in [
+                    'institution', 'organization', 'school'
+                ] or
+                overwrite
             ):
                 self.next_item.set_publisher(value)
         elif key.strip().lower() in ['journal', 'booktitle']:
@@ -88,7 +96,8 @@ class BibParser:
         elif key.strip().lower() in ['address', 'location']:
             if (
                 self.next_item.get_address() is None or
-                key.strip().lower() == 'location'
+                key.strip().lower() == 'location' or
+                overwrite
             ):
                 self.next_item.set_address(value)
         elif key.strip().lower() == 'doi':
@@ -107,16 +116,16 @@ class BibParser:
             self.next_item.set_descrip(value)
         elif key.strip().lower() == 'keywords':
             for tag in value.strip().split(","):
-                self.next_item.add_keyword(tag)
+                self.next_item.add_keyword(tag, reset=overwrite)
         else:
             raise ValueError(f"'{key}' with value '{value}' is not a "
                              "recognized key at this time")
 
-    def parse_file(self, filename):
+    def parse_file(self, fp):
         """ Iterator that parses a BibTex file and yields the entries.
 
         Args:
-            filename (str, path-like object): The path to the BibTex file.
+            fp (file object): Reference to an open (readable) BibTex file.
 
         Yields:
             BibEntry: The next entry in the file.
@@ -137,12 +146,9 @@ class BibParser:
         )
         re_next_item = re.compile(str_next_item)
 
-        with open(filename, "r") as fp:
-            bib_data = fp.read()
-
         next_descrip = ""
         pos = 0
-
+        bib_data = fp.read()
         while m := re_next_item.search(bib_data, pos):
             if m.group('type'):
                 if self.next_item is not None:
@@ -182,18 +188,15 @@ class BibParser:
             yield self.next_item
             self.next_item = None
 
-    def write_file(self, filename, info):
-        """ Write an entire BibTex file from a dictionary representation.
+    def write_file(self, entry, fp):
+        """ Write a single entry in a BibTex file.
 
         Args:
-            filename (str or path-like object): The path to the file to write.
+            fp (file object): Reference to an open (writable) BibTex file.
 
-            info (dict[BibEntry]): A dictionary of bibliography entries.
+            entry (BibEntry): A bibliography entry to write.
 
         """
 
-        with open(filename, "w") as fp:
-            for key in info:
-                self.next_item = BibEntry(info[key])
-                fp.write(self.next_item.to_bib())
-                fp.write("\n\n")
+        fp.write(entry.to_bib())
+        fp.write("\n\n")

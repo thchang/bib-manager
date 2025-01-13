@@ -2,6 +2,7 @@ import filecmp
 import os
 import unittest
 
+from bibmgr.bib_entry import BibEntry
 from bibmgr.bib_parser import BibParser
 from bibmgr.tests.unit_tests.common import check_results, soln
 
@@ -35,8 +36,7 @@ class TestBibParser(unittest.TestCase):
             TH Chang""")
         for i, itemi in enumerate(self.tester.next_item.get_authors()):
             assert itemi == expected_result[i]
-        self.tester.parse_line("author", "Chang, Tyler H."
-                                   "   and\nChang, TH ")
+        self.tester.parse_line("author", "Chang, Tyler H.   and\nChang, TH ")
         for i, itemi in enumerate(self.tester.next_item.get_authors()):
             assert itemi == expected_result[i]
 
@@ -159,12 +159,15 @@ class TestBibParser(unittest.TestCase):
 
     def test_parse_file(self):
         self.tester = BibParser()
-        for entry in self.tester.parse_file("bibmgr/tests/data/test.bib"):
-            check_results(entry)
+        with open("bibmgr/tests/data/test.bib", "r") as fp:
+            for entry in self.tester.parse_file(fp):
+                check_results(entry)
 
     def test_write_file(self):
         self.tester = BibParser()
-        self.tester.write_file("bibmgr/tests/data/test2.bib", soln)
+        with open("bibmgr/tests/data/test2.bib", "w") as fp:
+            for next_key in soln:
+                self.tester.write_file(BibEntry(soln[next_key]), fp)
         assert os.path.exists("bibmgr/tests/data/test2.bib")
         assert filecmp.cmp("bibmgr/tests/data/written_test.bib",
                            "bibmgr/tests/data/test2.bib")

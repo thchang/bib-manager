@@ -118,12 +118,15 @@ class BibEntry:
                 if key in self.__slots__:
                     setattr(self, key, dict_rep[key])
 
-    def add_authors(self, authors):
+    def add_authors(self, authors, reset=False):
         """ Adds the author to the bib item.
 
         Args:
             authors (list of str, list of list of str): The author(s) to add
                 for this entry.
+
+            reset (bool, optional): Reset the author list to empty before
+                adding. Defaults to False.
 
         Raises:
             TypeError: If 'authors' does not match the expected type.
@@ -133,6 +136,8 @@ class BibEntry:
         if not isinstance(authors, list):
             raise TypeError("expected a list of authors or names, got:"
                             f" {type(authors)}")
+        if reset:
+            self.authors = []
         if isinstance(authors[0], str):
             self.authors.append([ni.strip() for ni in authors])
         elif isinstance(authors[0], list) and isinstance(authors[0][0], str):
@@ -453,17 +458,22 @@ class BibEntry:
                             f"got: {type(descrip)}")
         self.descrip = descrip.strip()
 
-    def add_keyword(self, tag):
+    def add_keyword(self, tag, reset=False):
         """ Attaches relevant tags/keywords to the bib item for easy lookup.
 
         Args:
             tag (str): Any keywords or tags for this bib entry.
+
+            reset (bool, optional): Reset the tags list to empty before
+                adding. Defaults to False.
 
         Raises:
             TypeError: If 'tag' does not match the expected type.
 
         """
 
+        if reset:
+            self.tags = []
         if isinstance(tag, str):
             self.tags.append(tag.strip())
         elif isinstance(tag, list):

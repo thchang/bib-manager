@@ -37,26 +37,6 @@ class DictDatabase:
         else:
             self.info[key] = entry
 
-    def update_entry(self, entry_key, update_key, update_value):
-        """ Update an existing entry in the internal database.
-
-        Args:
-            entry_key (str): The key of the entry to update.
-
-            update_key (str): The key of the field to update in that entry.
-
-            update_value (str or int): The new value for that entry.
-
-        Raises:
-            RuntimeError: If the entry_key cannot be found.
-
-        """
-
-        if not self.contains(entry_key):
-            raise RuntimeError(f"no key '{entry_key}' in current database")
-        self.bib_parser.next_item = self.info[entry_key]
-        self.bib_parser.parse_line(update_key, update_value)
-
     def read_entry(self, entry_key):
         """ Read an existing entry from the internal database.
 
@@ -74,6 +54,31 @@ class DictDatabase:
         if not self.contains(entry_key):
             raise RuntimeError(f"no key '{entry_key}' in current database")
         return self.info[entry_key]
+
+    def update_entry(self, entry_key, update_key, update_value):
+        """ Update an existing entry in the internal database.
+
+        Also fixes the entry key if needed.
+
+        Args:
+            entry_key (str): The key of the entry to update.
+
+            update_key (str): The key of the field to update in that entry.
+
+            update_value (str or int): The new value for that entry.
+
+        Raises:
+            RuntimeError: If the entry_key cannot be found.
+
+        """
+
+        if not self.contains(entry_key):
+            raise RuntimeError(f"no key '{entry_key}' in current database")
+        self.bib_parser.next_item = self.info[entry_key]
+        self.bib_parser.parse_line(update_key, update_value)
+        if self.bib_parser.next_item.get_key() != entry_key:
+            self.create_entry(self.bib_parser.next_item)
+            self.delete_entry(entry_key)
 
     def delete_entry(self, entry_key):
         """ Delete an existing entry from the internal database.

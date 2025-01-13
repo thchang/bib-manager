@@ -66,3 +66,9 @@ class TestDictDatabase(unittest.TestCase):
             assert key in ["chang2020algorithm", "chang2016gpu"]
         for key in tester.keys(lambda x: "software" in x.tags):
             assert key in ["chang2020algorithm"]
+
+    def test_contains(self):
+        tester = DictDatabase()
+        tester.create_entry(BibEntry(test1_dict))
+        assert tester.contains("chang2020algorithm")
+        assert not tester.contains("chang2016gpu")

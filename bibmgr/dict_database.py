@@ -77,8 +77,7 @@ class DictDatabase:
         self.bib_parser.next_item = self.info[entry_key]
         self.bib_parser.parse_line(update_key, update_value)
         if self.bib_parser.next_item.get_key() != entry_key:
-            self.create_entry(self.bib_parser.next_item)
-            self.delete_entry(entry_key)
+            self.create_entry(self.delete_entry(entry_key))
 
     def delete_entry(self, entry_key):
         """ Delete an existing entry from the internal database.

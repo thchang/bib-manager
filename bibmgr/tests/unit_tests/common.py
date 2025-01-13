@@ -1,4 +1,4 @@
-from bibmgr.tests.data.soln import soln
+from bibmgr.tests.data.test_soln import soln
 
 
 def check_results(item):

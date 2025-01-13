@@ -11,20 +11,19 @@ class TestDatabaseManager:
     def test_read_bibtex(self):
         tester = DatabaseManager()
         tester.read_bibtex("bibmgr/tests/data/test.bib")
-        for key in tester.info:
-            check_results(tester.info[key])
+        for entry in tester.entries():
+            check_results(entry)
 
     def test_read_yaml(self):
         tester = DatabaseManager()
         tester.read_yaml("bibmgr/tests/data/test.yaml")
-        for key in tester.info:
-            check_results(tester.info[key])
+        for entry in tester.entries():
+            check_results(entry)
 
     def test_write_bibtex(self):
         tester = DatabaseManager()
-        for next_key in soln:
-            next_entry = BibEntry(soln[next_key])
-            tester.info[next_key] = next_entry
+        for key in soln:
+            tester.create_entry(BibEntry(soln[key]))
         tester.write_bibtex("bibmgr/tests/data/test2.bib")
         assert os.path.exists("bibmgr/tests/data/test2.bib")
         assert filecmp.cmp("bibmgr/tests/data/written_test.bib",
@@ -33,9 +32,8 @@ class TestDatabaseManager:
 
     def test_write_yaml(self):
         tester = DatabaseManager()
-        for next_key in soln:
-            next_entry = BibEntry(soln[next_key])
-            tester.info[next_key] = next_entry
+        for key in soln:
+            tester.create_entry(BibEntry(soln[key]))
         tester.write_yaml("bibmgr/tests/data/test2.yaml")
         assert os.path.exists("bibmgr/tests/data/test2.yaml")
         assert filecmp.cmp("bibmgr/tests/data/test.yaml",

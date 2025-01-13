@@ -118,6 +118,31 @@ class DictDatabase:
             for key in self.info:
                 yield self.info[key]
 
+    def keys(self, predicate=None):
+        """ Iterate over the keys in the current database and yield them.
+
+        Args:
+            predicate (func, optional): Only yields the keys whose entries
+                satisfy the predicate. When omitted, all keys are yielded.
+
+        Yields:
+            str: The key for a bib entry in the internal database.
+
+        Raises:
+            TypeError: If the predicate is not a valid function.
+
+        """
+
+        if predicate is not None:
+            if not callable(predicate):
+                raise TypeError(f"predicate '{predicate}' is not callable")
+            for key in self.info:
+                if predicate(self.info[key]):
+                    yield key
+        else:
+            for key in self.info:
+                yield key
+
     def contains(self, key):
         """ Check the internal database for the given key.
 

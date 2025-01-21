@@ -9,7 +9,7 @@ class DatabaseCLI:
     def __init__(self):
         """Initialize the CLI with a Database instance."""
 
-        cache = os.path.join(
+        self.cache_file = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "bibcache.yaml"
         )
@@ -27,7 +27,24 @@ class DatabaseCLI:
         """Add a new entry to the database."""
 
         self.create_entry(entry_data)
-        self.database.write_yaml(self.master_db)
+        self.database.write_yaml(self.cache_file)
+
+    def load_data(self, filepath):
+        """Load a database of existing entries into the cache."""
+
+        if not os.path.exists(filepath):
+            raise RuntimeError(f"{filepath} does not exist")
+        temp_db = DatabaseManager()
+        if filepath.split(".")[-1].lower() == "bib":
+            temp_db.read_bibtex(filepath)
+        else:
+            temp_db.read_yaml(filepath)
+        for entry in temp_db.entries():
+            try:
+                self.create_entry(entry)
+            except RuntimeError:
+                print(f"found duplicate entry: {entry};\nskipping...")
+        self.database.write_yaml(self.cache_file)
 
     def parse_args(self):
         """Get the CLI application."""

@@ -14,8 +14,8 @@ class DatabaseCLI:
             "bibcache.yaml"
         )
         self.database = DatabaseManager()
-        if os.path.exists(cache):
-            self.database.read_yaml(cache)
+        if os.path.exists(self.cache_file):
+            self.database.read_yaml(self.cache_file)
 
     def show(self):
         """Display the contents of the database."""
@@ -60,14 +60,17 @@ class DatabaseCLI:
 
         return parser.parse_args()
 
-    def run(args):
+    def print_help(self):
+        print("help")
+
+    def run(self, args):
 
         if args.command == "show":
             self.show_contents()
         elif args.command == "add":
             self.add_entry(args.entry_data)
         else:
-            parser.print_help()
+            self.print_help()
 
 if __name__ == "__main__":
     from database import Database  # Replace this with the actual import

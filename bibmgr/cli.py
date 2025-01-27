@@ -1,8 +1,8 @@
 import argparse
-import pathlib
 import os
 
 from bibmgr.database_mgr import DatabaseManager
+
 
 class DatabaseCLI:
 
@@ -50,18 +50,33 @@ class DatabaseCLI:
         """Get the CLI application."""
 
         parser = argparse.ArgumentParser(description="Database CLI Tool")
-        subparsers = parser.add_subparsers(dest="command",
-                                           help="Available commands")
+        subparsers = parser.add_subparsers(
+            dest="command",
+            help="Available commands"
+        )
         # Show contents command
         subparsers.add_parser("show", help="Show contents of the database")
         # Add entry command
-        add_parser = subparsers.add_parser("add", help="Add a new entry to the database")
-        add_parser.add_argument("entry_data", type=str, help="Data for the new entry (as a string)")
-
+        add_parser = subparsers.add_parser(
+            "add",
+            help="Add a new entry to the database"
+        )
+        add_parser.add_argument(
+            "entry_data",
+            type=str,
+            help="Data for the new entry (as a string)"
+        )
         return parser.parse_args()
 
-    def print_help(self):
-        print("help")
+    def print_help(self, cmd):
+        """ Display a help message.
+
+        Args:
+            cmd (str or str-like): The command that failed.
+
+        """
+
+        print(f"Command {cmd} not recognized.\nFor help, use bibmgr --help")
 
     def run(self, args):
 
@@ -70,7 +85,8 @@ class DatabaseCLI:
         elif args.command == "add":
             self.add_entry(args.entry_data)
         else:
-            self.print_help()
+            self.print_help(args.command)
+
 
 if __name__ == "__main__":
     from database import Database  # Replace this with the actual import
@@ -81,4 +97,3 @@ if __name__ == "__main__":
 
     cli = DatabaseCLI(db)
     cli.run()
-

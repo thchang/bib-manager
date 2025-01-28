@@ -2,6 +2,7 @@ import argparse
 import os
 import re
 
+from bibmgr.bib_entry import BibEntry
 from bibmgr.database_mgr import DatabaseManager
 
 
@@ -33,7 +34,7 @@ class DatabaseCLI:
             "bibcache.yaml"
         )
         self.database = DatabaseManager()
-        self.predicate_str = None
+        self.pred_str = None
         if os.path.exists(self.cache_file):
             self.database.read_yaml(self.cache_file)
 
@@ -68,7 +69,7 @@ class DatabaseCLI:
     def filter(self):
         """ Filter the current contents of the cache. """
 
-        if self.predicate_str is None:
+        if self.pred_str is None:
             raise ValueError("No predicate to filter")
         temp_db = DatabaseManager()
         for entry in self.database.entries(self.predicate):
@@ -111,7 +112,7 @@ class DatabaseCLI:
     def show(self):
         """ Display the current contents of the cache. """
 
-        if self.predicate_str is None:
+        if self.pred_str is None:
             for entry in self.database.entries():
                 print(entry)
         else:
@@ -152,7 +153,7 @@ class DatabaseCLI:
             r'\s*(\w+)'
         )
         if m := legal_preds.match(pred_str):
-            self.predicate_str = f"get_{m.group(1)}() {m.group(2)} {m.group(3)}"
+            self.pred_str = f"get_{m.group(1)}() {m.group(2)} {m.group(3)}"
         else:
             raise RuntimeError(
                 f"Illegal predicate: {pred_str}. "
@@ -168,7 +169,7 @@ class DatabaseCLI:
 
         """
 
-        return exec(f"{x}.{self.predicate_str}")
+        return exec(f"{x}.{self.pred_str}")
 
     def print_help(self, cmd):
         """ Display a help message.

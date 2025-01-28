@@ -72,3 +72,11 @@ class TestDictDatabase(unittest.TestCase):
         tester.create_entry(BibEntry(test1_dict))
         assert tester.contains("chang2020algorithm")
         assert not tester.contains("chang2016gpu")
+
+    def test_size(self):
+        tester = DictDatabase()
+        assert tester.size() == 0
+        tester.create_entry(BibEntry(test1_dict))
+        assert tester.size() == 1
+        tester.create_entry(BibEntry(test2_dict))
+        assert tester.size() == 2

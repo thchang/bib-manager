@@ -3,26 +3,33 @@ import os
 import re
 
 from bibmgr.bib_entry import BibEntry
-from bibmgr.database_mgr import DatabaseManager
+from bibmgr.database_manager import DatabaseManager
 
 
 class DatabaseCLI:
     """ A CLI for interacting with the BibMgr Database.
 
-    Uses the following helper methods:
+    Provides the following helper methods:
 
      * `add_entry(entry_data)`
+     * `clear()`
      * `delete_entry(entry_key)`
      * `filter(predicate)`
      * `load_data(filepath)`
      * `save_data(filepath)` TBD
      * `show(entry_key, predicate)`
      * `update_entry(entry_key, update_key, update_data)` TBD
+
+    And the following runtime methods:
+
      * `parse_args()` TBD
      * `parse_predicate(pred_str)`
      * `predicate(x)`
      * `print_help()`
      * `run(args)` TBD
+     * `user_continue()`
+
+    Together, these are used to build the bibmgr CLI, defined in `__main__.py`.
 
     """
 
@@ -43,26 +50,28 @@ class DatabaseCLI:
 
         new_entry = BibEntry(entry_data)
         print(f"Will add: {new_entry}\n")
-        response = input("Continue? (y/n): ")
-        if response == "y":
+        if self.user_continue():
             self.database.create_entry(new_entry)
             self.database.write_yaml(self.cache_file)
-        else:
-            print("Aborting.")
+
+    def clear(self):
+        """ Clear the cache. """
+
+        if os.path.exists(self.cache_file):
+            print(f"Will remove {self.database.size()} items stored in "
+                  f"{self.cache_file}\n")
+            if self.user_continue():
+                os.remove(self.cache_file)
+                self.database = DatabaseManager()
 
     def delete_entry(self, entry_key):
         """ Delete an entry from the cache. """
 
         if self.database.contains(entry_key):
             print(f"Will delete: {self.database.read_entry(entry_key)}\n")
-            response = input("Continue? (y/n): ")
-            if len(response) > 0:
-                response = response[0].lower()
-            if response == "y":
+            if self.user_continue():
                 self.delete_entry(entry_key)
                 self.database.write_yaml(self.cache_file)
-            else:
-                print("Aborting.")
         else:
             print(f"{entry_key} not found, aborting.")
 
@@ -75,12 +84,9 @@ class DatabaseCLI:
         for entry in self.database.entries(self.predicate):
             temp_db.create_entry(entry)
         print(f"{self.database.size() - temp_db.size()} items filtered")
-        response = input("Continue? (y/n): ")
-        if response == "y":
+        if self.user_continue():
             self.database = temp_db
             self.database.write_yaml(self.cache_file)
-        else:
-            print("Aborting.")
 
     def load_data(self, filepath):
         """ Load a database of existing entries into the cache.
@@ -98,16 +104,13 @@ class DatabaseCLI:
         else:
             temp_db.read_yaml(filepath)
         print(f"Will load {temp_db.size()} entries\n")
-        response = input("Continue? (y/n): ")
-        if response == "y":
+        if self.user_continue():
             for entry in temp_db.entries():
                 try:
                     self.database.create_entry(entry)
                 except RuntimeError:
                     print(f"found duplicate entry: {entry};\nskipping...")
             self.database.write_yaml(self.cache_file)
-        else:
-            print("Aborting.")
 
     def show(self):
         """ Display the current contents of the cache. """
@@ -197,6 +200,21 @@ class DatabaseCLI:
             self.add_entry(args.entry_data)
         else:
             self.print_help(args.command)
+
+    def user_continue(self):
+        """ Check with user to proceed.
+
+        Returns:
+            bool: True if the user elects to proceed, False otherwise.
+
+        """
+
+        response = input("Continue? (y/n): ")
+        if len(response) > 0 and response[0].lower() == "y":
+            return True
+        else:
+            print("Aborting.")
+            return False
 
 
 if __name__ == "__main__":

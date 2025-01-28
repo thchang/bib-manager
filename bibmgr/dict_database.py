@@ -159,3 +159,13 @@ class DictDatabase:
         """
 
         return key in self.info
+
+    def size(self):
+        """ Get the size of the current database.
+
+        Returns:
+            int: The number of items in the current database.
+
+        """
+
+        return len(self.info)

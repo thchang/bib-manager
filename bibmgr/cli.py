@@ -68,9 +68,9 @@ class DatabaseCLI:
         """ Delete an entry from the cache. """
 
         if self.database.contains(entry_key):
-            print(f"Will delete: {self.database.read_entry(entry_key)}\n")
+            print(f"Will delete: {entry_key}\n")
             if self.user_continue():
-                self.delete_entry(entry_key)
+                self.database.delete_entry(entry_key)
                 self.database.write_yaml(self.cache_file)
         else:
             print(f"{entry_key} not found, aborting.")

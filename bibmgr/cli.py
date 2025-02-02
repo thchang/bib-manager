@@ -160,9 +160,13 @@ class DatabaseCLI:
             r'\s*(\w+)'
         )
         if m := single_preds.match(pred_str):
+            if not hasattr(BibEntry, f"get_{m.group(1)}"):
+                raise ValueError(f"attribute '{m.group(1)}' is not valid")
             self.pred_str = (f'str(x.get_{m.group(1)}()) {m.group(2)}'
                              f' "{m.group(3)}"')
         elif m := list_preds.match(pred_str):
+            if not hasattr(BibEntry, f"get_{m.group(2)}"):
+                raise ValueError(f"attribute '{m.group(2)}' is not valid")
             self.pred_str = f'"{m.group(1)}" in str(x.get_{m.group(2)}())'
         else:
             raise RuntimeError(

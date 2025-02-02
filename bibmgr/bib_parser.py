@@ -9,8 +9,8 @@ class BibParser:
     Contains the following public methods:
 
      - `parse_line(key, value)` parses a single line from a BibTex file;
-       resolves key conflicts; and
-     - `parse_file(fp)` parses an entire BibTex file.
+       resolves key conflicts;
+     - `parse_file(fp)` parses an entire BibTex file; and
      - `write_file(entry, fp)` writes an entry to a BibTex file.
 
     """
@@ -49,7 +49,7 @@ class BibParser:
         value = " ".join(value.strip().split())
         if self.next_item is None:
             self.next_item = BibEntry()
-        if key.strip().lower() == 'author':
+        if key.strip().lower() in ['author', 'authors']:
             for author in value.split(" and "):
                 names = author.strip().split(",")
                 if len(names) <= 1:
@@ -79,7 +79,7 @@ class BibParser:
                 overwrite
             ):
                 self.next_item.set_publisher(value)
-        elif key.strip().lower() in ['journal', 'booktitle']:
+        elif key.strip().lower() in ['journal', 'booktitle', 'venue']:
             self.next_item.set_venue(value)
         elif key.strip().lower() in ['volume']:
             self.next_item.set_volume(value)
@@ -114,12 +114,12 @@ class BibParser:
             self.next_item.set_note(value)
         elif key.strip().lower() in ['descrip', 'summary']:
             self.next_item.set_descrip(value)
-        elif key.strip().lower() == 'keywords':
+        elif key.strip().lower() in ['keywords', 'tags']:
             for tag in value.strip().split(","):
                 self.next_item.add_keyword(tag, reset=overwrite)
         else:
-            raise ValueError(f"'{key}' with value '{value}' is not a "
-                             "recognized key at this time")
+            raise KeyError(f"'{key}' with value '{value}' is not a "
+                           "recognized key at this time")
 
     def parse_file(self, fp):
         """ Iterator that parses a BibTex file and yields the entries.
@@ -183,7 +183,7 @@ class BibParser:
                 self.parse_line(m.group('halfkey'), bib_data[start:end-1])
                 pos = end
             else:
-                raise RuntimeError(f"Unmatched expression: {m}")
+                raise ValueError(f"Unmatched expression: {m}")
         if self.next_item is not None:
             yield self.next_item
             self.next_item = None

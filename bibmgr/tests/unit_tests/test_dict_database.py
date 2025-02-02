@@ -14,13 +14,13 @@ class TestDictDatabase(unittest.TestCase):
         assert len([ei for ei in tester.entries()]) == 0
         tester.create_entry(BibEntry(test1_dict))
         assert "chang2020algorithm" in tester.keys()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(KeyError):
             tester.create_entry(BibEntry(test1_dict))
         assert len([ei for ei in tester.entries()]) == 1
 
     def test_read_entry(self):
         tester = DictDatabase()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(KeyError):
             tester.read_entry("chang2020algorithm")
         tester.create_entry(BibEntry(test1_dict))
         entry = tester.read_entry("chang2020algorithm")
@@ -28,18 +28,18 @@ class TestDictDatabase(unittest.TestCase):
 
     def test_update_entry(self):
         tester = DictDatabase()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(KeyError):
             tester.update_entry("chang2020algorithm", "title", "TOMS Alg 1012")
         tester.create_entry(BibEntry(test1_dict))
         tester.update_entry("chang2020algorithm", "title", "TOMS Alg 1012")
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(KeyError):
             tester.read_entry("chang2020algorithm")
         entry = tester.read_entry("chang2020toms")
         assert entry.get_key() == "chang2020toms"
 
     def test_delete_entry(self):
         tester = DictDatabase()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(KeyError):
             tester.delete_entry("chang2020algorithm")
         tester.create_entry(BibEntry(test1_dict))
         entry = tester.delete_entry("chang2020algorithm")

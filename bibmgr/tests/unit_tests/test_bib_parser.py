@@ -154,7 +154,7 @@ class TestBibParser(unittest.TestCase):
         assert self.tester.next_item.get_tags() == test_tags
 
     def test_parse_line(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(KeyError):
             self.tester.parse_line("bad_key", "oopsie!")
 
     def test_parse_file(self):

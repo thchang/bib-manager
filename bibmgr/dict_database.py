@@ -33,7 +33,7 @@ class DictDatabase:
             raise TypeError(f"expected a BibEntry object, got: {type(entry)}")
         key = entry.get_key()
         if self.contains(key):
-            raise RuntimeError(f"duplicate key '{key}' requested")
+            raise KeyError(f"duplicate key '{key}' requested")
         else:
             self.info[key] = entry
 
@@ -52,10 +52,10 @@ class DictDatabase:
         """
 
         if not self.contains(entry_key):
-            raise RuntimeError(f"no key '{entry_key}' in current database")
+            raise KeyError(f"no key '{entry_key}' in current database")
         return self.info[entry_key]
 
-    def update_entry(self, entry_key, update_key, update_value):
+    def update_entry(self, entry_key, update_field, update_value):
         """ Update an existing entry in the internal database.
 
         Also fixes the entry key if needed.
@@ -63,7 +63,7 @@ class DictDatabase:
         Args:
             entry_key (str): The key of the entry to update.
 
-            update_key (str): The key of the field to update in that entry.
+            update_field (str): The field to update in that entry.
 
             update_value (str or int): The new value for that entry.
 
@@ -73,9 +73,9 @@ class DictDatabase:
         """
 
         if not self.contains(entry_key):
-            raise RuntimeError(f"no key '{entry_key}' in current database")
+            raise KeyError(f"no key '{entry_key}' in current database")
         self.bib_parser.next_item = self.info[entry_key]
-        self.bib_parser.parse_line(update_key, update_value)
+        self.bib_parser.parse_line(update_field, update_value)
         if self.bib_parser.next_item.get_key() != entry_key:
             self.create_entry(self.delete_entry(entry_key))
 
@@ -94,7 +94,7 @@ class DictDatabase:
         """
 
         if not self.contains(entry_key):
-            raise RuntimeError(f"no key '{entry_key}' in current database")
+            raise KeyError(f"no key '{entry_key}' in current database")
         return self.info.pop(entry_key)
 
     def entries(self, predicate=None):

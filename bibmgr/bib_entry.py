@@ -53,7 +53,9 @@ class BibEntry:
 
     and the following converter methods:
 
-     - `to_dict()`.
+     - `to_dict()`,
+     - `to_bib()`, and
+     - `__str__()`.
 
     """
 
@@ -475,11 +477,13 @@ class BibEntry:
         if reset:
             self.tags = []
         if isinstance(tag, str):
-            self.tags.append(tag.strip())
+            if tag.strip() not in self.tags:
+                self.tags.append(tag.strip())
         elif isinstance(tag, list):
             for ti in tag:
                 if isinstance(ti, str):
-                    self.tags.append(ti.strip())
+                    if ti.strip() not in self.tags:
+                        self.tags.append(ti.strip())
                 else:
                     raise TypeError("expected a list or string specifying the "
                                     f"keyword(s), got: {type(ti)}")
@@ -746,16 +750,6 @@ class BibEntry:
         return dict_rep
 
     def to_bib(self):
-        """ Convert this bib entry into a BibTex format.
-
-        Returns:
-            str: A BibTex entry with a key for each present attribute.
-
-        """
-
-        return self.__str__()
-
-    def __str__(self):
         """ Generates a BibTex string representation of this entry.
 
         Returns:
@@ -857,3 +851,17 @@ class BibEntry:
         if len(self.tags) > 0:
             bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
         return "\n".join(bib_str) + "\n}"
+
+    def __str__(self):
+        """ Convert this bib entry into a string.
+
+        Returns:
+            str: A string representation of this bibliography entry and its
+                internal fields.
+
+        """
+
+        str_rep = f"{self.get_key()}\n"
+        for key in self.__slots__:
+            str_rep += f"\t{key}: {getattr(self, key)}\n"
+        return str_rep

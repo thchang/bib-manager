@@ -11,7 +11,7 @@ class DatabaseCLI:
 
     Provides the following interface methods:
 
-     * `add_entry()`
+     * `add_entry(str_rep)`
      * `clear()`
      * `delete_entry(entry_key)`
      * `filter()`
@@ -46,50 +46,54 @@ class DatabaseCLI:
         self.force = False
         self.verbose = True
 
-    def add_entry(self):
+    def add_entry(self, str_rep=None):
         """ Add a new entry to the cache. """
 
         parser = BibParser()
-        parser.next_item = BibEntry()
-        next_val = input("Enter publication type: ")
-        valid_types = [
-            'article', 'book', 'booklet', 'conference', 'inbook',
-            'incollection', 'inproceedings', 'manual', 'mastersthesis',
-            'misc', 'phdthesis', 'proceedings', 'techreport', 'unpublished'
-        ]
-        if next_val not in valid_types:
-            self._print("Warning: Publication type should usually be one of: ")
-            self._print(", ".join(valid_types))
-            next_val = input("Re-enter publication type: ")
-            while len(next_val.strip()) == 0:
-                next_val = input("Type required. Enter publication type: ")
-        parser.parse_line("type", next_val)
-        for (next_key, instructions) in [
-            ("authors", "Enter authors separated by 'and'"),
-            ("title", "Enter publication title"),
-            ("year", "Enter publication year"),
-            ("venue", "Enter journal, conference booktitle, or other venue"),
-            ("series", "Enter publisher series"),
-            ("volume", "Enter volume number"),
-            ("number", "Enter issue number"),
-            ("articleno", "Enter article number"),
-            ("pages", "Enter pages either first--last or num pages"),
-            ("publisher", "Enter publisher name"),
-            ("address", "Enter publisher address or conference location"),
-            ("doi", "Enter doi if known"),
-            ("url", "Enter official publication url"),
-            ("isbn", "Enter publication ISBN"),
-            ("web", "Enter any additional authors' website"),
-            ("git", "Enter any git repo for the project"),
-            ("note", "Enter any publisher's notes"),
-            ("descrip", "Enter a short description of this entry"),
-            ("tags", "Enter a comma-separated list of keywords"),
-        ]:
-            next_val = input(
-                f"Enter {next_key} {instructions} (leave blank if none): "
-            )
-            if len(next_val.strip()) > 0:
-                parser.parse_line(next_key, next_val)
+        if str_rep is not None:
+            for entry in parser.parse_file(str_rep):
+                self.database.create_entry(entry)
+        else:
+            parser.next_item = BibEntry()
+            next_val = input("Enter publication type: ")
+            valid_types = [
+                'article', 'book', 'booklet', 'conference', 'inbook',
+                'incollection', 'inproceedings', 'manual', 'mastersthesis',
+                'misc', 'phdthesis', 'proceedings', 'techreport', 'unpublished'
+            ]
+            if next_val not in valid_types:
+                self._print("Warning: Publication type is usually be one of: ")
+                self._print(", ".join(valid_types))
+                next_val = input("Re-enter publication type: ")
+                while len(next_val.strip()) == 0:
+                    next_val = input("Type required. Enter publication type: ")
+            parser.parse_line("type", next_val)
+            for (next_key, instructions) in [
+                ("authors", "Enter authors separated by 'and'"),
+                ("title", "Enter publication title"),
+                ("year", "Enter publication year"),
+                ("venue", "Enter journal, conference book, or other venue"),
+                ("series", "Enter publisher series"),
+                ("volume", "Enter volume number"),
+                ("number", "Enter issue number"),
+                ("articleno", "Enter article number"),
+                ("pages", "Enter pages either first--last or num pages"),
+                ("publisher", "Enter publisher name"),
+                ("address", "Enter publisher address or conference location"),
+                ("doi", "Enter doi if known"),
+                ("url", "Enter official publication url"),
+                ("isbn", "Enter publication ISBN"),
+                ("web", "Enter any additional authors' website"),
+                ("git", "Enter any git repo for the project"),
+                ("note", "Enter any publisher's notes"),
+                ("descrip", "Enter a short description of this entry"),
+                ("tags", "Enter a comma-separated list of keywords"),
+            ]:
+                next_val = input(
+                    f"Enter {next_key} {instructions} (leave blank if none): "
+                )
+                if len(next_val.strip()) > 0:
+                    parser.parse_line(next_key, next_val)
         self._print(f"Will add: {parser.next_item}")
         if self._user_continue():
             self.database.create_entry(parser.next_item)

@@ -148,7 +148,11 @@ class BibParser:
 
         next_descrip = ""
         pos = 0
-        bib_data = fp.read()
+        bib_data = ""
+        if isinstance(fp, str):
+            bib_data = fp
+        else:
+            bib_data = fp.read()
         while m := re_next_item.search(bib_data, pos):
             if m.group('type'):
                 if self.next_item is not None:

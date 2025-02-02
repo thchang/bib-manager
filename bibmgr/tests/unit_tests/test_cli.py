@@ -56,6 +56,10 @@ class TestDatabaseCLI(unittest.TestCase):
             tester.parse_predicate("the publication year == 2020")
         with self.assertRaises(RuntimeError):
             tester.parse_predicate("year=2020")
+        with self.assertRaises(ValueError):
+            tester.parse_predicate("funding == 4k")
+        with self.assertRaises(ValueError):
+            tester.parse_predicate("DOE in funding_agency")
         tester.parse_predicate("year == 2020")
         tester.filter()
         assert cpt_out.getvalue() == "0 items filtered\n"

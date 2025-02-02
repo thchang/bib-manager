@@ -106,11 +106,14 @@ class DatabaseCLI:
         """
 
         tag_list = tags.strip().split(",")
-        if entry_key is None:
+        if entry_key is not None:
+            self.database.read_entry(entry_key).add_keyword(tag_list)
+        elif self.pred_str is None:
             for entry in self.database.entries():
                 entry.add_keyword(tag_list)
         else:
-            self.database.read_entry(entry_key).add_keyword(tag_list)
+            for entry in self.database.entries(self._predicate):
+                entry.add_keyword(tag_list)
 
     def clear(self):
         """ Clear the cache. """

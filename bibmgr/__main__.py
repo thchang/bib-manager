@@ -101,6 +101,14 @@ def run(args):
             bibdb.show()
         else:
             bibdb.show(args.entry_key)
+    elif args.command == "tag":
+        if args.predicate is not None:
+            bibdb.set_predicate(args.predicate)
+        if args.entry_key is None:
+            bibdb.tag()
+        else:
+            bibdb.tag(args.entry_key)
+
     elif args.command == "update":
         bibdb.update_entry(args.key, args.value)
     else:

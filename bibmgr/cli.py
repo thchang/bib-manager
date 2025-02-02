@@ -27,9 +27,6 @@ class DatabaseCLI:
      * `_print(message)`
      * `_user_continue()`
 
-     * `parse_args()` TBD
-     * `run(args)` TBD
-
     Together, these are used to build the bibmgr CLI, defined in `__main__.py`.
 
     """
@@ -238,22 +235,27 @@ class DatabaseCLI:
             for entry in self.database.entries(self._predicate):
                 self._print(entry)
 
-    def update_entry(self, entry_key, update_field, update_data):
+    def update_entry(self, compound_key, new_value):
         """ Modify a specific field of an existing entry.
 
         Args:
-            entry_key (str): The key of the entry to modify.
-            update_field (str): The field of the entry_key to modify.
-            update_data (any): The new value to assign to the update key, which
-                must match the type requirement for the update_field.
+            compound_key (str): The entry key followed by field to update, in
+                the format "key.field"
+            new_value (str): The new value to assign to the update key.
 
         """
 
+        if len(compound_key.strip().split(".")) != 2:
+            raise ValueError(
+                "The compounded key should be in the format 'key.field'. "
+                f"'{compound_key}' is not valid"
+            )
+        [entry_key, update_field] = compound_key.strip().split(".")
         if not self.database.contains(entry_key):
             raise KeyError(f"{entry_key} is not in the current cache")
         self._print(f"Will update: {entry_key}")
         self._print(f"Old value: {self.database.read_entry(entry_key)}")
-        self.database.update_entry(entry_key, update_field, update_data)
+        self.database.update_entry(entry_key, update_field, new_value)
         self._print(f"New value: {self.database.read_entry(entry_key)}")
         if self._user_continue():
             self.database.write_yaml(self.cache_file)

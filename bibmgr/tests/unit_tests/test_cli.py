@@ -218,10 +218,12 @@ class TestDatabaseCLI(unittest.TestCase):
         tester.database.create_entry(BibEntry(test1_dict))
         cpt_out.truncate(0)
         cpt_out.seek(0)
+        with self.assertRaises(ValueError):
+            tester.update_entry("tyler's special venue", "home")
         with self.assertRaises(KeyError):
-            tester.update_entry("tyler", "venue", "home")
+            tester.update_entry("tyler.venue", "home")
         test1_key = BibEntry(test1_dict).get_key()
-        tester.update_entry(test1_key, "venue", "home")
+        tester.update_entry(f"{test1_key}.venue", "home")
         assert tester.database.read_entry(test1_key).get_venue() == "home"
         assert cpt_out.getvalue() == (
             f"Will update: {test1_key}\n"

@@ -33,20 +33,18 @@ def run(args):
 
     """
 
-    """
-     * `filter()`
-     * `show(entry_key)`
-     * `update_entry(entry_key, update_key, update_data)`
-    """
-
     bibdb = DatabaseCLI()
 
     if args.command == "add":
-        bibdb.add_entry(args.entry_data)
+        bibdb.add_entry()
     elif args.command == "clear":
         bibdb.clear()
     elif args.command == "delete":
         bibdb.delete_entry(args.entry_key)
+    elif args.command == "filter":
+        if args.predicate is not None:
+            bibdb.set_predicate(args.predicate)
+        bibdb.filter()
     elif args.command == "load":
         if args.filename is None:
             filepath = os.environ.get(
@@ -66,7 +64,14 @@ def run(args):
         else:
             bibdb.save_data(args.filename)
     elif args.command == "show":
-        bibdb.show(args.entry_key)
+        if args.predicate is not None:
+            bibdb.set_predicate(args.predicate)
+        if args.entry_key is None:
+            bibdb.show()
+        else:
+            bibdb.show(args.entry_key)
+    elif args.command == "update":
+        bibdb.update_entry(args.key, args.value)
     else:
         print(f"Command '{args.command}' not recognized.")
         print("For help, use 'bibmgr --help'")

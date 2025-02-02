@@ -65,7 +65,6 @@ def run(args):
     """
 
     bibdb = DatabaseCLI()
-
     if args.command == "add":
         bibdb.add_entry()
     elif args.command == "clear":
@@ -105,10 +104,9 @@ def run(args):
         if args.predicate is not None:
             bibdb.set_predicate(args.predicate)
         if args.entry_key is None:
-            bibdb.tag()
+            bibdb.tag_entries(args.tags)
         else:
-            bibdb.tag(args.entry_key)
-
+            bibdb.tag_entries(args.tags, args.entry_key)
     elif args.command == "update":
         bibdb.update_entry(args.key, args.value)
     else:

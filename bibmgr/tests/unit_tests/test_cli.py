@@ -60,7 +60,7 @@ class TestDatabaseCLI(unittest.TestCase):
             tester.parse_predicate("funding == 4k")
         with self.assertRaises(ValueError):
             tester.parse_predicate("DOE in funding_agency")
-        tester.parse_predicate("year == 2020")
+        tester.parse_predicate("year < 2021")
         tester.filter()
         assert cpt_out.getvalue() == "0 items filtered\n"
         assert tester.database.size() == 1

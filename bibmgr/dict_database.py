@@ -75,7 +75,7 @@ class DictDatabase:
         if not self.contains(entry_key):
             raise KeyError(f"no key '{entry_key}' in current database")
         self.bib_parser.next_item = self.info[entry_key]
-        self.bib_parser.parse_line(update_field, update_value)
+        self.bib_parser.parse_line(update_field, update_value, overwrite=True)
         if self.bib_parser.next_item.get_key() != entry_key:
             self.create_entry(self.delete_entry(entry_key))
 

@@ -12,6 +12,7 @@ class DatabaseCLI:
     Provides the following interface methods:
 
      * `add_entry()`
+     * `add_tags()`
      * `clear()`
      * `delete_entry(entry_key)`
      * `filter()`
@@ -19,7 +20,7 @@ class DatabaseCLI:
      * `save_data(filepath, overwrite=False)`
      * `set_predicate(pred_str)`
      * `show(entry_key)`
-     * `update_entry(entry_key, update_field, update_data)`
+     * `update_entry(compound_key, new_value)`
 
     And the following helper methods:
 
@@ -93,6 +94,23 @@ class DatabaseCLI:
         if self._user_continue():
             self.database.create_entry(parser.next_item)
             self.database.write_yaml(self.cache_file)
+
+    def add_tags(self, tags, entry_key=None):
+        """ Add a comma separated list of tags to any/all items in the cache.
+
+        Args:
+            tags (str): A comma separated list of the tags to add.
+            entry_key (str, optional): When present, the key of the entry to
+                tag. Defaults to all items in the cache being tagged.
+
+        """
+
+        tag_list = tags.strip().split(",")
+        if entry_key is None:
+            for entry in self.database.entries():
+                entry.add_keyword(tag_list)
+        else:
+            self.database.read_entry(entry_key).add_keyword(tag_list)
 
     def clear(self):
         """ Clear the cache. """

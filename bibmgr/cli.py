@@ -25,7 +25,6 @@ class DatabaseCLI:
      * `parse_args()` TBD
      * `parse_predicate(pred_str)`
      * `predicate(x)`
-     * `print_help()`
      * `run(args)` TBD
      * `user_continue()`
 
@@ -150,18 +149,26 @@ class DatabaseCLI:
 
         """
 
-        legal_preds = re.compile(
+        single_preds = re.compile(
             r'(\w+)\s*'
             r'(==|!=|<|<=|>|>=)'
+            r'\s*([\w\s]+)'
+        )
+        list_preds = re.compile(
+            r'([\w\s]+\w)\s*'
+            r'in'
             r'\s*(\w+)'
         )
-        if m := legal_preds.match(pred_str):
-            self.pred_str = f"get_{m.group(1)}() {m.group(2)} {m.group(3)}"
+        if m := single_preds.match(pred_str):
+            self.pred_str = (f'str(x.get_{m.group(1)}()) {m.group(2)}'
+                             f' "{m.group(3)}"')
+        elif m := list_preds.match(pred_str):
+            self.pred_str = f'"{m.group(1)}" in str(x.get_{m.group(2)}())'
         else:
             raise RuntimeError(
                 f"Illegal predicate: {pred_str}. "
                 "Hint: use one of the following ops in the predicate: "
-                "== , != , < , <= , > , >="
+                "== , != , < , <= , > , >=, in"
             )
 
     def predicate(self, x):
@@ -172,17 +179,7 @@ class DatabaseCLI:
 
         """
 
-        return exec(f"{x}.{self.pred_str}")
-
-    def print_help(self, cmd):
-        """ Display a help message.
-
-        Args:
-            cmd (str or str-like): The command that failed.
-
-        """
-
-        print(f"Command {cmd} not recognized.\nFor help, use bibmgr --help")
+        return eval(self.pred_str)
 
     def run(self, args):
         """ Run the command for the args given.
@@ -199,7 +196,8 @@ class DatabaseCLI:
         elif args.command == "add":
             self.add_entry(args.entry_data)
         else:
-            self.print_help(args.command)
+            print(f"Command '{args.command}' not recognized.")
+            print("For help, use 'bibmgr --help'")
 
     def user_continue(self):
         """ Check with user to proceed.
@@ -215,10 +213,3 @@ class DatabaseCLI:
         else:
             print("Aborting.")
             return False
-
-
-if __name__ == "__main__":
-
-    cli = DatabaseCLI()
-    args = cli.parse_args()
-    cli.run(args)

@@ -26,8 +26,7 @@ if [ $CHECK_BIBMGR_SYNTAX == true ]; then
   echo "Linting with flake8..."
   echo
 
-  python3 -m flake8 bibmgr/*.py --per-file-ignores="__init__.py:F401";
-  python3 -m flake8 bibmgr/tests/unit_tests/*.py;
+  python3 -m flake8 bibmgr --filename="*.py" --exclude="bibmgr/tests/data/*";
 
   echo
   echo "Done."

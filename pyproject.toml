@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bibmgr"
+version = "0.0.0-dev"
+description = "A simple manager for bibliography entries"
+authors = [
+    { name = "Tyler Chang", email = "thchang@vt.edu" }
+]
+license = { text = "MIT" }
+dependencies = ["pyyaml"]
+
+[pyproject.optional-dependencies]
+test = ["pytest", "coverage", "pytest-cov", "flake8", "flake8-pyproject"]
+
+[project.scripts]
+bibmgr = "bibmgr.__main__:main"
+
+[tool.pytest.ini_options]
+addopts = "-v --cov-config=bibmgr/tests/.coveragerc --cov=bibmgr --cov-report= -W error::UserWarning"
+testpaths = ["bibmgr/tests"]
+
+[tool.coverage.report]
+show_missing = true
+source = ["bibmgr"]
+
+[tool.flake8]
+filename = "*.py"
+exclude = "bibmgr/tests/data/*"

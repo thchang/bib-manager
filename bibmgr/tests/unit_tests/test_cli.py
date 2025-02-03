@@ -126,12 +126,15 @@ class TestDatabaseCLI(unittest.TestCase):
         tester.load_data(tester.cache_file)
         assert cpt_out.getvalue() == (
             f"found duplicate: {BibEntry(test1_dict).get_key()}; skipping...\n"
-            "Will load 1 entries\n"
+            f"Will load 1 entries from {tester.cache_file}\n"
         )
         cpt_out.truncate(0)
         cpt_out.seek(0)
         tester.load_data(tester.cache_file, overwrite=True)
-        assert cpt_out.getvalue() == "Will load 1 entries\n"
+        assert (
+            cpt_out.getvalue() ==
+            f"Will load 1 entries from {tester.cache_file}\n"
+        )
         tester.clear()
         tester.load_data("bibmgr/tests/data/test.bib")
         for entry in tester.database.entries():

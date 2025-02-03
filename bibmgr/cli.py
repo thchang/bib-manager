@@ -46,12 +46,28 @@ class DatabaseCLI:
         self.force = False
         self.verbose = True
 
-    def add_entry(self, str_rep=None):
-        """ Add a new entry to the cache. """
+    def add_entry(self, str_rep=None, filename=None):
+        """ Add a new entry to the cache.
+
+        Args:
+            str_rep (str, optional): A string representation (BibTex syntax) of
+                the entry to add. When both this and the filename are blank,
+                defaults to prompting user for input.
+            filename (path-like, optional): A filepath to a .bib file to load
+                the entry(s) from. When both this and the str_rep are blank,
+                defaults to prompting user for input.
+
+        """
 
         parser = BibParser()
         if str_rep is not None:
+            self._print(f"Will parse from: {str_rep}")
             for entry in parser.parse_file(str_rep):
+                self.database.create_entry(entry)
+                self._print(f"Will add: {entry}")
+        elif filename is not None:
+            self._print(f"Will load from: {filename}")
+            with open(filename) as fp:
                 self.database.create_entry(entry)
                 self._print(f"Will add: {entry}")
         else:
@@ -159,7 +175,7 @@ class DatabaseCLI:
                     self._print(
                         f"found duplicate: {entry.get_key()}; skipping..."
                     )
-        self._print(f"Will load {temp_db.size()} entries")
+        self._print(f"Will load {temp_db.size()} entries from {filepath}")
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 

@@ -28,4 +28,4 @@ source = ["bibmgr"]
 
 [tool.flake8]
 filename = "*.py"
-exclude = "bibmgr/tests/data/*,bibmgr/__main__.py"
+exclude = "bibmgr/tests/data/*"

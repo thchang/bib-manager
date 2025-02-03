@@ -7,7 +7,7 @@ import unittest
 
 from bibmgr.bib_entry import BibEntry
 from bibmgr.cli import DatabaseCLI
-from bibmgr.tests.data.test_entries import test1_dict, test2_dict
+from bibmgr.tests.data.test_entries import test1_dict, test1_bib, test2_dict
 from bibmgr.tests.unit_tests.common import check_results, soln
 
 
@@ -49,6 +49,11 @@ class TestDatabaseCLI(unittest.TestCase):
         ]
         with mock.patch('builtins.input', side_effect=input_seq):
             tester.add_entry()
+        assert tester.database.contains(BibEntry(test1_dict).get_key())
+        with mock.patch('builtins.input', return_value="y"):
+            tester.clear()
+        with mock.patch('builtins.input', side_effect=input_seq):
+            tester.add_entry(test1_bib)
         assert tester.database.contains(BibEntry(test1_dict).get_key())
 
     def test_delete_entry(self):
@@ -208,6 +213,32 @@ class TestDatabaseCLI(unittest.TestCase):
         cpt_out.seek(0)
         tester.show(BibEntry(test2_dict).get_key())
         assert cpt_out.getvalue() == f"{BibEntry(test2_dict)}\n"
+
+    def test_tag_entries(self):
+        cpt_out = io.StringIO()
+        sys.stdout = cpt_out
+        tester = DatabaseCLI()
+        tester.force = True
+        tester.clear()
+        tester.database.create_entry(BibEntry(test1_dict))
+        tester.database.create_entry(BibEntry(test2_dict))
+        cpt_out.truncate(0)
+        cpt_out.seek(0)
+        k1 = BibEntry(test1_dict).get_key()
+        k2 = BibEntry(test2_dict).get_key()
+        tester.tag_entries("research")
+        assert "research" in tester.database.read_entry(k1).get_tags()
+        assert "research" in tester.database.read_entry(k2).get_tags()
+        tester.tag_entries("phd paper", entry_key="chang2020algorithm")
+        assert "phd paper" in tester.database.read_entry(k1).get_tags()
+        assert "phd paper" not in tester.database.read_entry(k2).get_tags()
+        tester.tag_entries("ug paper", entry_key="chang2016gpu")
+        assert "ug paper" not in tester.database.read_entry(k1).get_tags()
+        assert "ug paper" in tester.database.read_entry(k2).get_tags()
+        tester.set_predicate("Watson in authors")
+        tester.tag_entries("watson paper")
+        assert "watson paper" in tester.database.read_entry(k1).get_tags()
+        assert "watson paper" not in tester.database.read_entry(k2).get_tags()
 
     def test_update_entry(self):
         cpt_out = io.StringIO()

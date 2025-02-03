@@ -162,6 +162,12 @@ class TestBibParser(unittest.TestCase):
         with open("bibmgr/tests/data/test.bib", "r") as fp:
             for entry in self.tester.parse_file(fp):
                 check_results(entry)
+        self.tester = BibParser()
+        test_data = ""
+        with open("bibmgr/tests/data/test.bib", "r") as fp:
+            test_data = fp.read()
+        for entry in self.tester.parse_file(test_data):
+            check_results(entry)
 
     def test_write_file(self):
         self.tester = BibParser()

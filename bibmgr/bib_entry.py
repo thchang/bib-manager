@@ -48,7 +48,7 @@ class BibEntry:
      - `get_web(web)`,
      - `get_note(note)`,
      - `get_descrip(descrip)`,
-     - `get_keyword(tags)`, and
+     - `get_tags(tags)`, and
      - `get_key()`,
 
     and the following converter methods:

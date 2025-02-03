@@ -11,7 +11,7 @@ class DatabaseCLI:
 
     Provides the following interface methods:
 
-     * `add_entry(str_rep)`
+     * `add_entry(str_rep=None, filename=None)`
      * `clear()`
      * `delete_entry(entry_key)`
      * `filter()`
@@ -63,13 +63,24 @@ class DatabaseCLI:
         if str_rep is not None:
             self._print(f"Will parse from: {str_rep}")
             for entry in parser.parse_file(str_rep):
-                self.database.create_entry(entry)
-                self._print(f"Will add: {entry}")
+                try:
+                    self.database.create_entry(entry)
+                    self._print(f"Will add: {entry}")
+                except KeyError:
+                    self._print(
+                        f"found duplicate: {entry.get_key()}; skipping..."
+                    )
         elif filename is not None:
-            self._print(f"Will load from: {filename}")
-            with open(filename) as fp:
-                self.database.create_entry(entry)
-                self._print(f"Will add: {entry}")
+            self._print(f"Will parse from: {filename}")
+            with open(filename, "r") as fp:
+                for entry in parser.parse_file(fp):
+                    try:
+                        self.database.create_entry(entry)
+                        self._print(f"Will add: {entry}")
+                    except KeyError:
+                        self._print(
+                            f"found duplicate: {entry.get_key()}; skipping..."
+                        )
         else:
             parser.next_item = BibEntry()
             next_val = input("Enter publication type: ")
@@ -111,8 +122,14 @@ class DatabaseCLI:
                 )
                 if len(next_val.strip()) > 0:
                     parser.parse_line(next_key, next_val)
-            self.database.create_entry(parser.next_item)
-            self._print(f"Will add: {parser.next_item}")
+            try:
+                self.database.create_entry(parser.next_item)
+                self._print(f"Will add: {parser.next_item}")
+            except KeyError:
+                self._print(
+                    f"found duplicate: {parser.next_item.get_key()};"
+                    "skipping..."
+                )
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 

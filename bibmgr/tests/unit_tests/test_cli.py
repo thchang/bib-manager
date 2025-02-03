@@ -7,16 +7,16 @@ import unittest
 
 from bibmgr.bib_entry import BibEntry
 from bibmgr.cli import DatabaseCLI
-from bibmgr.tests.data.test_entries import test1_dict, test1_bib, test2_dict
+from bibmgr.tests.data.test_entries import \
+    test1_dict, test1_bib, test2_dict, test2_bib
 from bibmgr.tests.unit_tests.common import check_results, soln
 
 
 class TestDatabaseCLI(unittest.TestCase):
 
     def test_add_entry(self):
-        cpt_out = io.StringIO()
-        sys.stdout = cpt_out
         tester = DatabaseCLI()
+        tester.verbose = False
         with mock.patch('builtins.input', return_value="y"):
             tester.clear()
         input_seq = [
@@ -49,12 +49,17 @@ class TestDatabaseCLI(unittest.TestCase):
         ]
         with mock.patch('builtins.input', side_effect=input_seq):
             tester.add_entry()
+        with mock.patch('builtins.input', side_effect=input_seq):
+            tester.add_entry()
         assert tester.database.contains(BibEntry(test1_dict).get_key())
         with mock.patch('builtins.input', return_value="y"):
-            tester.clear()
-        with mock.patch('builtins.input', side_effect=input_seq):
-            tester.add_entry(test1_bib)
+            tester.add_entry(str_rep=test1_bib)
+            tester.add_entry(str_rep=test2_bib)
         assert tester.database.contains(BibEntry(test1_dict).get_key())
+        assert tester.database.contains(BibEntry(test2_dict).get_key())
+        with mock.patch('builtins.input', return_value="y"):
+            tester.add_entry(filename="bibmgr/tests/data/test.bib")
+        assert tester.database.size() == 34
 
     def test_delete_entry(self):
         cpt_out = io.StringIO()

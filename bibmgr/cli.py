@@ -116,9 +116,7 @@ class DatabaseCLI:
                 ("descrip", "Enter a short description of this entry"),
                 ("tags", "Enter a comma-separated list of keywords"),
             ]:
-                next_val = input(
-                    f"Enter {next_key} {instructions} (leave blank if none): "
-                )
+                next_val = input(f"{instructions} (leave blank if none): ")
                 if len(next_val.strip()) > 0:
                     parser.parse_line(next_key, next_val)
             try:
@@ -306,12 +304,17 @@ class DatabaseCLI:
         tag_list = tags.strip().split(",")
         if entry_key is not None:
             self.database.read_entry(entry_key).add_keyword(tag_list)
+            self._print(f"Will tag {entry_key} with {tag_list}")
         elif self.pred_str is None:
             for entry in self.database.entries():
                 entry.add_keyword(tag_list)
+                self._print(f"Will tag {entry.get_key()} with {tag_list}")
         else:
             for entry in self.database.entries(self._predicate):
                 entry.add_keyword(tag_list)
+                self._print(f"Will tag {entry.get_key()} with {tag_list}")
+        if self._user_continue():
+            self.database.write_yaml(self.cache_file)
 
     def update_entry(self, compound_key, new_value):
         """ Modify a specific field of an existing entry.

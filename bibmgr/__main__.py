@@ -13,7 +13,11 @@ def parse_args():
         description=(
             "CLI tool for managing, annotating, & searching bib entries"
         ),
-        usage="%(prog)s [options]",
+        usage="%(prog)s",
+    )
+    subparsers = parser.add_subparsers(
+        dest="command",
+        description="The bibmgr command to execute",
         help="""Execute a single command with the bibmgr program.
 
             With each command, bibliography entries are written to a cache file
@@ -24,12 +28,8 @@ def parse_args():
             Use CMD=save to "commit" changes into an existing yaml/bibtex file.
 
             Use CMD=load to merge entries from an existing yaml/bibtex file.
-        """
-    )
-    subparsers = parser.add_subparsers(
-        dest="command",
-        description="The bibmgr command to execute",
-        help="""Use `bibmgr --help` for a list of valid values for CMD.
+
+            Use `bibmgr --help` for a list of valid values for CMD.
 
             Use `bibmgr CMD --help` to get more info on a specific CMD.
         """,
@@ -121,9 +121,8 @@ def parse_args():
     )
     load_parser.add_argument(
         "-o", "--overwrite",
-        dest=args.overwrite,
+        dest="overwrite",
         action="store_true",
-        type=bool,
         help="Set to discard the current contents of the cache when loading."
     )
     save_parser.add_argument(
@@ -146,9 +145,8 @@ def parse_args():
     )
     save_parser.add_argument(
         "-o", "--overwrite",
-        dest=args.overwrite,
+        dest="overwrite",
         action="store_true",
-        type=bool,
         help="Set to discard the current contents of FILE when saving."
     )
     show_parser.add_argument(
@@ -170,7 +168,7 @@ def parse_args():
     )
     tag_parser.add_argument(
         "-t", "--tag",
-        dest="tag",
+        dest="tags",
         required=True,
         type=str,
         help="""A comma-separated list of tags that will be added to the
@@ -225,14 +223,12 @@ def parse_args():
             "--force",
             dest="force",
             action="store_true",
-            type=bool,
             help="Force the results of the command without checking first."
         )
         subparser.add_argument(
             "-q", "--quiet",
             dest="quiet",
             action="store_true",
-            type=bool,
             help="Quiet any diagnostics/logs printed by the command."
         )
     return parser.parse_args()
@@ -247,10 +243,14 @@ def run(args):
     """
 
     bibdb = DatabaseCLI()
-    if args.force is not None:
-        bibdb.force = args.force
-    if args.quiet is not None:
-        bibdb.verbose = not args.quiet
+    if args.command in [
+        "add", "clear", "delete", "filter", "load", "save", "tag", "update",
+        # "show",  # quiet / force is not relevant for this command
+    ]:
+        if args.force is not None:
+            bibdb.force = args.force
+        if args.quiet is not None:
+            bibdb.verbose = not args.quiet
     if args.command == "add":
         if args.value is not None:
             path = None

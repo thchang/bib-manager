@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bibmgr"
-version = "0.0.0-dev"
+version = "0.0.1+dev"
 description = "A simple manager for bibliography entries"
 authors = [
     { name = "Tyler Chang", email = "thchang@vt.edu" }

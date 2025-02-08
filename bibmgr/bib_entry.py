@@ -4,58 +4,51 @@ from datetime import datetime
 class BibEntry:
     """ Class for storing a single bibliography entry.
 
-    Contains the following "setter" methods:
-
-     - `add_authors(authors)`,
-     - `set_title(title)`,
-     - `set_year(year)`,
-     - `set_type(type)`,
-     - `set_venue(venue)`,
-     - `set_series(series)`,
-     - `set_volume(volume)`,
-     - `set_number(number)`,
-     - `set_articleno(articleno)`,
-     - `set_pages(pages)`,
-     - `set_publisher(publisher)`,
-     - `set_address(address)`,
-     - `set_doi(doi)`,
-     - `set_url(url)`,
-     - `set_isbn(isbn)`,
-     - `set_git(git)`,
-     - `set_web(web)`,
-     - `set_note(note)`,
-     - `set_descrip(descrip)`, and
-     - `add_keyword(tags)`,
-
-    and the following "getter" methods:
-
-     - `get_authors(authors)`,
-     - `get_title(title)`,
-     - `get_year(year)`,
-     - `get_type(type)`,
-     - `get_venue(venue)`,
-     - `get_series(series)`,
-     - `get_volume(volume)`,
-     - `get_number(number)`,
-     - `get_articleno(articleno)`,
-     - `get_pages(pages)`,
-     - `get_publisher(publisher)`,
-     - `get_address(address)`,
-     - `get_doi(doi)`,
-     - `get_url(url)`,
-     - `get_isbn(isbn)`,
-     - `get_git(git)`,
-     - `get_web(web)`,
-     - `get_note(note)`,
-     - `get_descrip(descrip)`,
-     - `get_tags(tags)`, and
-     - `get_key()`,
-
-    and the following converter methods:
-
-     - `to_dict()`,
-     - `to_bib()`, and
-     - `__str__()`.
+    Methods:
+        add_authors(authors)
+        set_title(title)
+        set_year(year)
+        set_type(type)
+        set_venue(venue)
+        set_series(series)
+        set_volume(volume)
+        set_number(number)
+        set_articleno(articleno)
+        set_pages(pages)
+        set_publisher(publisher)
+        set_address(address)
+        set_doi(doi)
+        set_url(url)
+        set_isbn(isbn)
+        set_git(git)
+        set_web(web)
+        set_note(note)
+        set_descrip(descrip)
+        add_keyword(tags)
+        get_authors(authors)
+        get_title(title)
+        get_year(year)
+        get_type(type)
+        get_venue(venue)
+        get_series(series)
+        get_volume(volume)
+        get_number(number)
+        get_articleno(articleno)
+        get_pages(pages)
+        get_publisher(publisher)
+        get_address(address)
+        get_doi(doi)
+        get_url(url)
+        get_isbn(isbn)
+        get_git(git)
+        get_web(web)
+        get_note(note)
+        get_descrip(descrip)
+        get_tags(tags)
+        get_key()
+        to_dict()
+        to_bib()
+        __str__()
 
     """
 
@@ -89,6 +82,9 @@ class BibEntry:
             dict_rep (dict, optional): A dict representation of this BibEntry,
                 which will be used to initialize the object when provided.
                 Otherwise, all slots are initialized to empty values.
+
+        Raises:
+            TypeError: If an invalid dict_rep is given.
 
         """
 

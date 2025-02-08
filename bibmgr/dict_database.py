@@ -3,6 +3,20 @@ from bibmgr.bib_parser import BibParser
 
 
 class DictDatabase:
+    """ An implementation of basic database manipulation/access tasks that uses
+    a dictionary to store the database contents.
+
+    Methods:
+        create_entry(entry)
+        read_entry(entry_key)
+        update_entry(entry_key, update_field, update_value)
+        delete_entry(entry_key)
+        entries()
+        keys(predicate=None)
+        contains(key)
+        size()
+
+    """
 
     __slots__ = [
         'bib_parser',
@@ -24,8 +38,7 @@ class DictDatabase:
 
         Raises:
             TypeError: If entry is not a BibEntry object.
-
-            RuntimeError: If a key collision occurs.
+            KeyError: If a key collision occurs.
 
         """
 
@@ -47,7 +60,7 @@ class DictDatabase:
             BibEntry: The entry stored under the entry_key.
 
         Raises:
-            RuntimeError: If the entry_key cannot be found.
+            KeyError: If the entry_key cannot be found.
 
         """
 
@@ -68,7 +81,7 @@ class DictDatabase:
             update_value (str or int): The new value for that entry.
 
         Raises:
-            RuntimeError: If the entry_key cannot be found.
+            KeyError: If the entry_key cannot be found.
 
         """
 
@@ -89,7 +102,7 @@ class DictDatabase:
             BibEntry: The deleted entry.
 
         Raises:
-            RuntimeError: If the entry_key cannot be found.
+            KeyError: If the entry_key cannot be found.
 
         """
 

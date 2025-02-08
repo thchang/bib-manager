@@ -5,6 +5,18 @@ from bibmgr.dict_database import DictDatabase
 
 
 class DatabaseManager(DictDatabase):
+    """ An extension of the core database structure with additional methods for
+    parsing bib and yaml files.
+
+    Inherits from DictDatabase.
+
+    Methods:
+        read_yaml(filename)
+        read_bibtex(filename)
+        write_yaml(filename)
+        write_bibtex(filename)
+
+    """
 
     __slots__ = [
         'bib_parser',

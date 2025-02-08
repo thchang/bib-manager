@@ -7,28 +7,27 @@ from bibmgr.database_manager import DatabaseManager
 
 
 class DatabaseCLI:
-    """ A CLI for interacting with the BibMgr Database.
+    """ A CLI for interacting with a BibMgr Database.
 
-    Provides the following interface methods:
+    Methods:
+        add_entry(str_rep=None, filename=None)
+        clear()
+        delete_entry(entry_key)
+        filter()
+        load_data(filepath, overwrite=False)
+        save_data(filepath, overwrite=False)
+        set_predicate(pred_str)
+        show(entry_key=None)
+        tag_entries(tags, entry_key=None)
+        update_entry(compound_key, new_value)
 
-     * `add_entry(str_rep=None, filename=None)`
-     * `clear()`
-     * `delete_entry(entry_key)`
-     * `filter()`
-     * `load_data(filepath, overwrite=False)`
-     * `save_data(filepath, overwrite=False)`
-     * `set_predicate(pred_str)`
-     * `show(entry_key)`
-     * `tag_entries(tags, entry_key=None)`
-     * `update_entry(compound_key, new_value)`
+    Private methods:
+        _predicate(x)
+        _print(message)
+        _user_continue()
 
-    And the following helper methods:
-
-     * `_predicate(x)`
-     * `_print(message)`
-     * `_user_continue()`
-
-    Together, these are used to build the bibmgr CLI, defined in `__main__.py`.
+    The public methods are used to build the bibmgr CLI, defined in
+    `__main__.py`.
 
     """
 
@@ -144,7 +143,12 @@ class DatabaseCLI:
                 self.database = DatabaseManager()
 
     def delete_entry(self, entry_key):
-        """ Delete an entry from the cache. """
+        """ Delete an entry from the cache.
+
+        Args:
+            entry_key (str): The key of the entry to delete.
+
+        """
 
         if self.database.contains(entry_key):
             self._print(f"Will delete: {entry_key}")
@@ -172,6 +176,11 @@ class DatabaseCLI:
 
         Args:
             filepath (path-like object): The path to the file to load.
+            overwrite (bool, optional): Overwrite any existing data in the
+                cache with the data stored at filepath when True. Default
+                behavior (False) is to merge the current contents stored at
+                filepath with the current contents of the cache (keeping data
+                in the cache when there is a conflict) while loading.
 
         """
 
@@ -201,6 +210,10 @@ class DatabaseCLI:
 
         Args:
             filepath (path-like object): The path to the file to write.
+            overwrite (bool, optional): Overwrite any existing data at filepath
+                with the contents of the cache when True. Default behavior
+                (False) is to merge the current contents stored at filepath
+                with the current contents of the cache before saving.
 
         """
 
@@ -263,7 +276,13 @@ class DatabaseCLI:
             )
 
     def show(self, entry_key=None):
-        """ Display the current contents of the cache. """
+        """ Display the current contents of the cache.
+
+        Args:
+            entry_key (str, optional): When present, the key of the entry to
+                show. Defaults to all items in the cache being shown.
+
+        """
 
         if entry_key is not None:
             self._print(self.database.read_entry(entry_key))
@@ -330,7 +349,12 @@ class DatabaseCLI:
         return eval(self.pred_str)
 
     def _print(self, message):
-        """ Helper function that prints information when verbose """
+        """ Helper function that prints information when verbose.
+
+        Args:
+            message (str): The message to print.
+
+        """
 
         if self.verbose:
             print(message)

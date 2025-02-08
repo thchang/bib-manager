@@ -6,12 +6,10 @@ from bibmgr.bib_entry import BibEntry
 class BibParser:
     """ Class for parsing bibtex entries.
 
-    Contains the following public methods:
-
-     - `parse_line(key, value)` parses a single line from a BibTex file;
-       resolves key conflicts;
-     - `parse_file(fp)` parses an entire BibTex file; and
-     - `write_file(entry, fp)` writes an entry to a BibTex file.
+    Methods:
+        parse_line(key, value)
+        parse_file(fp)
+        write_file(entry, fp)
 
     """
 
@@ -42,7 +40,7 @@ class BibParser:
                 Defaults to False.
 
         Raises:
-            ValueError: If 'key' is not a supported / recognized BibTex key.
+            KeyError: If 'key' is not a supported / recognized BibTex key.
 
         """
 
@@ -131,7 +129,7 @@ class BibParser:
             BibEntry: The next entry in the file.
 
         Raises:
-            RuntimeError: If a line in the input file could not be parsed.
+            ValueError: If a line in the input file could not be parsed.
             This likely indicates an illegal or irregular syntax in the BibTex
             file.
 

@@ -11,6 +11,10 @@ git clone https://github.com/thchang/bib-manager
 cd bib-manager && pip install -e .
 ```
 
+The following dependencies will be fetched:
+
+ * `pyyaml`
+
 ### Running Tests
 
 This step should not be necessary for most users, but it may be useful to run
@@ -27,6 +31,14 @@ flake8  # linting
 pytest  # testing
 coverage report  # generate code coverage
 ```
+
+The following additional dependencies will be fetched for testing:
+
+ * coverage
+ * flake8
+ * flake8-pyproject
+ * pytest
+ * pytest-cov
 
 ## Basic Usage
 

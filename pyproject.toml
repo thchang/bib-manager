@@ -13,7 +13,7 @@ license = { text = "MIT" }
 dependencies = ["pyyaml"]
 
 [pyproject.optional-dependencies]
-test = ["pytest", "coverage", "pytest-cov", "flake8", "flake8-pyproject"]
+test = ["coverage", "flake8", "flake8-pyproject", "pytest", "pytest-cov"]
 
 [project.scripts]
 bibmgr = "bibmgr.__main__:main"

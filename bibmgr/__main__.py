@@ -23,11 +23,14 @@ def parse_args():
             With each command, bibliography entries are written to a cache file
             stored in the install dir.
 
-            Run various commands to manipulate the contents of this cache.
+            Run one of the following commands to manipulate the entries in the
+            cache:
 
-            Use CMD=save to "commit" changes into an existing yaml/bibtex file.
+            add, clear, delete, filter, load, save, show, tag, and update.
 
-            Use CMD=load to merge entries from an existing yaml/bibtex file.
+            Since commands are executed upon the cache, the save command should
+            be used to "commit" entries to a permanent save file, which can be
+            specified or configured via environment variable.
 
             Use `bibmgr --help` for a list of valid values for CMD.
 

@@ -11,9 +11,26 @@ git clone https://github.com/thchang/bib-manager
 cd bib-manager && pip install -e .
 ```
 
-The following dependencies will be fetched:
+Alternatively, clone and add to the `PYTHONPATH`
+
+```
+git clone https://github.com/thchang/bib-manager
+cd bib-manager && export PYTHONPATH=`pwd`
+```
+
+The following dependencies are needed (will be fetched automatically by pip):
 
  * `pyyaml`
+
+### Checking Installation
+
+To check the installation, simply run the help function from the command line.
+
+```
+bibmgr --help
+```
+
+You should see a help message suggesting basic usage.
 
 ### Running Tests
 

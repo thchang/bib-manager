@@ -61,12 +61,28 @@ class BibParser:
                         [" ".join(names[1:]).strip(), names[0].strip()],
                         reset=overwrite
                     )
+        elif key.strip().lower() in ['editor', 'editors']:
+            for editor in value.split(" and "):
+                names = editor.strip().split(",")
+                if len(names) <= 1:
+                    names = editor.strip().split()
+                    self.next_item.add_editors(
+                        [" ".join(names[:-1]).strip(), names[-1].strip()],
+                        reset=overwrite
+                    )
+                else:
+                    self.next_item.add_editors(
+                        [" ".join(names[1:]).strip(), names[0].strip()],
+                        reset=overwrite
+                    )
         elif key.strip().lower() == 'title':
             self.next_item.set_title(value)
         elif key.strip().lower() == 'year':
             self.next_item.set_year(value)
+        elif key.strip().lower() == 'month':
+            self.next_item.set_month(value)
         elif key.strip().lower() in ['type', 'howpublished']:
-            self.next_item.set_type(value)
+            self.next_item.set_type(value.lower())
         elif key.strip().lower() in ['publisher', 'institution',
                                      'organization', 'school']:
             if (
@@ -86,11 +102,18 @@ class BibParser:
         elif key.strip().lower() in ['articleno']:
             self.next_item.set_articleno(value)
         elif key.strip().lower() in ['pages', 'numpages']:
-            pages = [pp for pp in value.replace('--', '-').split('-')
-                     if pp.strip() != ""]
+            pages = [
+                pp for pp in
+                value.replace('--', '-').replace('–', '-').split('-')
+                if pp.strip() != ""
+            ]
             self.next_item.set_pages(pages)
         elif key.strip().lower() == 'series':
             self.next_item.set_series(value)
+        elif key.strip().lower() == 'edition':
+            self.next_item.set_edition(value)
+        elif key.strip().lower() == 'chapter':
+            self.next_item.set_chapter(value)
         elif key.strip().lower() in ['address', 'location']:
             if (
                 self.next_item.get_address() is None or
@@ -104,6 +127,8 @@ class BibParser:
             self.next_item.set_url(value)
         elif key.strip().lower() == 'isbn':
             self.next_item.set_isbn(value)
+        elif key.strip().lower() == 'issn':
+            self.next_item.set_issn(value)
         elif key.strip().lower() == 'git':
             self.next_item.set_git(value)
         elif key.strip().lower() == 'web':

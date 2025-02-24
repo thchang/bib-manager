@@ -185,7 +185,7 @@ class DatabaseCLI:
         if not os.path.exists(filepath):
             raise RuntimeError(f"{filepath} does not exist")
         temp_db = DatabaseManager()
-        if filepath.split(".")[-1].lower() == "bib":
+        if str(filepath).split(".")[-1].lower() == "bib":
             temp_db.read_bibtex(filepath)
         else:
             temp_db.read_yaml(filepath)

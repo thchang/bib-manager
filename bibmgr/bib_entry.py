@@ -6,11 +6,15 @@ class BibEntry:
 
     Methods:
         add_authors(authors)
+        add_editors(editors)
         set_title(title)
         set_year(year)
+        set_month(month)
         set_type(type)
         set_venue(venue)
         set_series(series)
+        set_edition(edition)
+        set_chapter(chapter)
         set_volume(volume)
         set_number(number)
         set_articleno(articleno)
@@ -20,31 +24,37 @@ class BibEntry:
         set_doi(doi)
         set_url(url)
         set_isbn(isbn)
+        set_issn(issn)
         set_git(git)
         set_web(web)
         set_note(note)
         set_descrip(descrip)
         add_keyword(tags)
-        get_authors(authors)
-        get_title(title)
-        get_year(year)
-        get_type(type)
-        get_venue(venue)
-        get_series(series)
-        get_volume(volume)
-        get_number(number)
-        get_articleno(articleno)
-        get_pages(pages)
-        get_publisher(publisher)
-        get_address(address)
-        get_doi(doi)
-        get_url(url)
-        get_isbn(isbn)
-        get_git(git)
-        get_web(web)
-        get_note(note)
-        get_descrip(descrip)
-        get_tags(tags)
+        get_authors()
+        get_editors()
+        get_title()
+        get_year()
+        get_month()
+        get_type()
+        get_venue()
+        get_series()
+        get_edition()
+        get_chapter()
+        get_volume()
+        get_number()
+        get_articleno()
+        get_pages()
+        get_publisher()
+        get_address()
+        get_doi()
+        get_url()
+        get_isbn()
+        get_issn()
+        get_git()
+        get_web()
+        get_note()
+        get_descrip()
+        get_tags()
         get_key()
         to_dict()
         to_bib()
@@ -54,11 +64,15 @@ class BibEntry:
 
     __slots__ = [
         'authors',
+        'editors',
         'title',
         'year',
+        'month',
         'type',
         'venue',
         'series',
+        'edition',
+        'chapter',
         'volume',
         'number',
         'articleno',
@@ -68,6 +82,7 @@ class BibEntry:
         'doi',
         'url',
         'isbn',
+        'issn',
         'git',
         'web',
         'note',
@@ -89,11 +104,15 @@ class BibEntry:
         """
 
         self.authors = []
+        self.editors = []
         self.title = None
         self.year = None
+        self.month = None
         self.type = None
         self.venue = None
         self.series = None
+        self.edition = None
+        self.chapter = None
         self.volume = None
         self.number = None
         self.articleno = None
@@ -103,6 +122,7 @@ class BibEntry:
         self.doi = None
         self.url = None
         self.isbn = None
+        self.issn = None
         self.git = None
         self.web = None
         self.note = None
@@ -148,6 +168,38 @@ class BibEntry:
             raise TypeError("expected a list of authors or names, got:"
                             f" list of {type(authors[0])}")
 
+    def add_editors(self, editors, reset=False):
+        """ Adds the editor to the bib item.
+
+        Args:
+            editors (list of str, list of list of str): The editor(s) to add
+                for this entry.
+
+            reset (bool, optional): Reset the editor list to empty before
+                adding. Defaults to False.
+
+        Raises:
+            TypeError: If 'editors' does not match the expected type.
+
+        """
+
+        if not isinstance(editors, list):
+            raise TypeError("expected a list of editors or names, got:"
+                            f" {type(editors)}")
+        if reset:
+            self.editors = []
+        if isinstance(editors[0], str):
+            self.editors.append([ni.strip() for ni in editors])
+        elif isinstance(editors[0], list) and isinstance(editors[0][0], str):
+            for name in editors:
+                self.editors.append([ni.strip() for ni in name])
+        elif isinstance(editors[0], list):
+            raise TypeError("expected a list of editors or names, got:"
+                            f" list of lists of {type(editors[0][0])}")
+        else:
+            raise TypeError("expected a list of editors or names, got:"
+                            f" list of {type(editors[0])}")
+
     def set_title(self, title):
         """ Sets the article title for the bib item.
 
@@ -179,6 +231,22 @@ class BibEntry:
             raise TypeError("expected a string or int specifying the year, "
                             f" got: {type(year)}")
         self.year = int(str(year).strip())
+
+    def set_month(self, month):
+        """ Sets the publication month for the bib item.
+
+        Args:
+            month (str): The month for this bib entry.
+
+        Raises:
+            TypeError: If 'month' does not match the expected type.
+
+        """
+
+        if not isinstance(month, str):
+            raise TypeError("expected a string specifying the month, "
+                            f" got: {type(month)}")
+        self.month = month.strip()
 
     def set_type(self, btype):
         """ Sets the entry type for the bib item.
@@ -228,6 +296,38 @@ class BibEntry:
                             f" {type(series)}")
         self.series = series.strip()
 
+    def set_edition(self, edition):
+        """ Sets the edition for the bib item.
+
+        Args:
+            edition (str): The edition for this bib entry.
+
+        Raises:
+            TypeError: If 'edition' does not match the expected type.
+
+        """
+
+        if not isinstance(edition, str):
+            raise TypeError("expected a string specifying the edition, got:"
+                            f" {type(edition)}")
+        self.edition = edition.strip()
+
+    def set_chapter(self, chapter):
+        """ Sets the chapter for the bib item.
+
+        Args:
+            chapter (str): The chapter for this bib entry.
+
+        Raises:
+            TypeError: If 'chapter' does not match the expected type.
+
+        """
+
+        if not isinstance(chapter, str):
+            raise TypeError("expected a string specifying the chapter, got:"
+                            f" {type(chapter)}")
+        self.chapter = chapter.strip()
+
     def set_volume(self, volume):
         """ Sets the publication volume for the bib item.
 
@@ -242,7 +342,7 @@ class BibEntry:
         if not isinstance(volume, str) and not isinstance(volume, int):
             raise TypeError("expected a string or int specifying the volume, "
                             f" got: {type(volume)}")
-        self.volume = int(str(volume).strip())
+        self.volume = str(volume).strip()
 
     def set_number(self, number):
         """ Sets the publication number for the bib item.
@@ -280,8 +380,8 @@ class BibEntry:
         """ Sets the page number(s) for the bib item.
 
         Args:
-            pages (list of ints): The page numbers (if applicable) or number of
-                pages for this bib entry.
+            pages (list of ints or strs): The page numbers (if applicable) or
+                number of pages for this bib entry.
 
         Raises:
             TypeError: If 'pages' does not match the expected type.
@@ -298,8 +398,10 @@ class BibEntry:
                             "numbers (if numbered), got: "
                             f"list of length {len(pages)}")
         self.pages = []
+        if len(pages) == 1:
+            self.pages.append(int(str(pages[0]).strip()))
         for page in pages:
-            self.pages.append(int(str(page).strip()))
+            self.pages.append(str(page).strip())
 
     def set_publisher(self, publisher):
         """ Sets the publisher name for the bib item.
@@ -390,6 +492,22 @@ class BibEntry:
             raise TypeError("expected a string specifying the ISBN, got:"
                             f" {type(isbn)}")
         self.isbn = isbn.strip()
+
+    def set_issn(self, issn):
+        """ Sets the ISSN for the bib item.
+
+        Args:
+            issn (str): The ISSN for this bib entry.
+
+        Raises:
+            TypeError: If 'issn' does not match the expected type.
+
+        """
+
+        if not isinstance(issn, str):
+            raise TypeError("expected a string specifying the ISSN, got:"
+                            f" {type(issn)}")
+        self.issn = issn.strip()
 
     def set_git(self, git):
         """ Sets the Git repo for the bib item.
@@ -542,6 +660,17 @@ class BibEntry:
 
         return self.authors
 
+    def get_editors(self):
+        """ Gets the editors of the publication.
+
+        Returns:
+            list[list[str]]: A list of lists, where each inner list represents
+                an editor (first name, last name).
+
+        """
+
+        return self.editors
+
     def get_title(self):
         """ Gets the title of the publication.
 
@@ -560,6 +689,16 @@ class BibEntry:
         """
 
         return self.year
+
+    def get_month(self):
+        """ Gets the month of the publication.
+
+        Returns:
+            str: The month of the publication.
+
+        """
+
+        return self.month
 
     def get_type(self):
         """ Gets the type of the publication.
@@ -591,11 +730,31 @@ class BibEntry:
 
         return self.series
 
+    def get_edition(self):
+        """ Gets the edition of the publication.
+
+        Returns:
+            str: The edition of the publication.
+
+        """
+
+        return self.edition
+
+    def get_chapter(self):
+        """ Gets the chapter of the publication.
+
+        Returns:
+            str: The chapter of the publication.
+
+        """
+
+        return self.chapter
+
     def get_volume(self):
         """ Gets the volume of the publication.
 
         Returns:
-            int: The volume of the publication.
+            str: The volume of the publication.
 
         """
 
@@ -625,7 +784,7 @@ class BibEntry:
         """ Gets the pages of the publication.
 
         Returns:
-            list[int]: A list of integers representing the pages.
+            list[int or str]: A list of integers representing the pages.
 
         """
 
@@ -680,6 +839,16 @@ class BibEntry:
         """
 
         return self.isbn
+
+    def get_issn(self):
+        """ Gets the ISSN of the publication.
+
+        Returns:
+            str: The ISSN of the publication.
+
+        """
+
+        return self.issn
 
     def get_git(self):
         """ Gets the Git repository URL of the publication.
@@ -772,12 +941,19 @@ class BibEntry:
         if len(self.authors) > 0:
             names = [f"{last}, {first}" for [first, last] in self.authors]
             bib_str.append(f"\tauthor = {{{' and '.join(names)}}},")
+        # Get the editor names
+        if len(self.editors) > 0:
+            names = [f"{last}, {first}" for [first, last] in self.editors]
+            bib_str.append(f"\teditor = {{{' and '.join(names)}}},")
         # Get the title
         if self.title is not None:
             bib_str.append(f"\ttitle = {{{self.title}}},")
         # Get the year
         if self.year is not None:
             bib_str.append(f"\tyear = {{{self.year}}},")
+        # Get the month
+        if self.month is not None:
+            bib_str.append(f"\tmonth = {{{self.month}}},")
         # Get the howpublished
         if bib_type == 'misc' and self.type != 'misc':
             bib_str.append(f"\thowpublished = {{{self.type}}},")
@@ -790,6 +966,12 @@ class BibEntry:
         # Get the series
         if self.series is not None:
             bib_str.append(f"\tseries = {{{self.series}}},")
+        # Get the edition
+        if self.edition is not None:
+            bib_str.append(f"\tedition = {{{self.edition}}},")
+        # Get the chapter
+        if self.chapter is not None:
+            bib_str.append(f"\tchapter = {{{self.chapter}}},")
         # Get the volume
         if self.volume is not None:
             bib_str.append(f"\tvolume = {{{self.volume}}},")
@@ -831,6 +1013,9 @@ class BibEntry:
         # Get the ISBN
         if self.isbn is not None:
             bib_str.append(f"\tisbn = {{{self.isbn}}},")
+        # Get the ISSN
+        if self.issn is not None:
+            bib_str.append(f"\tissn = {{{self.issn}}},")
         # Get the Git address
         if self.git is not None:
             bib_str.append(f"\tgit = {{{self.git}}},")

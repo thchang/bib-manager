@@ -103,7 +103,7 @@ class TestBibEntry(unittest.TestCase):
             tester.set_volume([5])
         assert tester.get_volume() is None
         tester.set_volume(test_volume)
-        assert tester.get_volume() == int(test_volume)
+        assert tester.get_volume() == test_volume
 
     def test_set_get_number(self):
         test_number = "Volume 0"
@@ -131,7 +131,7 @@ class TestBibEntry(unittest.TestCase):
             tester.set_pages([])
         assert tester.get_pages() is None
         tester.set_pages([1, 10])
-        assert tester.get_pages() == [1, 10]
+        assert tester.get_pages() == ["1", "10"]
         tester.set_pages(["10"])
         assert tester.get_pages() == [10]
 

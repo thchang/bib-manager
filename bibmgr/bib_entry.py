@@ -400,8 +400,9 @@ class BibEntry:
         self.pages = []
         if len(pages) == 1:
             self.pages.append(int(str(pages[0]).strip()))
-        for page in pages:
-            self.pages.append(str(page).strip())
+        else:
+            for page in pages:
+                self.pages.append(str(page).strip())
 
     def set_publisher(self, publisher):
         """ Sets the publisher name for the bib item.

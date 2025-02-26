@@ -66,7 +66,7 @@ class TestBibParser(unittest.TestCase):
     def test_parse_volume(self):
         test_volume = "0"
         self.tester.parse_line("volume", test_volume)
-        assert self.tester.next_item.get_volume() == int(test_volume)
+        assert self.tester.next_item.get_volume() == test_volume
 
     def test_parse_number(self):
         test_number = "Volume 0"
@@ -80,7 +80,7 @@ class TestBibParser(unittest.TestCase):
 
     def test_parse_pages(self):
         self.tester.parse_line("pages", "1 -- 10")
-        assert self.tester.next_item.get_pages() == [1, 10]
+        assert self.tester.next_item.get_pages() == ["1", "10"]
         self.tester.parse_line("pages", "10")
         assert self.tester.next_item.get_pages() == [10]
 

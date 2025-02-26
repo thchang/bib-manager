@@ -25,7 +25,7 @@ chang2015implementing:
   type: inproceedings
   url: https://apps.dtic.mil/sti/pdfs/AD1000355.pdf
   venue: ARL Summer Student Research Symposium Compendium of Abstracts
-  volume: 2
+  volume: '2'
   web: null
   year: 2015
 chang2016gpu:
@@ -224,7 +224,7 @@ chang2019leastsquares:
   type: article
   url: null
   venue: Quantum Information Processing
-  volume: 18
+  volume: '18'
   web: null
   year: 2019
 chang2020algorithm:
@@ -267,7 +267,7 @@ chang2020algorithm:
   type: article
   url: null
   venue: ACM Transactions on Mathematical Software
-  volume: 46
+  volume: '46'
   web: null
   year: 2020
 chang2020managing:
@@ -357,8 +357,8 @@ chang2020multiobjective:
   note: null
   number: null
   pages:
-  - 3081
-  - 3092
+  - '3081'
+  - '3092'
   publisher: null
   series: null
   tags: []
@@ -409,7 +409,7 @@ chang2022algorithm:
   type: article
   url: null
   venue: ACM Transactions on Mathematical Software
-  volume: 48
+  volume: '48'
   web: null
   year: 2022
 chang2023framework:
@@ -484,7 +484,7 @@ chang2023parmoo:
   type: article
   url: null
   venue: Journal of Open Source Software
-  volume: 8
+  volume: '8'
   web: null
   year: 2023
 chang2024parmoo:
@@ -719,8 +719,8 @@ garg2023sfsfd:
   note: null
   number: null
   pages:
-  - 3636
-  - 3646
+  - '3636'
+  - '3646'
   publisher: null
   series: null
   tags: []
@@ -1064,8 +1064,8 @@ lux2021interpolation:
   note: null
   number: '1'
   pages:
-  - 281
-  - 313
+  - '281'
+  - '313'
   publisher: Springer
   series: null
   tags: []
@@ -1073,7 +1073,7 @@ lux2021interpolation:
   type: article
   url: null
   venue: Numerical Algorithms
-  volume: 88
+  volume: '88'
   web: null
   year: 2021
 lux2023algorithm:
@@ -1108,7 +1108,7 @@ lux2023algorithm:
   type: article
   url: null
   venue: ACM Transactions on Mathematical Software
-  volume: 49
+  volume: '49'
   web: null
   year: 2023
 neveu2023comparison:
@@ -1145,7 +1145,7 @@ neveu2023comparison:
   type: article
   url: null
   venue: Computer Physics Communication
-  volume: 283
+  volume: '283'
   web: null
   year: 2023
 raghunath2017global:
@@ -1221,8 +1221,8 @@ wang2023design:
   note: null
   number: '1'
   pages:
-  - 88
-  - 103
+  - '88'
+  - '103'
   publisher: Taylor \& Francis
   series: null
   tags: []
@@ -1231,7 +1231,7 @@ wang2023design:
   type: article
   url: null
   venue: Journal of Quality Technology
-  volume: 55
+  volume: '55'
   web: null
   year: 2023
 xu2020modeling:
@@ -1268,8 +1268,8 @@ xu2020modeling:
   note: null
   number: null
   pages:
-  - 87
-  - 98
+  - '87'
+  - '98'
   publisher: Elsevier
   series: null
   tags: []
@@ -1278,7 +1278,7 @@ xu2020modeling:
   type: article
   url: null
   venue: Journal of Parallel and Distributed Computing
-  volume: 139
+  volume: '139'
   web: null
   year: 2020
 xu2021prediction:
@@ -1315,8 +1315,8 @@ xu2021prediction:
   note: null
   number: '2'
   pages:
-  - 318
-  - 334
+  - '318'
+  - '334'
   publisher: Taylor \& Francis
   series: null
   tags: []
@@ -1325,6 +1325,6 @@ xu2021prediction:
   type: article
   url: null
   venue: Quality Engineering
-  volume: 33
+  volume: '33'
   web: null
   year: 2021

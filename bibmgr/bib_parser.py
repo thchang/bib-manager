@@ -82,7 +82,7 @@ class BibParser:
         elif key.strip().lower() == 'month':
             self.next_item.set_month(value)
         elif key.strip().lower() in ['type', 'howpublished']:
-            self.next_item.set_type(value.lower())
+            self.next_item.set_type(value)
         elif key.strip().lower() in ['publisher', 'institution',
                                      'organization', 'school']:
             if (
@@ -181,7 +181,7 @@ class BibParser:
                 if self.next_item is not None:
                     yield self.next_item
                     self.next_item = None
-                self.parse_line('type', m.group('type').strip())
+                self.parse_line('type', m.group('type').strip().lower())
                 self.parse_line('descrip', next_descrip.strip())
                 next_descrip = ""
                 pos = m.end()

@@ -4,11 +4,16 @@ chang2015implementing:
   authors:
   - - Tyler H.
     - Chang
+  chapter: null
   descrip: This was my first writing for a summer internship. It's just an abstract
     in the minisymposium booklet, but the booklet was published online.
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: ARL-TM-2015A
   pages: null
@@ -29,10 +34,15 @@ chang2016gpu:
   authors:
   - - Tyler H.
     - Chang
+  chapter: null
   descrip: ''
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages: null
@@ -68,10 +78,15 @@ chang2018computing:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.1109/SECON.2018.8479003
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -107,10 +122,15 @@ chang2018polynomial:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.1145/3190645.3190680
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -150,10 +170,15 @@ chang2018predicting:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.22360/springsim.2018.hpc.003
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -179,10 +204,15 @@ chang2019leastsquares:
     - Lux
   - - Sai Sindhura
     - Tipirneni
+  chapter: null
   descrip: ''
   doi: 10.1007/s11128-019-2489-x
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '12'
   pages:
@@ -213,10 +243,15 @@ chang2020algorithm:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: This is probably my 'best work'
   doi: 10.1145/3422818
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '4'
   pages:
@@ -247,10 +282,15 @@ chang2020managing:
     - Watson
   - - Thomas C. H.
     - Lux
+  chapter: null
   descrip: ''
   doi: 10.22360/springsim.2020.hpc.001
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -272,10 +312,15 @@ chang2020mathematical:
   authors:
   - - Tyler H.
     - Chang
+  chapter: null
   descrip: ''
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: '{\bf Dept. of Computer Science Nominee for Outstanding Dissertation Award}'
   number: null
   pages: null
@@ -300,10 +345,15 @@ chang2020multiobjective:
     - Larson
   - - Layne T.
     - Watson
+  chapter: null
   descrip: ''
   doi: 10.1109/WSC48552.2020.9383875
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -338,10 +388,15 @@ chang2022algorithm:
     - Deshpande
   - - Thomas C. H.
     - Lux
+  chapter: null
   descrip: ''
   doi: 10.1145/3529258
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '3'
   pages:
@@ -371,11 +426,16 @@ chang2023framework:
     - Chaudhuri
   - - Joseph A.
     - Libera
+  chapter: null
   descrip: This is my favorite application that I've worked on (using my ParMOO software,
     listed below)
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages: null
@@ -399,12 +459,17 @@ chang2023parmoo:
     - Chang
   - - Stefan M.
     - Wild
+  chapter: null
   descrip: This is my best piece of software, which I invested the most time into
     out of all my research projects. However, there is no description of the underlying
     algorithms in this paper.
   doi: 10.21105/joss.04468
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '82'
   pages:
@@ -432,12 +497,17 @@ chang2024parmoo:
     - Wild
   - - Hyrum
     - Dickinson
+  chapter: null
   descrip: These are just the readthedocs pages for my ParMOO software, but there
     are features in here that are not publication worthy so there may be reasons to
     cite the docs over the paper itself.
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: Version 0.4.1
   pages: null
@@ -459,11 +529,16 @@ chang2025designing:
     - Chang
   - - Stefan M.
     - Wild
+  chapter: null
   descrip: This is the paper corresponding to the ParMOO software itself. This version
     of the paper may be outdated...
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: 'Submitted Jul 2023. Preprint: \url{https://arxiv.org/abs/2304.06881}'
   number: null
   pages: null
@@ -488,10 +563,15 @@ chang2025leveraging:
     - Gillette
   - - Romit
     - Maulik
+  chapter: null
   descrip: ''
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: 'Submitted Apr 2024. Preprint: \url{https://arxiv.org/abs/2404.03586}'
   number: null
   pages: null
@@ -520,10 +600,15 @@ chang2025remark:
     - Lux
   - - Hussain M. J.
     - Almohri
+  chapter: null
   descrip: ''
   doi: 10.1145/3656581
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: To appear in ACM Transactions on Mathematical Software
   number: null
   pages:
@@ -550,10 +635,15 @@ chen2023integrated:
     - Power
   - - Chungunag
     - Jing
+  chapter: null
   descrip: ''
   doi: 10.48550/arXiv.2311.09415
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -584,10 +674,15 @@ egele2025parallel:
     - Vishwanath
   - - Prasanna
     - Balaprakash
+  chapter: null
   descrip: ''
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: 'Submitted Apr 2024. Preprint: \url{https://arxiv.org/abs/2309.14936}'
   number: null
   pages: null
@@ -612,10 +707,15 @@ garg2023sfsfd:
     - Chang
   - - Krishnan
     - Raghavan
+  chapter: null
   descrip: ''
   doi: 10.1109/WSC60868.2023.10408245
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -640,10 +740,15 @@ gillette2020algorithms:
     - Gillette
   - - Tyler H.
     - Chang
+  chapter: null
   descrip: ''
   doi: null
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: LLNL-CONF-814930
   pages: null
@@ -685,10 +790,15 @@ lux2018nonparametric:
     - Hong
   - - Danfeng
     - Yao
+  chapter: null
   descrip: ''
   doi: 10.1109/SECON.2018.8478814
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -732,10 +842,15 @@ lux2018novel:
     - Yao
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.1145/3190645.3190687
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -774,10 +889,15 @@ lux2018predictive:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.22360/springsim.2018.hpc.009
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -809,10 +929,15 @@ lux2020algorithm:
     - Wang
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.22360/springsim.2020.hpc.003
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -835,10 +960,15 @@ lux2020analytic:
     - Lux
   - - Tyler H.
     - Chang
+  chapter: null
   descrip: ''
   doi: 10.1109/SoutheastCon44009.2020.9368254
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -874,10 +1004,15 @@ lux2020effective:
     - Hong
   - - Kirk W.
     - Cameron
+  chapter: null
   descrip: ''
   doi: 10.1109/SoutheastCon44009.2020.9368295
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -917,10 +1052,15 @@ lux2021interpolation:
     - Cameron
   - - Yili
     - Hong
+  chapter: null
   descrip: ''
   doi: 10.1007/s11075-020-01040-2
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '1'
   pages:
@@ -948,10 +1088,15 @@ lux2023algorithm:
     - Chang
   - - William I.
     - Thacker
+  chapter: null
   descrip: ''
   doi: 10.1145/3570157
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '1'
   pages:
@@ -980,10 +1125,15 @@ neveu2023comparison:
     - Hudson
   - - Jeffrey
     - Larson
+  chapter: null
   descrip: ''
   doi: 10.1016/j.cpc.2022.108566
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -1014,10 +1164,15 @@ raghunath2017global:
     - Kapania
   - - Raymond M.
     - Kolonay
+  chapter: null
   descrip: ''
   doi: 10.22360/springsim.2017.hpc.023
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -1054,10 +1209,15 @@ wang2023design:
     - Watson
   - - Kirk W.
     - Cameron
+  chapter: null
   descrip: ''
   doi: 10.1080/00224065.2022.2035285
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '1'
   pages:
@@ -1096,10 +1256,15 @@ xu2020modeling:
     - Cameron
   - - Layne T.
     - Watson
+  chapter: null
   descrip: ''
   doi: 10.1016/j.jpdc.2020.01.005
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: null
   pages:
@@ -1138,10 +1303,15 @@ xu2021prediction:
     - Yao
   - - Kirk W.
     - Cameron
+  chapter: null
   descrip: ''
   doi: 10.1080/08982112.2020.1866203
+  edition: null
+  editors: []
   git: null
   isbn: null
+  issn: null
+  month: null
   note: null
   number: '2'
   pages:

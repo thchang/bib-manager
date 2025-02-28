@@ -300,33 +300,33 @@ class BibEntry:
         """ Sets the edition for the bib item.
 
         Args:
-            edition (str): The edition for this bib entry.
+            edition (str or int): The edition for this bib entry.
 
         Raises:
             TypeError: If 'edition' does not match the expected type.
 
         """
 
-        if not isinstance(edition, str):
-            raise TypeError("expected a string specifying the edition, got:"
-                            f" {type(edition)}")
-        self.edition = edition.strip()
+        if not isinstance(edition, str) and not isinstance(edition, int):
+            raise TypeError("expected a string or int specifying the edition, "
+                            f"got: {type(edition)}")
+        self.edition = str(edition).strip()
 
     def set_chapter(self, chapter):
         """ Sets the chapter for the bib item.
 
         Args:
-            chapter (str): The chapter for this bib entry.
+            chapter (str or int): The chapter for this bib entry.
 
         Raises:
             TypeError: If 'chapter' does not match the expected type.
 
         """
 
-        if not isinstance(chapter, str):
-            raise TypeError("expected a string specifying the chapter, got:"
-                            f" {type(chapter)}")
-        self.chapter = chapter.strip()
+        if not isinstance(chapter, str) and not isinstance(chapter, int):
+            raise TypeError("expected a string or int specifying the chapter, "
+                            f"got: {type(chapter)}")
+        self.chapter = str(chapter).strip()
 
     def set_volume(self, volume):
         """ Sets the publication volume for the bib item.

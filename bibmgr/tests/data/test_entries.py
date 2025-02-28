@@ -23,7 +23,7 @@ test1_dict = {
     'address': 'New York, NY, USA',
     'doi': '10.1145/3422818',
     'url': 'https://dl.acm.org/doi/10.1145/3422818',
-    'isbn': '0098-3500',
+    'issn': '0098-3500',
     'git': 'https://github.com/vtopt/DelaunaySparse',
     'web': 'https://vtopt.github.io/DelaunaySparse',
     'descrip': '',
@@ -47,7 +47,7 @@ test1_bib = (
     "\taddress = {New York, NY, USA},\n"
     "\tdoi = {10.1145/3422818},\n"
     "\turl = {https://dl.acm.org/doi/10.1145/3422818},\n"
-    "\tisbn = {0098-3500},\n"
+    "\tissn = {0098-3500},\n"
     "\tgit = {https://github.com/vtopt/DelaunaySparse},\n"
     "\tweb = {https://vtopt.github.io/DelaunaySparse},\n"
     "\tkeywords = {software, algorithms, delaunay triangulation},\n"
@@ -120,15 +120,19 @@ test3_bib = (
 )
 test4_dict = {
     'authors': [['Tyler H.', 'Chang']],
+    'editors': [['Layne T.', 'Watson']],
     'title': 'Mathematical Software for Multiobjective Optimization Problems',
     'year': 2020,
+    'month': 'may',
     'type': 'phdthesis',
+    'chapter': 'Ch. 1',
     'publisher': (
         'Department of Computer Science, Virginia Polytechnic Institute and '
         'State University (Virginia Tech)'
     ),
     'address': 'Blacksburg, VA, USA',
     'url': 'http://hdl.handle.net/10919/98915',
+    'isbn': 'None',
     'note': (
         '{\\bf Dept. of Computer Science Nominee for Outstanding Dissertation '
         'Award}'
@@ -138,13 +142,17 @@ test4_dict = {
 test4_bib = (
     "@phdthesis{chang2020mathematical,\n"
     "\tauthor = {Chang, Tyler H.},\n"
+    "\teditor = {Watson, Layne T.},\n"
     "\ttitle = {Mathematical Software for Multiobjective Optimization "
     "Problems},\n"
     "\tyear = {2020},\n"
+    "\tmonth = {may},\n"
+    "\tchapter = {Ch. 1},\n"
     "\tschool = {Department of Computer Science, Virginia Polytechnic "
     "Institute and State University (Virginia Tech)},\n"
     "\taddress = {Blacksburg, VA, USA},\n"
     "\turl = {http://hdl.handle.net/10919/98915},\n"
+    "\tisbn = {None},\n"
     "\tnote = {{\\bf Dept. of Computer Science Nominee for Outstanding "
     "Dissertation Award}},\n"
     "}"
@@ -161,6 +169,7 @@ test5_dict = {
     ),
     'year': 2024,
     'type': 'techreport',
+    'edition': '0.4.1',
     'number': 'Version 0.4.1',
     'publisher': 'Argonne National Laboratory',
     'address': 'Lemont, Illinois, USA',
@@ -177,6 +186,7 @@ test5_bib = (
     "\ttitle = {{ParMOO}: {P}ython library for parallel multiobjective "
     "simulation optimization},\n"
     "\tyear = {2024},\n"
+    "\tedition = {0.4.1},\n"
     "\tnumber = {Version 0.4.1},\n"
     "\tinstitution = {Argonne National Laboratory},\n"
     "\taddress = {Lemont, Illinois, USA},\n"

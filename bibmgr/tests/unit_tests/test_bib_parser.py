@@ -40,6 +40,30 @@ class TestBibParser(unittest.TestCase):
         for i, itemi in enumerate(self.tester.next_item.get_authors()):
             assert itemi == expected_result[i]
 
+    def test_parse_editors(self):
+        expected_result = [
+            ["Tyler H.", "Chang"],
+            ["Tyler H.", "Chang"],
+            ["Tyler H.", "Chang"],
+            ["TH", "Chang"],
+            ["Tyler H.", "Chang"],
+            ["TH", "Chang"],
+        ]
+        self.tester.parse_line("editor", " Tyler  H.  Chang ")
+        for i, itemi in enumerate(self.tester.next_item.get_editors()):
+            assert itemi == expected_result[i]
+        self.tester.parse_line("editor", "\n\nChang,\tTyler H.  ")
+        for i, itemi in enumerate(self.tester.next_item.get_editors()):
+            assert itemi == expected_result[i]
+        self.tester.parse_line("editor", """
+            Tyler H. Chang  \t and
+            TH Chang""")
+        for i, itemi in enumerate(self.tester.next_item.get_editors()):
+            assert itemi == expected_result[i]
+        self.tester.parse_line("editor", "Chang, Tyler H.   and\nChang, TH ")
+        for i, itemi in enumerate(self.tester.next_item.get_editors()):
+            assert itemi == expected_result[i]
+
     def test_parse_title(self):
         test_title = "The {TEST}: A title worthy of testing"
         self.tester.parse_line("title", test_title)
@@ -49,6 +73,11 @@ class TestBibParser(unittest.TestCase):
         test_year = "2025"
         self.tester.parse_line("year", test_year)
         assert self.tester.next_item.get_year() == int(test_year)
+
+    def test_parse_month(self):
+        test_month = "jan"
+        self.tester.parse_line("month", test_month)
+        assert self.tester.next_item.get_month() == test_month
 
     def test_parse_venue(self):
         test_venue = "Journal of Testing"
@@ -62,6 +91,16 @@ class TestBibParser(unittest.TestCase):
         test_series = "Collection of Tests"
         self.tester.parse_line("series", test_series)
         assert self.tester.next_item.get_series() == test_series
+
+    def test_parse_edition(self):
+        test_edition = "1st Edition"
+        self.tester.parse_line("edition", test_edition)
+        assert self.tester.next_item.get_edition() == test_edition
+
+    def test_parse_chapter(self):
+        test_chapter = "Ch. 1"
+        self.tester.parse_line("chapter", test_chapter)
+        assert self.tester.next_item.get_chapter() == test_chapter
 
     def test_parse_volume(self):
         test_volume = "0"

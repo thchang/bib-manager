@@ -52,6 +52,32 @@ class TestBibEntry(unittest.TestCase):
         assert len(tester.get_authors()) == 1
         assert tester.get_authors()[0] == expected_result[0]
 
+    def test_add_get_editors(self):
+        expected_result = [
+            ["Tyler H.", "Chang"],
+            ["Tyler H.", "Chang"],
+            ["Tyler H.", "Chang"],
+            ["TH", "Chang"],
+        ]
+        tester = BibEntry()
+        with self.assertRaises(TypeError):
+            tester.add_editors(5)
+        assert len(tester.get_editors()) == 0
+        with self.assertRaises(TypeError):
+            tester.add_editors([5])
+        assert len(tester.get_editors()) == 0
+        with self.assertRaises(TypeError):
+            tester.add_editors([[5]])
+        assert len(tester.get_editors()) == 0
+        tester.add_editors(["Tyler H.  ", "Chang"])
+        tester.add_editors([["Tyler H.", " Chang "]])
+        tester.add_editors([["Tyler H.", "Chang"], ["TH", "Chang"]])
+        for i, itemi in enumerate(tester.get_editors()):
+            assert itemi == expected_result[i]
+        tester.add_editors(expected_result[0], reset=True)
+        assert len(tester.get_editors()) == 1
+        assert tester.get_editors()[0] == expected_result[0]
+
     def test_set_get_title(self):
         test_title = "The {TEST}: A title worthy of testing"
         tester = BibEntry()
@@ -69,6 +95,15 @@ class TestBibEntry(unittest.TestCase):
         assert tester.get_year() is None
         tester.set_year(test_year)
         assert tester.get_year() == int(test_year)
+
+    def test_set_get_month(self):
+        test_month = "January"
+        tester = BibEntry()
+        with self.assertRaises(TypeError):
+            tester.set_month([])
+        assert tester.get_month() is None
+        tester.set_month(test_month)
+        assert tester.get_month() == test_month
 
     def test_set_get_type(self):
         tester = BibEntry()
@@ -95,6 +130,24 @@ class TestBibEntry(unittest.TestCase):
         assert tester.get_series() is None
         tester.set_series(test_series)
         assert tester.get_series() == test_series
+
+    def test_set_get_edition(self):
+        test_edition = "1st ed"
+        tester = BibEntry()
+        with self.assertRaises(TypeError):
+            tester.set_edition([5])
+        assert tester.get_edition() is None
+        tester.set_edition(test_edition)
+        assert tester.get_edition() == test_edition
+
+    def test_set_get_chapter(self):
+        test_chapter = "Ch. 1"
+        tester = BibEntry()
+        with self.assertRaises(TypeError):
+            tester.set_chapter([5])
+        assert tester.get_chapter() is None
+        tester.set_chapter(test_chapter)
+        assert tester.get_chapter() == test_chapter
 
     def test_set_get_volume(self):
         test_volume = "0"
@@ -185,6 +238,15 @@ class TestBibEntry(unittest.TestCase):
         assert tester.get_isbn() is None
         tester.set_isbn(test_isbn)
         assert tester.get_isbn() == test_isbn
+
+    def test_set_get_issn(self):
+        test_issn = "1234.567.8910"
+        tester = BibEntry()
+        with self.assertRaises(TypeError):
+            tester.set_issn(5)
+        assert tester.get_issn() is None
+        tester.set_issn(test_issn)
+        assert tester.get_issn() == test_issn
 
     def test_set_get_git(self):
         test_git = "www.github.com/thchang/bib-manager"

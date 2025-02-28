@@ -154,6 +154,11 @@ class TestBibParser(unittest.TestCase):
         self.tester.parse_line("isbn", test_isbn)
         assert self.tester.next_item.get_isbn() == test_isbn
 
+    def test_parse_issn(self):
+        test_issn = "1234.567.8910"
+        self.tester.parse_line("issn", test_issn)
+        assert self.tester.next_item.get_issn() == test_issn
+
     def test_parse_git(self):
         test_git = "www.github.com/thchang/bib-manager"
         self.tester.parse_line("git", test_git)

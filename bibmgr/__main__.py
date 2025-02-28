@@ -1,4 +1,5 @@
 import argparse
+from importlib.metadata import version
 import os
 import pathlib
 
@@ -37,6 +38,11 @@ def parse_args():
             Use `bibmgr CMD --help` to get more info on a specific CMD.
         """,
         metavar="CMD"
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=version("bibmgr")
     )
     add_parser = subparsers.add_parser(
         "add",

@@ -1,7 +1,7 @@
 import yaml
 
-from bibmgr.bib_entry import BibEntry
-from bibmgr.dict_database import DictDatabase
+from .bib_entry import BibEntry
+from .dict_database import DictDatabase
 
 
 class DatabaseManager(DictDatabase):

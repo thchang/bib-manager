@@ -1,5 +1,5 @@
-from bibmgr.bib_entry import BibEntry
-from bibmgr.bib_parser import BibParser
+from .bib_entry import BibEntry
+from .bib_parser import BibParser
 
 
 class DictDatabase:

@@ -1,6 +1,6 @@
 import re
 
-from bibmgr.bib_entry import BibEntry
+from .bib_entry import BibEntry
 
 
 class BibParser:

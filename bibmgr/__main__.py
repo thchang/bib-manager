@@ -2,7 +2,7 @@ import argparse
 import os
 import pathlib
 
-from bibmgr.cli import DatabaseCLI
+from .cli import DatabaseCLI
 
 
 def parse_args():
@@ -318,9 +318,15 @@ def run(args):
         print("\nFor help, use 'bibmgr --help'")
 
 
-if __name__ == "__main__":
+def main():
+    """ Driver for the main program. """
+
     args = parse_args()
     try:
         run(args)
     except Exception as e:
         print(e)
+
+
+if __name__ == "__main__":
+    main()

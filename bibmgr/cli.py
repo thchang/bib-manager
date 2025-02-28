@@ -1,9 +1,9 @@
 import os
 import re
 
-from bibmgr.bib_entry import BibEntry
-from bibmgr.bib_parser import BibParser
-from bibmgr.database_manager import DatabaseManager
+from .bib_entry import BibEntry
+from .bib_parser import BibParser
+from .database_manager import DatabaseManager
 
 
 class DatabaseCLI:

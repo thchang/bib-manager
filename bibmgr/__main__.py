@@ -287,18 +287,18 @@ def run(args):
         bibdb.filter()
     elif args.command == "load":
         if args.filename is None:
-            filepath = os.environ.get(
-                'BIBMGR_DATABASE_SAVE_PATH',
-                str(os.path.join(os.getcwd(), "bibmgr_db.yaml"))
+            filepath = os.path.join(
+                os.environ.get('BIBMGR_DATABASE_SAVE_PATH', os.getcwd()),
+                "bibmgr_db.yaml"
             )
             bibdb.load_data(filepath, args.overwrite)
         else:
             bibdb.load_data(args.filename, args.overwrite)
     elif args.command == "save":
         if args.filename is None:
-            filepath = os.environ.get(
-                'BIBMGR_DATABASE_SAVE_PATH',
-                str(os.path.join(os.getcwd(), "bibmgr_db.yaml"))
+            filepath = os.path.join(
+                os.environ.get('BIBMGR_DATABASE_SAVE_PATH', os.getcwd()),
+                "bibmgr_db.yaml"
             )
             bibdb.save_data(filepath, args.overwrite)
         else:

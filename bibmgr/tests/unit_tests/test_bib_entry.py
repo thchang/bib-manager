@@ -174,7 +174,7 @@ class TestBibEntry(unittest.TestCase):
             tester.set_articleno([5])
         assert tester.get_articleno() is None
         tester.set_articleno(test_number)
-        assert tester.get_articleno() == int(test_number)
+        assert tester.get_articleno() == test_number
 
     def test_set_get_pages(self):
         tester = BibEntry()

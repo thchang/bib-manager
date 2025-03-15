@@ -267,15 +267,10 @@ def run(args):
                 path = pathlib.Path(args.value)
             except Exception:
                 path = ""
-            try:
-                if os.path.exists(path):
-                    bibdb.add_entry(filename=args.value)
-                else:
-                    bibdb.add_entry(str_rep=args.value)
-            except ValueError:
-                raise ValueError(
-                    f'--value="{args.value}" is not a valid file or bib string'
-                )
+            if os.path.exists(path):
+                bibdb.add_entry(filename=args.value)
+            else:
+                bibdb.add_entry(str_rep=args.value)
         else:
             bibdb.add_entry()
     elif args.command == "clear":

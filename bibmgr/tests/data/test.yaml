@@ -104,7 +104,7 @@ chang2018computing:
   year: 2018
 chang2018polynomial:
   address: Richmond, KY, USA
-  articleno: 12
+  articleno: '12'
   authors:
   - - Tyler H.
     - Chang
@@ -148,7 +148,7 @@ chang2018polynomial:
   year: 2018
 chang2018predicting:
   address: Baltimore, MD, USA
-  articleno: 2
+  articleno: '2'
   authors:
   - - Tyler H.
     - Chang
@@ -196,7 +196,7 @@ chang2018predicting:
   year: 2018
 chang2019leastsquares:
   address: null
-  articleno: 374
+  articleno: '374'
   authors:
   - - Tyler H.
     - Chang
@@ -229,7 +229,7 @@ chang2019leastsquares:
   year: 2019
 chang2020algorithm:
   address: null
-  articleno: 38
+  articleno: '38'
   authors:
   - - Tyler H.
     - Chang
@@ -272,7 +272,7 @@ chang2020algorithm:
   year: 2020
 chang2020managing:
   address: Fairfax, VA, USA
-  articleno: 31
+  articleno: '31'
   authors:
   - - Tyler H.
     - Chang
@@ -372,7 +372,7 @@ chang2020multiobjective:
   year: 2020
 chang2022algorithm:
   address: null
-  articleno: 36
+  articleno: '36'
   authors:
   - - Tyler H.
     - Chang
@@ -453,7 +453,7 @@ chang2023framework:
   year: 2023
 chang2023parmoo:
   address: null
-  articleno: 4468
+  articleno: '4468'
   authors:
   - - Tyler H.
     - Chang
@@ -816,7 +816,7 @@ lux2018nonparametric:
   year: 2018
 lux2018novel:
   address: Richmond, KY, USA
-  articleno: 13
+  articleno: '13'
   authors:
   - - Thomas C. H.
     - Lux
@@ -867,7 +867,7 @@ lux2018novel:
   year: 2018
 lux2018predictive:
   address: Baltimore, MD, USA
-  articleno: 8
+  articleno: '8'
   authors:
   - - Thomas C. H.
     - Lux
@@ -915,7 +915,7 @@ lux2018predictive:
   year: 2018
 lux2020algorithm:
   address: Fairfax, VA, USA
-  articleno: 33
+  articleno: '33'
   authors:
   - - Thomas C. H.
     - Lux
@@ -1078,7 +1078,7 @@ lux2021interpolation:
   year: 2021
 lux2023algorithm:
   address: null
-  articleno: 6
+  articleno: '6'
   authors:
   - - Thomas C. H.
     - Lux
@@ -1113,7 +1113,7 @@ lux2023algorithm:
   year: 2023
 neveu2023comparison:
   address: null
-  articleno: 108566
+  articleno: '108566'
   authors:
   - - Nicole
     - Neveu
@@ -1150,7 +1150,7 @@ neveu2023comparison:
   year: 2023
 raghunath2017global:
   address: Virginia Beach, VA, USA
-  articleno: 7
+  articleno: '7'
   authors:
   - - Chaitra
     - Raghunath

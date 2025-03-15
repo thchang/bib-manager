@@ -115,7 +115,7 @@ class TestBibParser(unittest.TestCase):
     def test_parse_articleno(self):
         test_number = "0"
         self.tester.parse_line("articleno", test_number)
-        assert self.tester.next_item.get_articleno() == int(test_number)
+        assert self.tester.next_item.get_articleno() == test_number
 
     def test_parse_pages(self):
         self.tester.parse_line("pages", "1 -- 10")

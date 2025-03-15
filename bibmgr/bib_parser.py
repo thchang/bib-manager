@@ -97,7 +97,7 @@ class BibParser:
             self.next_item.set_venue(value)
         elif key.strip().lower() in ['volume']:
             self.next_item.set_volume(value)
-        elif key.strip().lower() in ['number']:
+        elif key.strip().lower() in ['number', 'issue', 'version']:
             self.next_item.set_number(value)
         elif key.strip().lower() in ['articleno']:
             self.next_item.set_articleno(value)
@@ -123,15 +123,15 @@ class BibParser:
                 self.next_item.set_address(value)
         elif key.strip().lower() == 'doi':
             self.next_item.set_doi(value)
-        elif key.strip().lower() == 'url':
+        elif key.strip().lower() in ['preprint', 'url']:
             self.next_item.set_url(value)
         elif key.strip().lower() == 'isbn':
             self.next_item.set_isbn(value)
         elif key.strip().lower() == 'issn':
             self.next_item.set_issn(value)
-        elif key.strip().lower() == 'git':
+        elif key.strip().lower() in ['git', 'software', 'code']:
             self.next_item.set_git(value)
-        elif key.strip().lower() == 'web':
+        elif key.strip().lower() in ['web']:
             self.next_item.set_web(value)
         elif key.strip().lower() == 'note':
             self.next_item.set_note(value)

@@ -374,7 +374,7 @@ class BibEntry:
         if not isinstance(articleno, str) and not isinstance(articleno, int):
             raise TypeError("expected a string or int specifying the article "
                             f"number, got: {type(articleno)}")
-        self.articleno = int(str(articleno).strip())
+        self.articleno = str(articleno).strip()
 
     def set_pages(self, pages):
         """ Sets the page number(s) for the bib item.

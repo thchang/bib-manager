@@ -1132,8 +1132,9 @@ class BibEntry:
                                 new_entry['month'] = pub_date[0][1]
                         # Get crossref type
                         if 'type' in candi:
-                            new_entry['type'] = \
-                                CROSSREF_TYPE_TO_BIB_TYPE[candi['type']]
+                            new_entry['type'] = CROSSREF_TYPE_TO_BIB_TYPE[
+                                candi['type'].strip().lower()
+                            ]
                         # Get crossref publication title
                         if 'container-title' in candi:
                             if len(candi['container-title'] > 1):
@@ -1182,7 +1183,9 @@ class BibEntry:
                         # Get crossref ISSN
                         if 'ISSN' in candi and len(candi['ISSN']) > 0:
                             new_entry['issn'] = candi['ISSN'][0]
-                        break
+                        # Break early when author, title, and type all match
+                        if new_entry['type'] == self.type.lower():
+                            break
                 if i > 9:
                     break  # Only check the top 10 search results
             for key in new_entry:

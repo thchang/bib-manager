@@ -1,5 +1,41 @@
 from datetime import datetime
 
+import requests
+
+
+CROSSREF_TYPE_TO_BIB_TYPE = {
+    'book-section': 'inbook',                # 0
+    'monograph': 'book',                     # 1
+    'report-component': 'techreport',        # 2
+    'report': 'techreport',                  # 3
+    'peer-review': 'misc',                   # 4
+    'book-track': 'book',                    # 5
+    'journal-article': 'article',            # 6
+    'book-part': 'inbook',                   # 7
+    'other': 'misc',                         # 8
+    'book': 'book',                          # 9
+    'journal-volume': 'incollection',        # 10
+    'book-set': 'book',                      # 11
+    'reference-entry': 'misc',               # 12
+    'proceedings-article': 'inproceedings',  # 13
+    'journal': 'booklet',                    # 14
+    'component': 'misc',                     # 15
+    'book-chapter': 'inbook',                # 16
+    'proceedings-series': 'conference',      # 17
+    'report-series': 'report',               # 18
+    'proceedings': 'proceedings',            # 19
+    'database': 'misc',                      # 20
+    'standard': 'techreport',                # 21
+    'reference-book': 'book',                # 22
+    'posted-content': 'misc',                # 23
+    'journal-issue': 'booklet',              # 24
+    'dissertation': 'phdthesis',             # 25
+    'grant': 'misc',                         # 26
+    'dataset': 'misc',                       # 27
+    'book-series': 'book',                   # 28
+    'edited-book': 'book',                   # 29
+}
+
 
 class BibEntry:
     """ Class for storing a single bibliography entry.
@@ -1036,14 +1072,14 @@ class BibEntry:
             bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
         return "\n".join(bib_str) + "\n}"
 
-    def auto_fill(self, overwrite=True):
-        """ Attempt to clean/autofill this entry in the database using crossref.
+    def auto_fill(self, overwrite=False):
+        """ Attempt to clean/autofill this entry using crossref API.
 
         Args:
-            overwrite (bool, optional): When True (default), overwrites the
-                existing fields with the retrieved fields whenever they are
-                found.  Otherwise, will only overwrite fields that are
-                currently blank.
+            overwrite (bool, optional): When True, overwrites the existing
+                fields with the retrieved fields whenever they are found.
+                Otherwise, will only fill fields that are currently blank
+                (defaults to False).
 
         Raises:
             requests.exceptions.RequestException: If any error occurs during
@@ -1052,7 +1088,7 @@ class BibEntry:
         """
 
         base_url = "https://api.crossref.org/works"  # The crossref query URL
-        if self.title is not None and title != "":
+        if self.title is not None and self.title != "":
             params = {"query": self.title.strip("{").strip("}")}
             response = requests.get(base_url, params=params)
             response.raise_for_status()  # Raise error for bad response
@@ -1061,70 +1097,102 @@ class BibEntry:
                 if (
                     len(self.authors) == 0 or
                     len(candi['author']) > 0 and
-                    'family' in candi['author'][0].keys() and
+                    'family' in candi['author'][0] and
                     self.authors[0][-1] in candi['author'][0]['family']
                 ):
-                    date = None
-                    if ('published-print' in candi.keys()):
-                        date = 'published-print'
-                    elif ('published' in candi.keys()):
-                        date = 'published'
+                    pub_date = None
                     if (
-                        self.year None or date is not None and
-                        'date-parts' in candi[date].keys() and
-                        len(candidates[date]['date-parts']) > 0 and
-                        len(candidates[date]['date-parts'][0]) > 0 and
-                        self.year == candi[date]['date-parts'][0][0]
+                        'published-print' in candi and
+                        'date-parts' in candi['published-print']
                     ):
-                        if 'author' in candi.keys():
+                        pub_date = candi['published-print']['date-parts']
+                    elif (
+                        'published' in candi and
+                        'date-parts' in candi['published']
+                    ):
+                        pub_date = candi['published']['date-parts']
+                    if (
+                        self.year is None or
+                        pub_date is not None and
+                        len(pub_date) > 0 and
+                        len(pub_date[0]) > 0 and
+                        self.year == pub_date[0][0]
+                    ):
+                        # Get crossref authors
+                        if 'author' in candi:
                             new_entry['author'] = [
                                 [aj['given'], aj['family']]
                                 for aj in candi['author']
                             ]
-                        if (
-                            'date-parts' in candi[date].keys() and
-                            len(candidates[date]['date-parts']) > 0 and
-                            len(candidates[date]['date-parts'][0]) > 0
-                        ):
-                            new_entry['year'] = candi[date]['date-parts'][0][0]
-                        if 'month' in candi.keys():
-                            new_entry['month'] = candi['month']
-                        if 'type' in candi.keys():
-                            new_entry['type'] = candi['type']
-                        if 'venue' in candi.keys():
-                            new_entry['venue'] = candi['venue']
-                        if 'series' in candi.keys():
-                            new_entry['series'] = candi['series']
-                        if 'edition' in candi.keys():
-                            new_entry['edition'] = candi['edition']
-                        if 'chapter' in candi.keys():
-                            new_entry['chapter'] = candi['chapter']
-                        if 'volume' in candi.keys():
+                        # Get crossref date
+                        if pub_date is not None and len(pub_date) > 0:
+                            if len(pub_date[0]) > 0:
+                                new_entry['year'] = pub_date[0][0]
+                            if len(pub_date[0]) > 1:
+                                new_entry['month'] = pub_date[0][1]
+                        # Get crossref type
+                        if 'type' in candi:
+                            new_entry['type'] = \
+                                CROSSREF_TYPE_TO_BIB_TYPE[candi['type']]
+                        # Get crossref publication title
+                        if 'container-title' in candi:
+                            if len(candi['container-title'] > 1):
+                                new_entry['series'] = \
+                                        candi['container-title'][-2]
+                            if len(candi['container-title'] > 0):
+                                new_entry['venue'] = \
+                                        candi['container-title'][-1]
+                        # Get crossref volume
+                        if 'volume' in candi:
                             new_entry['volume'] = candi['volume']
-                        if 'number' in candi.keys():
-                            new_entry['number'] = candi['number']
-                        if 'articleno' in candi.keys():
-                            new_entry['articleno'] = candi['articleno']
-                        if 'pages' in candi.keys():
+                        # Get crossref issue/number
+                        if 'issue' in candi:
+                            new_entry['number'] = candi['issue']
+                        # Get crossref page numbers
+                        if 'pages' in candi:
                             new_entry['pages'] = candi['pages']
-                        if 'publisher' in candi.keys():
+                        # Get crossref publisher
+                        if 'publisher' in candi:
                             new_entry['publisher'] = candi['publisher']
-                        if 'address' in candi.keys():
-                            new_entry['address'] = candi['address']
-                        if 'doi' in candi.keys():
-                            new_entry['doi'] = candi['doi']
-                        if 'url' in candi.keys():
-                            new_entry['url'] = candi['url']
-                        if 'isbn' in candi.keys():
-                            new_entry['isbn'] = candi['isbn']
-                        if 'issn' in candi.keys():
-                            new_entry['issn'] = candi['issn']
+                        # Get crossref event/publisher address
+                        if 'event' in candi and 'location' in candi['event']:
+                            new_entry['address'] = candi['event']['location']
+                        elif 'publisher-address' in candi:
+                            new_entry['address'] = candi['publisher-address']
+                        # Get crossref DOI
+                        if 'DOI' in candi:
+                            new_entry['doi'] = candi['DOI']
+                        # Get crossref URL
+                        if (
+                            'resource' in candi and
+                            'primary' in candi['resource'] and
+                            'URL' in candi['resource']['primary']
+                        ):
+                            new_entry['url'] = \
+                                candi['resource']['primary']['URL']
+                        elif (
+                            'link' in candi and
+                            len(candi['link']) > 0 and
+                            'URL' in candi['link'][0]
+                        ):
+                            new_entry['url'] = candi['link'][0]['URL']
+                        # Get crossref ISBN
+                        if 'ISBN' in candi and len(candi['ISBN']) > 0:
+                            new_entry['isbn'] = candi['ISBN'][0]
+                        # Get crossref ISSN
+                        if 'ISSN' in candi and len(candi['ISSN']) > 0:
+                            new_entry['issn'] = candi['ISSN'][0]
                         break
-                if i > 4:
-                    break  # Only do anything if found in the top 5
-            for key in new_entry.keys():  # TBD fix this
-                if self.key is None:
-                    self.key = new_entry[key]
+                if i > 9:
+                    break  # Only check the top 10 search results
+            for key in new_entry:
+                if (
+                    key in self.__slots__ and
+                    overwrite or
+                    getattr(self, key) is None or
+                    len(getattr(self, key)) == 0
+                ):
+                    setattr(self, key, new_entry[key])
 
     def __str__(self):
         """ Convert this bib entry into a string.

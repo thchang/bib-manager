@@ -1023,7 +1023,7 @@ class BibEntry:
         if self.git is not None:
             bib_str.append(f"\tgit = {{{self.git}}},")
         # Get additional web address
-        if self.git is not None:
+        if self.web is not None:
             bib_str.append(f"\tweb = {{{self.web}}},")
         # Get any notes
         if self.note is not None:
@@ -1035,6 +1035,96 @@ class BibEntry:
         if len(self.tags) > 0:
             bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
         return "\n".join(bib_str) + "\n}"
+
+    def auto_fill(self, overwrite=True):
+        """ Attempt to clean/autofill this entry in the database using crossref.
+
+        Args:
+            overwrite (bool, optional): When True (default), overwrites the
+                existing fields with the retrieved fields whenever they are
+                found.  Otherwise, will only overwrite fields that are
+                currently blank.
+
+        Raises:
+            requests.exceptions.RequestException: If any error occurs during
+                crossref API request.
+
+        """
+
+        base_url = "https://api.crossref.org/works"  # The crossref query URL
+        if self.title is not None and title != "":
+            params = {"query": self.title.strip("{").strip("}")}
+            response = requests.get(base_url, params=params)
+            response.raise_for_status()  # Raise error for bad response
+            new_entry = {}
+            for i, candi in enumerate(response.json()["message"]["items"]):
+                if (
+                    len(self.authors) == 0 or
+                    len(candi['author']) > 0 and
+                    'family' in candi['author'][0].keys() and
+                    self.authors[0][-1] in candi['author'][0]['family']
+                ):
+                    date = None
+                    if ('published-print' in candi.keys()):
+                        date = 'published-print'
+                    elif ('published' in candi.keys()):
+                        date = 'published'
+                    if (
+                        self.year None or date is not None and
+                        'date-parts' in candi[date].keys() and
+                        len(candidates[date]['date-parts']) > 0 and
+                        len(candidates[date]['date-parts'][0]) > 0 and
+                        self.year == candi[date]['date-parts'][0][0]
+                    ):
+                        if 'author' in candi.keys():
+                            new_entry['author'] = [
+                                [aj['given'], aj['family']]
+                                for aj in candi['author']
+                            ]
+                        if (
+                            'date-parts' in candi[date].keys() and
+                            len(candidates[date]['date-parts']) > 0 and
+                            len(candidates[date]['date-parts'][0]) > 0
+                        ):
+                            new_entry['year'] = candi[date]['date-parts'][0][0]
+                        if 'month' in candi.keys():
+                            new_entry['month'] = candi['month']
+                        if 'type' in candi.keys():
+                            new_entry['type'] = candi['type']
+                        if 'venue' in candi.keys():
+                            new_entry['venue'] = candi['venue']
+                        if 'series' in candi.keys():
+                            new_entry['series'] = candi['series']
+                        if 'edition' in candi.keys():
+                            new_entry['edition'] = candi['edition']
+                        if 'chapter' in candi.keys():
+                            new_entry['chapter'] = candi['chapter']
+                        if 'volume' in candi.keys():
+                            new_entry['volume'] = candi['volume']
+                        if 'number' in candi.keys():
+                            new_entry['number'] = candi['number']
+                        if 'articleno' in candi.keys():
+                            new_entry['articleno'] = candi['articleno']
+                        if 'pages' in candi.keys():
+                            new_entry['pages'] = candi['pages']
+                        if 'publisher' in candi.keys():
+                            new_entry['publisher'] = candi['publisher']
+                        if 'address' in candi.keys():
+                            new_entry['address'] = candi['address']
+                        if 'doi' in candi.keys():
+                            new_entry['doi'] = candi['doi']
+                        if 'url' in candi.keys():
+                            new_entry['url'] = candi['url']
+                        if 'isbn' in candi.keys():
+                            new_entry['isbn'] = candi['isbn']
+                        if 'issn' in candi.keys():
+                            new_entry['issn'] = candi['issn']
+                        break
+                if i > 4:
+                    break  # Only do anything if found in the top 5
+            for key in new_entry.keys():  # TBD fix this
+                if self.key is None:
+                    self.key = new_entry[key]
 
     def __str__(self):
         """ Convert this bib entry into a string.

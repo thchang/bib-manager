@@ -1087,115 +1087,152 @@ class BibEntry:
 
         """
 
+        session = requests.Session()
         base_url = "https://api.crossref.org/works"  # The crossref query URL
-        if self.title is not None and self.title != "":
-            params = {"query": self.title.strip("{").strip("}")}
-            response = requests.get(base_url, params=params)
+        new_entry = {}
+        if self.doi is not None:
+            base_url += f"?filter=doi:{self.doi}"
+            response = session.get(base_url)
             response.raise_for_status()  # Raise error for bad response
-            new_entry = {}
             for i, candi in enumerate(response.json()["message"]["items"]):
-                if (
-                    len(self.authors) == 0 or
-                    len(candi['author']) > 0 and
-                    'family' in candi['author'][0] and
-                    self.authors[0][-1] in candi['author'][0]['family']
-                ):
-                    pub_date = None
-                    if (
-                        'published-print' in candi and
-                        'date-parts' in candi['published-print']
-                    ):
-                        pub_date = candi['published-print']['date-parts']
-                    elif (
-                        'published' in candi and
-                        'date-parts' in candi['published']
-                    ):
-                        pub_date = candi['published']['date-parts']
-                    if (
-                        self.year is None or
-                        pub_date is not None and
-                        len(pub_date) > 0 and
-                        len(pub_date[0]) > 0 and
-                        self.year == pub_date[0][0]
-                    ):
-                        # Get crossref authors
-                        if 'author' in candi:
-                            new_entry['author'] = [
-                                [aj['given'], aj['family']]
-                                for aj in candi['author']
-                            ]
-                        # Get crossref date
-                        if pub_date is not None and len(pub_date) > 0:
-                            if len(pub_date[0]) > 0:
-                                new_entry['year'] = pub_date[0][0]
-                            if len(pub_date[0]) > 1:
-                                new_entry['month'] = pub_date[0][1]
-                        # Get crossref type
-                        if 'type' in candi:
-                            new_entry['type'] = CROSSREF_TYPE_TO_BIB_TYPE[
-                                candi['type'].strip().lower()
-                            ]
-                        # Get crossref publication title
-                        if 'container-title' in candi:
-                            if len(candi['container-title'] > 1):
-                                new_entry['series'] = \
-                                        candi['container-title'][-2]
-                            if len(candi['container-title'] > 0):
-                                new_entry['venue'] = \
-                                        candi['container-title'][-1]
-                        # Get crossref volume
-                        if 'volume' in candi:
-                            new_entry['volume'] = candi['volume']
-                        # Get crossref issue/number
-                        if 'issue' in candi:
-                            new_entry['number'] = candi['issue']
-                        # Get crossref page numbers
-                        if 'pages' in candi:
-                            new_entry['pages'] = candi['pages']
-                        # Get crossref publisher
-                        if 'publisher' in candi:
-                            new_entry['publisher'] = candi['publisher']
-                        # Get crossref event/publisher address
-                        if 'event' in candi and 'location' in candi['event']:
-                            new_entry['address'] = candi['event']['location']
-                        elif 'publisher-address' in candi:
-                            new_entry['address'] = candi['publisher-address']
-                        # Get crossref DOI
-                        if 'DOI' in candi:
-                            new_entry['doi'] = candi['DOI']
-                        # Get crossref URL
-                        if (
-                            'resource' in candi and
-                            'primary' in candi['resource'] and
-                            'URL' in candi['resource']['primary']
-                        ):
-                            new_entry['url'] = \
-                                candi['resource']['primary']['URL']
-                        elif (
-                            'link' in candi and
-                            len(candi['link']) > 0 and
-                            'URL' in candi['link'][0]
-                        ):
-                            new_entry['url'] = candi['link'][0]['URL']
-                        # Get crossref ISBN
-                        if 'ISBN' in candi and len(candi['ISBN']) > 0:
-                            new_entry['isbn'] = candi['ISBN'][0]
-                        # Get crossref ISSN
-                        if 'ISSN' in candi and len(candi['ISSN']) > 0:
-                            new_entry['issn'] = candi['ISSN'][0]
-                        # Break early when author, title, and type all match
-                        if new_entry['type'] == self.type.lower():
-                            break
+                new_entry = _crossref_to_bib_entry(candi)
+                if 'doi' in new_entry and self.doi == new_entry['doi']:
+                    break
+                # Give up after checking the top 10 search results
                 if i > 9:
-                    break  # Only check the top 10 search results
-            for key in new_entry:
+                    return False
+        elif self.title is not None and self.title != "":
+            params = {"query": self.title.strip("{").strip("}")}
+            response = session.get(base_url, params=params)
+            response.raise_for_status()  # Raise error for bad response
+            for i, candi in enumerate(response.json()["message"]["items"]):
+                new_entry = _crossref_to_bib_entry(candi)
+                # Break when author, year, and type all match
                 if (
-                    key in self.__slots__ and
-                    overwrite or
-                    getattr(self, key) is None or
-                    len(getattr(self, key)) == 0
+                    (
+                        len(self.authors) == 0 or
+                        'author' in candi and
+                        self.authors[0][-1] in candi['author'][0][-1]
+                    ) and (
+                        self.year is None or
+                        'year' in new_entry and
+                        self.year == new_entry['year']
+                    ) and (
+                        'type' not in new_entry or
+                        new_entry['type'] == self.type.lower()
+                    )
                 ):
-                    setattr(self, key, new_entry[key])
+                    break
+                # Give up after checking the top 10 search results
+                if i > 9:
+                    return False
+        else:
+            return False
+        # Update this item with the new entries
+        for key in new_entry:
+            if (
+                key in self.__slots__ and
+                overwrite or
+                getattr(self, key) is None or
+                len(getattr(self, key)) == 0
+            ):
+                setattr(self, key, new_entry[key])
+        return True
+
+    def _crossref_to_bib_entry(self, xref_entry):
+        """ Helper function for converting xref entries to bib entries.
+
+        Args:
+            xref_entry (dict): A dictionary representation of a bib entry,
+                returned by the crossref API.
+
+        Returns:
+            dict: A bib entry dict that is compatible with this class.
+
+        """
+
+        bib_entry = {}
+        # Get crossref date
+        pub_date = None
+        if (
+            'published-print' in xref_entry and
+            'date-parts' in xref_entry['published-print']
+        ):
+            pub_date = xref_entry['published-print']['date-parts']
+        elif (
+            'published' in xref_entry and
+            'date-parts' in xref_entry['published']
+        ):
+            pub_date = xref_entry['published']['date-parts']
+        if pub_date is not None and len(pub_date) > 0:
+            if len(pub_date[0]) > 0:
+                bib_entry['year'] = int(pub_date[0][0])
+            if len(pub_date[0]) > 1:
+                bib_entry['month'] = pub_date[0][1]
+        # Get crossref authors
+        if (
+            'author' in xref_entry and
+            len(xref_entry['author']) > 0 and
+            'family' in xref_entry['author'][0] and
+            'given' in xref_entry['author'][0]
+        ):
+            bib_entry['author'] = [
+                [aj['given'], aj['family']] for aj in xref_entry['author']
+            ]
+        # Get crossref type
+        if 'type' in xref_entry:
+            bib_entry['type'] = CROSSREF_TYPE_TO_BIB_TYPE[
+                xref_entry['type'].strip().lower()
+            ]
+        # Get crossref publication title
+        if 'container-title' in xref_entry:
+            if len(xref_entry['container-title'] > 1):
+                bib_entry['series'] = \
+                        xref_entry['container-title'][-2]
+            if len(xref_entry['container-title'] > 0):
+                bib_entry['venue'] = \
+                        xref_entry['container-title'][-1]
+        # Get crossref volume
+        if 'volume' in xref_entry:
+            bib_entry['volume'] = xref_entry['volume']
+        # Get crossref issue/number
+        if 'issue' in xref_entry:
+            bib_entry['number'] = xref_entry['issue']
+        # Get crossref page numbers
+        if 'pages' in xref_entry:
+            bib_entry['pages'] = xref_entry['pages']
+        # Get crossref publisher
+        if 'publisher' in xref_entry:
+            bib_entry['publisher'] = xref_entry['publisher']
+        # Get crossref event/publisher address
+        if 'event' in xref_entry and 'location' in xref_entry['event']:
+            bib_entry['address'] = xref_entry['event']['location']
+        elif 'publisher-address' in xref_entry:
+            bib_entry['address'] = xref_entry['publisher-address']
+        # Get crossref DOI
+        if 'DOI' in xref_entry:
+            bib_entry['doi'] = xref_entry['DOI']
+        # Get crossref URL
+        if (
+            'resource' in xref_entry and
+            'primary' in xref_entry['resource'] and
+            'URL' in xref_entry['resource']['primary']
+        ):
+            bib_entry['url'] = \
+                xref_entry['resource']['primary']['URL']
+        elif (
+            'link' in xref_entry and
+            len(xref_entry['link']) > 0 and
+            'URL' in xref_entry['link'][0]
+        ):
+            bib_entry['url'] = xref_entry['link'][0]['URL']
+        # Get crossref ISBN
+        if 'ISBN' in xref_entry and len(xref_entry['ISBN']) > 0:
+            bib_entry['isbn'] = xref_entry['ISBN'][0]
+        # Get crossref ISSN
+        if 'ISSN' in xref_entry and len(xref_entry['ISSN']) > 0:
+            bib_entry['issn'] = xref_entry['ISSN'][0]
+        return bib_entry
 
     def __str__(self):
         """ Convert this bib entry into a string.

@@ -94,6 +94,7 @@ class BibEntry:
         get_key()
         to_dict()
         to_bib()
+        autofill(overwrite=False)
         __str__()
 
     """
@@ -1072,7 +1073,7 @@ class BibEntry:
             bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
         return "\n".join(bib_str) + "\n}"
 
-    def auto_fill(self, overwrite=False):
+    def autofill(self, overwrite=False):
         """ Attempt to clean/autofill this entry using crossref API.
 
         Args:
@@ -1095,7 +1096,7 @@ class BibEntry:
             response = session.get(base_url)
             response.raise_for_status()  # Raise error for bad response
             for i, candi in enumerate(response.json()["message"]["items"]):
-                new_entry = _crossref_to_bib_entry(candi)
+                new_entry = self._crossref_to_bib_entry(candi)
                 if 'doi' in new_entry and self.doi == new_entry['doi']:
                     break
                 # Give up after checking the top 10 search results
@@ -1106,13 +1107,13 @@ class BibEntry:
             response = session.get(base_url, params=params)
             response.raise_for_status()  # Raise error for bad response
             for i, candi in enumerate(response.json()["message"]["items"]):
-                new_entry = _crossref_to_bib_entry(candi)
+                new_entry = self._crossref_to_bib_entry(candi)
                 # Break when author, year, and type all match
                 if (
                     (
                         len(self.authors) == 0 or
-                        'author' in candi and
-                        self.authors[0][-1] in candi['author'][0][-1]
+                        'authors' in new_entry and
+                        self.authors[0][-1] in new_entry['authors'][0][-1]
                     ) and (
                         self.year is None or
                         'year' in new_entry and
@@ -1176,7 +1177,7 @@ class BibEntry:
             'family' in xref_entry['author'][0] and
             'given' in xref_entry['author'][0]
         ):
-            bib_entry['author'] = [
+            bib_entry['authors'] = [
                 [aj['given'], aj['family']] for aj in xref_entry['author']
             ]
         # Get crossref type
@@ -1186,12 +1187,10 @@ class BibEntry:
             ]
         # Get crossref publication title
         if 'container-title' in xref_entry:
-            if len(xref_entry['container-title'] > 1):
-                bib_entry['series'] = \
-                        xref_entry['container-title'][-2]
-            if len(xref_entry['container-title'] > 0):
-                bib_entry['venue'] = \
-                        xref_entry['container-title'][-1]
+            if len(xref_entry['container-title']) > 1:
+                bib_entry['series'] = xref_entry['container-title'][-2]
+            if len(xref_entry['container-title']) > 0:
+                bib_entry['venue'] = xref_entry['container-title'][-1]
         # Get crossref volume
         if 'volume' in xref_entry:
             bib_entry['volume'] = xref_entry['volume']

@@ -343,3 +343,20 @@ class TestBibEntry(unittest.TestCase):
         assert tester.to_bib() == test4_bib
         tester = BibEntry(test5_dict)
         assert tester.to_bib() == test5_bib
+
+    def test_autofill(self):
+
+        tester = BibEntry(test1_dict)
+        assert tester.autofill(overwrite=True)
+        assert tester.get_authors()[0][-1] in test1_dict['authors'][0]
+        assert tester.to_bib() != test1_bib
+        tester = BibEntry(test2_dict)
+        assert not tester.autofill(overwrite=True)
+        assert tester.to_bib() == test2_bib
+        tester = BibEntry(test3_dict)
+        assert tester.autofill(overwrite=True)
+        assert tester.get_doi().lower() == test3_dict['doi'].lower()
+        assert tester.to_bib() != test3_bib
+        tester = BibEntry(test4_dict)
+        assert not tester.autofill(overwrite=True)
+        assert tester.to_bib() == test4_bib

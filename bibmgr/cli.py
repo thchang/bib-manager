@@ -11,6 +11,7 @@ class DatabaseCLI:
 
     Methods:
         add_entry(str_rep=None, filename=None)
+        autofill(overwrite=False)
         clear()
         delete_entry(entry_key)
         filter()
@@ -151,6 +152,23 @@ class DatabaseCLI:
                     f"found duplicate: {parser.next_item.get_key()};"
                     "skipping..."
                 )
+        if self._user_continue():
+            self.database.write_yaml(self.cache_file)
+
+    def autofill(self, overwrite=False):
+        """ Autofill missing fields for entries in the cache via crossref.
+
+        Args:
+            overwrite (bool, optional): Overwrite existing fields with
+                results from crossref lookup. Defaults to false.
+
+        """
+
+        self.database.autofill(overwrite)
+        self._print(f"autofilled {self.database.size()} entries.\n"
+                    "New database:")
+        for entry in self.database.entries():
+            self._print(entry)
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 

@@ -267,7 +267,7 @@ def run(args):
     bibdb = DatabaseCLI()
     if args.command in [
         "add", "autofill", "clear", "delete", "filter", "load", "save", "tag",
-        "update", # "show",  # quiet / force is not relevant for this command
+        "update",  # "show",  # quiet / force is not relevant for this command
     ]:
         if args.force is not None:
             bibdb.force = args.force

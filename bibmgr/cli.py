@@ -97,7 +97,7 @@ class DatabaseCLI:
                     next_val = input("Type required. Enter publication type: ")
             parser.parse_line("type", next_val)
             # Attempt to autofill from DOI
-            doi = input(f"Enter doi if known (leave blank if none): ")
+            doi = input("Enter doi if known (leave blank if none): ")
             if len(doi.strip()) > 0:
                 parser.parse_line("doi", doi.strip())
                 if parser.next_item.autofill(overwrite=True):

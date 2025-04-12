@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import requests
+import requests_cache
 
 
 CROSSREF_TYPE_TO_BIB_TYPE = {
@@ -1088,7 +1088,7 @@ class BibEntry:
 
         """
 
-        session = requests.Session()
+        session = requests_cache.CachedSession("bibmgr_cache")
         base_url = "https://api.crossref.org/works"  # The crossref query URL
         new_entry = {}
         found = False
@@ -1142,7 +1142,10 @@ class BibEntry:
                     key in self.__slots__ and
                     overwrite or
                     getattr(self, key) is None or
-                    len(getattr(self, key)) == 0
+                    (
+                        isinstance(getattr(self, key), list) and
+                        len(getattr(self, key)) == 0
+                    )
                 ):
                     setattr(self, key, new_entry[key])
         return found

@@ -1091,13 +1091,18 @@ class BibEntry:
         session = requests.Session()
         base_url = "https://api.crossref.org/works"  # The crossref query URL
         new_entry = {}
+        found = False
         if self.doi is not None:
             base_url += f"?filter=doi:{self.doi}"
             response = session.get(base_url)
             response.raise_for_status()  # Raise error for bad response
             for i, candi in enumerate(response.json()["message"]["items"]):
                 new_entry = self._crossref_to_bib_entry(candi)
-                if 'doi' in new_entry and self.doi == new_entry['doi']:
+                if (
+                    'doi' in new_entry and
+                    self.doi.lower() == new_entry['doi'].lower()
+                ):
+                    found = True
                     break
                 # Give up after checking the top 10 search results
                 if i > 9:
@@ -1123,6 +1128,7 @@ class BibEntry:
                         new_entry['type'] == self.type.lower()
                     )
                 ):
+                    found = True
                     break
                 # Give up after checking the top 10 search results
                 if i > 9:
@@ -1130,15 +1136,16 @@ class BibEntry:
         else:
             return False
         # Update this item with the new entries
-        for key in new_entry:
-            if (
-                key in self.__slots__ and
-                overwrite or
-                getattr(self, key) is None or
-                len(getattr(self, key)) == 0
-            ):
-                setattr(self, key, new_entry[key])
-        return True
+        if found:
+            for key in new_entry:
+                if (
+                    key in self.__slots__ and
+                    overwrite or
+                    getattr(self, key) is None or
+                    len(getattr(self, key)) == 0
+                ):
+                    setattr(self, key, new_entry[key])
+        return found
 
     def _crossref_to_bib_entry(self, xref_entry):
         """ Helper function for converting xref entries to bib entries.

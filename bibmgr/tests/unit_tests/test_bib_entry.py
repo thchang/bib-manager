@@ -5,7 +5,8 @@ from bibmgr.tests.data.test_entries import test1_dict, test1_bib, \
                                            test2_dict, test2_bib, \
                                            test3_dict, test3_bib, \
                                            test4_dict, test4_bib, \
-                                           test5_dict, test5_bib
+                                           test5_dict, test5_bib, \
+                                           test6_dict, test7_dict
 
 
 class TestBibEntry(unittest.TestCase):
@@ -360,3 +361,7 @@ class TestBibEntry(unittest.TestCase):
         tester = BibEntry(test4_dict)
         assert not tester.autofill(overwrite=True)
         assert tester.to_bib() == test4_bib
+        tester = BibEntry(test6_dict)
+        assert not tester.autofill(overwrite=True)
+        tester = BibEntry(test7_dict)
+        assert not tester.autofill(overwrite=True)

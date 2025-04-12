@@ -194,3 +194,11 @@ test5_bib = (
     "so there may be reasons to cite the docs over the paper itself.},\n"
     "}"
 )
+test6_dict = {
+    'doi': '10.1109/WSC60868.2023.1040824',
+}
+test7_dict = {
+    'authors': [
+        ['Tyler H.', 'Chang'],
+    ]
+}

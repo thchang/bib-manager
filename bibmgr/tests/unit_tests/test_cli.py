@@ -23,12 +23,15 @@ class TestDatabaseCLI(unittest.TestCase):
             "paper",
             "",
             "article",
+            "10.1145/3422818",
+            "n",
             "Chang, Tyler H. and Watson, Layne T. and Lux, Thomas C. H. "
             "and Butt, Ali R. and Cameron, Kirk W. and Hong, Yili",
             "Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse "
             "subset of the {D}elaunay triangulation in medium to high "
             "dimensions",
             "2020",
+            "n",
             "ACM Transactions on Mathematical Software",
             "Collections of the ACM",
             "46",
@@ -37,7 +40,6 @@ class TestDatabaseCLI(unittest.TestCase):
             "20",
             "Association of Computing Machinery",
             "New York, NY, USA",
-            "10.1145/3422818",
             "https://dl.acm.org/doi/10.1145/3422818",
             "0098-3500",
             "https://vtopt.github.io/DelaunaySparse",

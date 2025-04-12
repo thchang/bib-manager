@@ -1187,6 +1187,12 @@ class BibEntry:
             bib_entry['authors'] = [
                 [aj['given'], aj['family']] for aj in xref_entry['author']
             ]
+        if 'title' in xref_entry and len(xref_entry['title']) > 0:
+            bib_entry['title'] = " ".join(xref_entry['title']).strip()
+            if 'subtitle' in xref_entry and len(xref_entry['subtitle']) > 0:
+                bib_entry['title'] += ": " + " ".join(
+                    xref_entry['subtitle']
+                ).strip()
         # Get crossref type
         if 'type' in xref_entry:
             bib_entry['type'] = CROSSREF_TYPE_TO_BIB_TYPE[

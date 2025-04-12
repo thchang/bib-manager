@@ -39,3 +39,13 @@ class TestDatabaseManager:
         assert filecmp.cmp("bibmgr/tests/data/test.yaml",
                            "bibmgr/tests/data/test2.yaml")
         os.remove("bibmgr/tests/data/test2.yaml")
+
+    def test_autofill(self):
+        tester = DatabaseManager()
+        for key in soln:
+            if "chang2025" in key:
+                tester.create_entry(BibEntry(soln[key]))
+        tester.autofill()
+        for key in soln:
+            if "chang2025" in key:
+                assert key in tester.keys()

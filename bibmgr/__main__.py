@@ -27,7 +27,8 @@ def parse_args():
             Run one of the following commands to manipulate the entries in the
             cache:
 
-            add, clear, delete, filter, load, save, show, tag, and update.
+            add, autofill, clear, delete, filter, load, save, show, tag, and
+            update.
 
             Since commands are executed upon the cache, the save command should
             be used to "commit" entries to a permanent save file, which can be
@@ -46,7 +47,11 @@ def parse_args():
     )
     add_parser = subparsers.add_parser(
         "add",
-        description="Adds a new entry to the current cache",
+        description="Adds a new entry to the current cache"
+    )
+    autofill_parser = subparsers.add_parser(
+        "autofill",
+        description="Autofills missing fields for all entries in the cache"
     )
     clear_parser = subparsers.add_parser(
         "clear",
@@ -91,6 +96,14 @@ def parse_args():
             about the new entry manually.
         """,
         metavar="VALUE"
+    )
+    autofill_parser.add_argument(
+        "-o", "--overwrite",
+        dest="overwrite",
+        action="store_true",
+        help="""Overwrite existing fields in the cache with values found on
+            Crossref.
+        """,
     )
     delete_parser.add_argument(
         "-k", "--key",
@@ -224,8 +237,8 @@ def parse_args():
         help="Will assign VALUE to assign to the field at the compound KEY."
     )
     for subparser in [
-        add_parser, clear_parser, delete_parser, filter_parser, load_parser,
-        save_parser, tag_parser, update_parser,
+        add_parser, autofill_parser, clear_parser, delete_parser,
+        filter_parser, load_parser, save_parser, tag_parser, update_parser,
         # show_parser,  # quiet / force is not relevant for this command
     ]:
         subparser.add_argument(
@@ -253,8 +266,8 @@ def run(args):
 
     bibdb = DatabaseCLI()
     if args.command in [
-        "add", "clear", "delete", "filter", "load", "save", "tag", "update",
-        # "show",  # quiet / force is not relevant for this command
+        "add", "autofill", "clear", "delete", "filter", "load", "save", "tag",
+        "update", # "show",  # quiet / force is not relevant for this command
     ]:
         if args.force is not None:
             bibdb.force = args.force
@@ -273,6 +286,8 @@ def run(args):
                 bibdb.add_entry(str_rep=args.value)
         else:
             bibdb.add_entry()
+    elif args.command == "autofill":
+        bibdb.autofill(args.overwrite)
     elif args.command == "clear":
         bibdb.clear()
     elif args.command == "delete":

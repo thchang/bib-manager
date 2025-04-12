@@ -1,5 +1,41 @@
 from datetime import datetime
 
+import requests_cache
+
+
+CROSSREF_TYPE_TO_BIB_TYPE = {
+    'book-section': 'inbook',                # 0
+    'monograph': 'book',                     # 1
+    'report-component': 'techreport',        # 2
+    'report': 'techreport',                  # 3
+    'peer-review': 'misc',                   # 4
+    'book-track': 'book',                    # 5
+    'journal-article': 'article',            # 6
+    'book-part': 'inbook',                   # 7
+    'other': 'misc',                         # 8
+    'book': 'book',                          # 9
+    'journal-volume': 'incollection',        # 10
+    'book-set': 'book',                      # 11
+    'reference-entry': 'misc',               # 12
+    'proceedings-article': 'inproceedings',  # 13
+    'journal': 'booklet',                    # 14
+    'component': 'misc',                     # 15
+    'book-chapter': 'inbook',                # 16
+    'proceedings-series': 'conference',      # 17
+    'report-series': 'report',               # 18
+    'proceedings': 'proceedings',            # 19
+    'database': 'misc',                      # 20
+    'standard': 'techreport',                # 21
+    'reference-book': 'book',                # 22
+    'posted-content': 'misc',                # 23
+    'journal-issue': 'booklet',              # 24
+    'dissertation': 'phdthesis',             # 25
+    'grant': 'misc',                         # 26
+    'dataset': 'misc',                       # 27
+    'book-series': 'book',                   # 28
+    'edited-book': 'book',                   # 29
+}
+
 
 class BibEntry:
     """ Class for storing a single bibliography entry.
@@ -58,6 +94,7 @@ class BibEntry:
         get_key()
         to_dict()
         to_bib()
+        autofill(overwrite=False)
         __str__()
 
     """
@@ -1023,7 +1060,7 @@ class BibEntry:
         if self.git is not None:
             bib_str.append(f"\tgit = {{{self.git}}},")
         # Get additional web address
-        if self.git is not None:
+        if self.web is not None:
             bib_str.append(f"\tweb = {{{self.web}}},")
         # Get any notes
         if self.note is not None:
@@ -1035,6 +1072,182 @@ class BibEntry:
         if len(self.tags) > 0:
             bib_str.append(f"\tkeywords = {{{', '.join(self.tags)}}},")
         return "\n".join(bib_str) + "\n}"
+
+    def autofill(self, overwrite=False):
+        """ Attempt to clean/autofill this entry using crossref API.
+
+        Args:
+            overwrite (bool, optional): When True, overwrites the existing
+                fields with the retrieved fields whenever they are found.
+                Otherwise, will only fill fields that are currently blank
+                (defaults to False).
+
+        Raises:
+            requests.exceptions.RequestException: If any error occurs during
+                crossref API request.
+
+        """
+
+        session = requests_cache.CachedSession("bibmgr_cache")
+        base_url = "https://api.crossref.org/works"  # The crossref query URL
+        new_entry = {}
+        found = False
+        if self.doi is not None:
+            base_url += f"?filter=doi:{self.doi}"
+            response = session.get(base_url)
+            response.raise_for_status()  # Raise error for bad response
+            for i, candi in enumerate(response.json()["message"]["items"]):
+                new_entry = self._crossref_to_bib_entry(candi)
+                if (
+                    'doi' in new_entry and
+                    self.doi.lower() == new_entry['doi'].lower()
+                ):
+                    found = True
+                    break
+                # Give up after checking the top 10 search results
+                if i > 9:
+                    return False
+        elif self.title is not None and self.title != "":
+            params = {"query": self.title.strip("{").strip("}")}
+            response = session.get(base_url, params=params)
+            response.raise_for_status()  # Raise error for bad response
+            for i, candi in enumerate(response.json()["message"]["items"]):
+                new_entry = self._crossref_to_bib_entry(candi)
+                # Break when author, year, and type all match
+                if (
+                    (
+                        len(self.authors) == 0 or
+                        'authors' in new_entry and
+                        self.authors[0][-1] in new_entry['authors'][0][-1]
+                    ) and (
+                        self.year is None or
+                        'year' in new_entry and
+                        self.year == new_entry['year']
+                    ) and (
+                        'type' not in new_entry or
+                        new_entry['type'] == self.type.lower()
+                    )
+                ):
+                    found = True
+                    break
+                # Give up after checking the top 10 search results
+                if i > 9:
+                    return False
+        else:
+            return False
+        # Update this item with the new entries
+        if found:
+            for key in new_entry:
+                if (
+                    key in self.__slots__ and
+                    overwrite or
+                    getattr(self, key) is None or
+                    (
+                        isinstance(getattr(self, key), list) and
+                        len(getattr(self, key)) == 0
+                    )
+                ):
+                    setattr(self, key, new_entry[key])
+        return found
+
+    def _crossref_to_bib_entry(self, xref_entry):
+        """ Helper function for converting xref entries to bib entries.
+
+        Args:
+            xref_entry (dict): A dictionary representation of a bib entry,
+                returned by the crossref API.
+
+        Returns:
+            dict: A bib entry dict that is compatible with this class.
+
+        """
+
+        bib_entry = {}
+        # Get crossref date
+        pub_date = None
+        if (
+            'published-print' in xref_entry and
+            'date-parts' in xref_entry['published-print']
+        ):
+            pub_date = xref_entry['published-print']['date-parts']
+        elif (
+            'published' in xref_entry and
+            'date-parts' in xref_entry['published']
+        ):
+            pub_date = xref_entry['published']['date-parts']
+        if pub_date is not None and len(pub_date) > 0:
+            if len(pub_date[0]) > 0:
+                bib_entry['year'] = int(pub_date[0][0])
+            if len(pub_date[0]) > 1:
+                bib_entry['month'] = pub_date[0][1]
+        # Get crossref authors
+        if (
+            'author' in xref_entry and
+            len(xref_entry['author']) > 0 and
+            'family' in xref_entry['author'][0] and
+            'given' in xref_entry['author'][0]
+        ):
+            bib_entry['authors'] = [
+                [aj['given'], aj['family']] for aj in xref_entry['author']
+            ]
+        if 'title' in xref_entry and len(xref_entry['title']) > 0:
+            bib_entry['title'] = " ".join(xref_entry['title']).strip()
+            if 'subtitle' in xref_entry and len(xref_entry['subtitle']) > 0:
+                bib_entry['title'] += ": " + " ".join(
+                    xref_entry['subtitle']
+                ).strip()
+        # Get crossref type
+        if 'type' in xref_entry:
+            bib_entry['type'] = CROSSREF_TYPE_TO_BIB_TYPE[
+                xref_entry['type'].strip().lower()
+            ]
+        # Get crossref publication title
+        if 'container-title' in xref_entry:
+            if len(xref_entry['container-title']) > 1:
+                bib_entry['series'] = xref_entry['container-title'][-2]
+            if len(xref_entry['container-title']) > 0:
+                bib_entry['venue'] = xref_entry['container-title'][-1]
+        # Get crossref volume
+        if 'volume' in xref_entry:
+            bib_entry['volume'] = xref_entry['volume']
+        # Get crossref issue/number
+        if 'issue' in xref_entry:
+            bib_entry['number'] = xref_entry['issue']
+        # Get crossref page numbers
+        if 'pages' in xref_entry:
+            bib_entry['pages'] = xref_entry['pages']
+        # Get crossref publisher
+        if 'publisher' in xref_entry:
+            bib_entry['publisher'] = xref_entry['publisher']
+        # Get crossref event/publisher address
+        if 'event' in xref_entry and 'location' in xref_entry['event']:
+            bib_entry['address'] = xref_entry['event']['location']
+        elif 'publisher-address' in xref_entry:
+            bib_entry['address'] = xref_entry['publisher-address']
+        # Get crossref DOI
+        if 'DOI' in xref_entry:
+            bib_entry['doi'] = xref_entry['DOI']
+        # Get crossref URL
+        if (
+            'resource' in xref_entry and
+            'primary' in xref_entry['resource'] and
+            'URL' in xref_entry['resource']['primary']
+        ):
+            bib_entry['url'] = \
+                xref_entry['resource']['primary']['URL']
+        elif (
+            'link' in xref_entry and
+            len(xref_entry['link']) > 0 and
+            'URL' in xref_entry['link'][0]
+        ):
+            bib_entry['url'] = xref_entry['link'][0]['URL']
+        # Get crossref ISBN
+        if 'ISBN' in xref_entry and len(xref_entry['ISBN']) > 0:
+            bib_entry['isbn'] = xref_entry['ISBN'][0]
+        # Get crossref ISSN
+        if 'ISSN' in xref_entry and len(xref_entry['ISSN']) > 0:
+            bib_entry['issn'] = xref_entry['ISSN'][0]
+        return bib_entry
 
     def __str__(self):
         """ Convert this bib entry into a string.

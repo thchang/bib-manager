@@ -11,6 +11,7 @@ class DatabaseCLI:
 
     Methods:
         add_entry(str_rep=None, filename=None)
+        autofill(overwrite=False)
         clear()
         delete_entry(entry_key)
         filter()
@@ -89,16 +90,40 @@ class DatabaseCLI:
                 'misc', 'phdthesis', 'proceedings', 'techreport', 'unpublished'
             ]
             if next_val not in valid_types:
-                self._print("Warning: Publication type is usually be one of: ")
+                self._print("Warning: Publication type is usually one of: ")
                 self._print(", ".join(valid_types))
                 next_val = input("Re-enter publication type: ")
                 while len(next_val.strip()) == 0:
                     next_val = input("Type required. Enter publication type: ")
             parser.parse_line("type", next_val)
+            # Attempt to autofill from DOI
+            doi = input(f"Enter doi if known (leave blank if none): ")
+            if len(doi.strip()) > 0:
+                parser.parse_line("doi", doi.strip())
+                if parser.next_item.autofill(overwrite=True):
+                    self._print(f"Found: {parser.next_item}")
+                    if self._user_continue():
+                        self.database.write_yaml(self.cache_file)
+                        return
+            # Attempt to autofill from author, title, and year
             for (next_key, instructions) in [
                 ("authors", "Enter authors separated by 'and'"),
                 ("title", "Enter publication title"),
-                ("year", "Enter publication year"),
+                ("year", "Enter publication year")
+            ]:
+                next_val = input(f"{instructions} (leave blank if none): ")
+                if len(next_val.strip()) > 0:
+                    parser.parse_line(next_key, next_val)
+            if parser.next_item.autofill(overwrite=True):
+                self._print(f"Found: {parser.next_item}")
+                if self._user_continue():
+                    self.database.write_yaml(self.cache_file)
+                    return
+            # Manually fill remaining fields
+            for (next_key, instructions) in [
+                # ("authors", "Enter authors separated by 'and'"),
+                # ("title", "Enter publication title"),
+                # ("year", "Enter publication year")
                 ("venue", "Enter journal, conference book, or other venue"),
                 ("series", "Enter publisher series"),
                 ("volume", "Enter volume number"),
@@ -107,7 +132,7 @@ class DatabaseCLI:
                 ("pages", "Enter pages either first--last or num pages"),
                 ("publisher", "Enter publisher name"),
                 ("address", "Enter publisher address or conference location"),
-                ("doi", "Enter doi if known"),
+                # ("doi", "Enter doi if known"),
                 ("url", "Enter official publication url"),
                 ("isbn", "Enter publication ISBN"),
                 ("web", "Enter any additional authors' website"),
@@ -127,6 +152,23 @@ class DatabaseCLI:
                     f"found duplicate: {parser.next_item.get_key()};"
                     "skipping..."
                 )
+        if self._user_continue():
+            self.database.write_yaml(self.cache_file)
+
+    def autofill(self, overwrite=False):
+        """ Autofill missing fields for entries in the cache via crossref.
+
+        Args:
+            overwrite (bool, optional): Overwrite existing fields with
+                results from crossref lookup. Defaults to false.
+
+        """
+
+        self.database.autofill(overwrite)
+        self._print(f"autofilled {self.database.size()} entries.\n"
+                    "New database:")
+        for entry in self.database.entries():
+            self._print(entry)
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 

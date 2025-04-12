@@ -10,7 +10,7 @@ authors = [
     { name = "Tyler Chang", email = "thchang@vt.edu" }
 ]
 license = { text = "MIT" }
-dependencies = ["pyyaml"]
+dependencies = ["pyyaml", "requests", "requests-cache"]
 
 [pyproject.optional-dependencies]
 test = ["coverage", "flake8", "flake8-pyproject", "pytest", "pytest-cov"]

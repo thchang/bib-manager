@@ -21,7 +21,6 @@ test1_dict = {
     'pages': [20],
     'publisher': 'Association of Computing Machinery',
     'address': 'New York, NY, USA',
-    'doi': '10.1145/3422818',
     'url': 'https://dl.acm.org/doi/10.1145/3422818',
     'issn': '0098-3500',
     'git': 'https://github.com/vtopt/DelaunaySparse',
@@ -45,7 +44,6 @@ test1_bib = (
     "\tnumpages = {20},\n"
     "\tpublisher = {Association of Computing Machinery},\n"
     "\taddress = {New York, NY, USA},\n"
-    "\tdoi = {10.1145/3422818},\n"
     "\turl = {https://dl.acm.org/doi/10.1145/3422818},\n"
     "\tissn = {0098-3500},\n"
     "\tgit = {https://github.com/vtopt/DelaunaySparse},\n"
@@ -196,3 +194,11 @@ test5_bib = (
     "so there may be reasons to cite the docs over the paper itself.},\n"
     "}"
 )
+test6_dict = {
+    'doi': '10.1109/WSC60868.2023.1040824',
+}
+test7_dict = {
+    'authors': [
+        ['Tyler H.', 'Chang'],
+    ]
+}

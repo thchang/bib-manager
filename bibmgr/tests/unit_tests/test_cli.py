@@ -1,3 +1,4 @@
+import copy
 import filecmp
 import io
 from unittest import mock
@@ -23,12 +24,15 @@ class TestDatabaseCLI(unittest.TestCase):
             "paper",
             "",
             "article",
+            "10.1145/3422818",
+            "n",
             "Chang, Tyler H. and Watson, Layne T. and Lux, Thomas C. H. "
             "and Butt, Ali R. and Cameron, Kirk W. and Hong, Yili",
             "Algorithm 1012: {DELAUNAYSPARSE}: {I}nterpolation via a sparse "
             "subset of the {D}elaunay triangulation in medium to high "
             "dimensions",
             "2020",
+            "n",
             "ACM Transactions on Mathematical Software",
             "Collections of the ACM",
             "46",
@@ -37,7 +41,6 @@ class TestDatabaseCLI(unittest.TestCase):
             "20",
             "Association of Computing Machinery",
             "New York, NY, USA",
-            "10.1145/3422818",
             "https://dl.acm.org/doi/10.1145/3422818",
             "0098-3500",
             "https://vtopt.github.io/DelaunaySparse",
@@ -60,6 +63,25 @@ class TestDatabaseCLI(unittest.TestCase):
         with mock.patch('builtins.input', return_value="y"):
             tester.add_entry(filename="bibmgr/tests/data/test.bib")
         assert tester.database.size() == 34
+
+    def test_autofill(self):
+        cpt_out = io.StringIO()
+        sys.stdout = cpt_out
+        tester = DatabaseCLI()
+        tester.force = True
+        tester.clear()
+        tester.database.create_entry(BibEntry(test1_dict))
+        tester.database.create_entry(BibEntry(test2_dict))
+        cpt_out.truncate(0)
+        cpt_out.seek(0)
+        tester.autofill()
+        test1_copy = copy.deepcopy(test1_dict)
+        test1_copy['month'] = 12
+        test1_copy['doi'] = "10.1145/3422818"
+        assert cpt_out.getvalue() == (
+            f"autofilled 2 entries.\nNew database:\n"
+            f"{BibEntry(test1_copy)}\n{BibEntry(test2_dict)}\n"
+        )
 
     def test_delete_entry(self):
         cpt_out = io.StringIO()

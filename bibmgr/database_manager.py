@@ -15,6 +15,7 @@ class DatabaseManager(DictDatabase):
         read_bibtex(filename)
         write_yaml(filename)
         write_bibtex(filename)
+        autofill(overwrite=False)
 
     """
 
@@ -82,3 +83,15 @@ class DatabaseManager(DictDatabase):
         with open(filename, "w") as fp:
             for entry in self.entries():
                 self.bib_parser.write_file(entry, fp)
+
+    def autofill(self, overwrite=False):
+        """ Autofill missing fields for all entries via crossref lookup.
+
+        Args:
+            overwrite (bool, optional): Overwrite existing fields with
+                crossref lookups. Defaults to False.
+
+        """
+
+        for entry in self.entries():
+            entry.autofill(overwrite)

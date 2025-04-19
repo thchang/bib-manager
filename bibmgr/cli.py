@@ -261,7 +261,7 @@ class DatabaseCLI:
             self._print("Found an existing file")
             if not overwrite:
                 temp_db = DatabaseManager()
-                if filepath.split(".")[-1].lower() == "bib":
+                if str(filepath).split(".")[-1].lower() == "bib":
                     temp_db.read_bibtex(filepath)
                 else:
                     temp_db.read_yaml(filepath)
@@ -275,7 +275,7 @@ class DatabaseCLI:
                 self._print(f"Merged to {self.database.size()} total entries")
         self._print(f"Will write {self.database.size()} entries to {filepath}")
         if self._user_continue():
-            if filepath.split(".")[-1].lower() == "bib":
+            if str(filepath).split(".")[-1].lower() == "bib":
                 self.database.write_bibtex(filepath)
             else:
                 self.database.write_yaml(filepath)

@@ -1181,15 +1181,15 @@ class BibEntry:
             if len(pub_date[0]) > 1:
                 bib_entry['month'] = pub_date[0][1]
         # Get crossref authors
-        if (
-            'author' in xref_entry and
-            len(xref_entry['author']) > 0 and
-            'family' in xref_entry['author'][0] and
-            'given' in xref_entry['author'][0]
-        ):
-            bib_entry['authors'] = [
-                [aj['given'], aj['family']] for aj in xref_entry['author']
-            ]
+        if 'author' in xref_entry and len(xref_entry['author']) > 0:
+            bib_entry['authors'] = []
+            for aj in xref_entry['author']:
+                if 'family' in aj and 'given' in aj:
+                    bib_entry['authors'].append([aj['given'], aj['family']])
+                elif 'family' in aj:
+                    bib_entry['authors'].append([aj['family'], ])
+                else:
+                    bib_entry['authors'].append([aj[nk] for nk in aj])
         if 'title' in xref_entry and len(xref_entry['title']) > 0:
             bib_entry['title'] = " ".join(xref_entry['title']).strip()
             if 'subtitle' in xref_entry and len(xref_entry['subtitle']) > 0:

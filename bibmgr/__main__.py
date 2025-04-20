@@ -338,10 +338,7 @@ def main():
     """ Driver for the main program. """
 
     args = parse_args()
-    try:
-        run(args)
-    except Exception as e:
-        print(e)
+    run(args)
 
 
 if __name__ == "__main__":

@@ -22,9 +22,11 @@ bibmgr = "bibmgr.__main__:main"
 addopts = "-v --cov-config=bibmgr/tests/.coveragerc --cov=bibmgr --cov-report= -W error::UserWarning"
 testpaths = ["bibmgr/tests"]
 
+[tool.coverage.run]
+source = ["./bibmgr"]
+
 [tool.coverage.report]
 show_missing = true
-source = ["bibmgr"]
 
 [tool.flake8]
 filename = "*.py"

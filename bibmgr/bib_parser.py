@@ -9,7 +9,7 @@ class BibParser:
     Methods:
         parse_line(key, value)
         parse_file(fp)
-        write_file(entry, fp)
+        write_file(entry, fp, comment=False)
 
     """
 
@@ -215,7 +215,7 @@ class BibParser:
             yield self.next_item
             self.next_item = None
 
-    def write_file(self, entry, fp):
+    def write_file(self, entry, fp, comment=False):
         """ Write a single entry in a BibTex file.
 
         Args:
@@ -223,7 +223,10 @@ class BibParser:
 
             entry (BibEntry): A bibliography entry to write.
 
+            comment (bool, optional): Print the description field as a comment
+                at the top of the bib entry when True. Defaults to False.
+
         """
 
-        fp.write(entry.to_bib())
+        fp.write(entry.to_bib(comment=comment))
         fp.write("\n\n")

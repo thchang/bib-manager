@@ -147,6 +147,23 @@ def parse_args():
         action="store_true",
         help="Set to discard the current contents of the cache when loading."
     )
+    load_parser.add_argument(
+        "-u", "--update",
+        dest="update",
+        action="store_true",
+        help="""Set to load and update entries that are already in the cache.
+
+        When omitted, the default behavior is to load all entries in the file
+        and append them to the cache or skip them if they are already in the
+        cache (unless the --overwrite flag is set, in which case loaded entries
+        are favored over existing entries).
+
+        When the --update flag is set, only entries that are already in the
+        cache are loaded and the behavior is to update these entries by
+        overwriting them with contents from the file.
+
+        """
+    )
     save_parser.add_argument(
         "-f", "--filename",
         dest="filename",
@@ -296,14 +313,18 @@ def run(args):
         bibdb.set_predicate(args.predicate)
         bibdb.filter()
     elif args.command == "load":
+        filepath = None
         if args.filename is None:
             filepath = os.path.join(
                 os.environ.get('BIBMGR_DATABASE_SAVE_PATH', os.getcwd()),
                 "bibmgr_db.yaml"
             )
-            bibdb.load_data(filepath, args.overwrite)
         else:
-            bibdb.load_data(args.filename, args.overwrite)
+            filepath = args.filename
+        if args.update:
+            bibdb.update(filepath)
+        else:
+            bibdb.load_data(filepath, args.overwrite)
     elif args.command == "save":
         if args.filename is None:
             filepath = os.path.join(
@@ -312,7 +333,7 @@ def run(args):
             )
             bibdb.save_data(filepath, args.overwrite)
         else:
-            bibdb.save_data(args.filename, args.overwrite)
+            bibdb.save_data(args.filename, args.overwrite, comment=True)
     elif args.command == "show":
         if args.predicate is not None:
             bibdb.set_predicate(args.predicate)

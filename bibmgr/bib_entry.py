@@ -954,8 +954,12 @@ class BibEntry:
             dict_rep[key] = getattr(self, key)
         return dict_rep
 
-    def to_bib(self):
+    def to_bib(self, comment=False):
         """ Generates a BibTex string representation of this entry.
+
+        Args:
+            comment (bool, optional): Print the description field as a comment
+                at the top of the bib entry when True. Defaults to False.
 
         Returns:
             str: A BibTex-style entry.
@@ -976,6 +980,8 @@ class BibEntry:
             bib_type = self.type
         else:
             bib_type = 'misc'
+        if self.descrip is not None and self.descrip != "" and comment:
+            bib_str.append(f"% {self.descrip}")
         bib_str.append(f"@{bib_type}{{{self.get_key()},")
         # Get the author names
         if len(self.authors) > 0:
@@ -1066,7 +1072,7 @@ class BibEntry:
         if self.note is not None:
             bib_str.append(f"\tnote = {{{self.note}}},")
         # Add any description
-        if self.descrip is not None and self.descrip != "":
+        if self.descrip is not None and self.descrip != "" and not comment:
             bib_str.append(f"\tdescrip = {{{self.descrip}}},")
         # Add any keywords / tags
         if len(self.tags) > 0:

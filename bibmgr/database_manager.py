@@ -14,7 +14,7 @@ class DatabaseManager(DictDatabase):
         read_yaml(filename)
         read_bibtex(filename)
         write_yaml(filename)
-        write_bibtex(filename)
+        write_bibtex(filename, comment=False)
         autofill(overwrite=False)
 
     """
@@ -71,18 +71,20 @@ class DatabaseManager(DictDatabase):
         with open(filename, "w") as fp:
             yaml.dump(info_dict, fp)
 
-    def write_bibtex(self, filename):
+    def write_bibtex(self, filename, comment=False):
         """ Write database to a BibTex file.
 
         Args:
             filename (str or path-like object): The path to the file to write
                 bibliography entries to.
+            comment (bool, optional): Print the description field as a comment
+                at the top of the bib entry when True. Defaults to False.
 
         """
 
         with open(filename, "w") as fp:
             for entry in self.entries():
-                self.bib_parser.write_file(entry, fp)
+                self.bib_parser.write_file(entry, fp, comment=comment)
 
     def autofill(self, overwrite=False):
         """ Autofill missing fields for all entries via crossref lookup.

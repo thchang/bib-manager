@@ -16,10 +16,11 @@ class DatabaseCLI:
         delete_entry(entry_key)
         filter()
         load_data(filepath, overwrite=False)
-        save_data(filepath, overwrite=False)
+        save_data(filepath, overwrite=False, comment=False)
         set_predicate(pred_str)
         show(entry_key=None)
         tag_entries(tags, entry_key=None)
+        update(filepath)
         update_entry(compound_key, new_value)
 
     Private methods:
@@ -245,7 +246,7 @@ class DatabaseCLI:
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 
-    def save_data(self, filepath, overwrite=False):
+    def save_data(self, filepath, overwrite=False, comment=False):
         """ Write all entries in the current cache to a file.
 
         Args:
@@ -254,6 +255,8 @@ class DatabaseCLI:
                 with the contents of the cache when True. Default behavior
                 (False) is to merge the current contents stored at filepath
                 with the current contents of the cache before saving.
+            comment (bool, optional): Print the description field as a comment
+                at the top of the bib entry when True. Defaults to False.
 
         """
 
@@ -276,7 +279,7 @@ class DatabaseCLI:
         self._print(f"Will write {self.database.size()} entries to {filepath}")
         if self._user_continue():
             if str(filepath).split(".")[-1].lower() == "bib":
-                self.database.write_bibtex(filepath)
+                self.database.write_bibtex(filepath, comment=comment)
             else:
                 self.database.write_yaml(filepath)
             self.database.write_yaml(self.cache_file)
@@ -355,6 +358,35 @@ class DatabaseCLI:
             for entry in self.database.entries(self._predicate):
                 entry.add_keyword(tag_list)
                 self._print(f"Will tag {entry.get_key()} with {tag_list}")
+        if self._user_continue():
+            self.database.write_yaml(self.cache_file)
+
+    def update(self, filepath):
+        """ Update all entries in the cache using the data from a file.
+
+        Args:
+            filepath (str or Path-like object): The file to load data from.
+                Any entry in the cache that also appears in this file will be
+                updated using the data in the file. Any entry in the cache that
+                does not appear in this file is unmodified. Any entry in this
+                file that does not appear in the cache is ignored.
+
+        """
+
+        if not os.path.exists(filepath):
+            raise RuntimeError(f"{filepath} does not exist")
+        temp_db = DatabaseManager()
+        if str(filepath).split(".")[-1].lower() == "bib":
+            temp_db.read_bibtex(filepath)
+        else:
+            temp_db.read_yaml(filepath)
+        num_updates = 0
+        for entry in temp_db.entries():
+            if self.database.contains(entry.get_key()):
+                self.database.delete_entry(entry.get_key())
+                self.database.create_entry(entry)
+                num_updates += 1
+        self._print(f"Will update {num_updates} entries using {filepath}")
         if self._user_continue():
             self.database.write_yaml(self.cache_file)
 

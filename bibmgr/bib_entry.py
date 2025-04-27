@@ -674,7 +674,7 @@ class BibEntry:
         else:
             raise ValueError("Cannot generate key for bib item with no authors"
                              " and no publisher")
-        for char in ["{", "}", "'", '"', "\\", "`", ":", "-"]:
+        for char in ["{", "}", "'", '"', "\\", "`", ":", "-", " "]:
             last_name = last_name.replace(char, "")
         if self.year is not None:
             year = self.year
@@ -682,7 +682,7 @@ class BibEntry:
             year = int(datetime.now().year)
         first_word = ""
         for word in self.title.split():
-            for char in ["{", "}", "'", '"', "\\", "`", ":", "-"]:
+            for char in ["{", "}", "'", '"', "\\", "`", ":", "-", " "]:
                 word = word.replace(char, "")
             if len(word) > 2 and word.lower() not in ignores:
                 first_word = word.lower()

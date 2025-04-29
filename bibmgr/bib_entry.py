@@ -1124,7 +1124,9 @@ class BibEntry:
                 if i > 9:
                     return False
         elif self.title is not None and self.title != "":
-            params = {"query": self.title.strip("{").strip("}")}
+            params = {
+                "query": self.title.replace("{", "").replace("}", "").strip()
+            }
             response = session.get(base_url, params=params)
             response.raise_for_status()  # Raise error for bad response
             for i, candi in enumerate(response.json()["message"]["items"]):

@@ -677,7 +677,7 @@ class BibEntry:
         for char in [
             "{", "}", "(", ")", "[", "]",
             "'", '"', "`",
-            "\\", ":", "-",
+            "\\", "/", ":", "-",
             " ", "~",
         ]:
             last_name = last_name.replace(char, "")
@@ -690,7 +690,7 @@ class BibEntry:
             for char in [
                 "{", "}", "(", ")", "[", "]",
                 "'", '"', "`",
-                "\\", ":", "-",
+                "\\", "/", ":", "-",
                 " ", "~",
             ]:
                 word = word.replace(char, "")

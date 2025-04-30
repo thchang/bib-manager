@@ -161,7 +161,7 @@ class BibParser:
         """
 
         str_next_item = (
-            r'\@(?P<type>\w+){[\w-]+,|'
+            r'\@(?P<type>\w+){[\w-\.:\+]+,|'
             r'\%[ ]*(?P<comment>[^\n]+)\n|'
             r'(?P<fullkey>\w+)\s*=\s*(?P<value>'
             r'"(?:\\"|[^"])*"|\w+),?|'

@@ -148,6 +148,12 @@ def parse_args():
         help="Set to discard the current contents of the cache when loading."
     )
     load_parser.add_argument(
+        "-m", "--merge",
+        dest="merge",
+        action="store_true",
+        help="Set to resolve conflicts by merging tags for duplicate entries."
+    )
+    load_parser.add_argument(
         "-u", "--update",
         dest="update",
         action="store_true",
@@ -324,7 +330,7 @@ def run(args):
         if args.update:
             bibdb.update(filepath)
         else:
-            bibdb.load_data(filepath, args.overwrite)
+            bibdb.load_data(filepath, args.overwrite, args.merge)
     elif args.command == "save":
         if args.filename is None:
             filepath = os.path.join(

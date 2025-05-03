@@ -15,7 +15,7 @@ class DatabaseCLI:
         clear()
         delete_entry(entry_key)
         filter()
-        load_data(filepath, overwrite=False)
+        load_data(filepath, overwrite=False, merge=False)
         save_data(filepath, overwrite=False, comment=False)
         set_predicate(pred_str)
         show(entry_key=None)
@@ -212,16 +212,21 @@ class DatabaseCLI:
             self.database = temp_db
             self.database.write_yaml(self.cache_file)
 
-    def load_data(self, filepath, overwrite=False):
+    def load_data(self, filepath, overwrite=False, merge=False):
         """ Load a database of existing entries into the cache.
 
         Args:
             filepath (path-like object): The path to the file to load.
-            overwrite (bool, optional): Overwrite any existing data in the
+            overwrite (bool, optional): Overwrite any conflicting entries in
+                the cache with the data stored at filepath when True. Default
+                behavior (False) is to merge the current contents stored at
+                filepath with the current contents of the cache and keep data
+                in the cache whenever there is a key conflict.
+            merge (bool, optional): Merge any conflicting entries in the
                 cache with the data stored at filepath when True. Default
                 behavior (False) is to merge the current contents stored at
-                filepath with the current contents of the cache (keeping data
-                in the cache when there is a conflict) while loading.
+                filepath with the current contents of the cache and keep data
+                in the cache whenever there is a key conflict.
 
         """
 
@@ -234,6 +239,17 @@ class DatabaseCLI:
             temp_db.read_yaml(filepath)
         if overwrite:
             self.database = temp_db
+        elif merge:
+            for entry in temp_db.entries():
+                try:
+                    self.database.create_entry(entry)
+                except KeyError:
+                    self._print(
+                        f"found duplicate: {entry.get_key()}; merging tags..."
+                    )
+                    self.database.read_entry(entry.get_key()).add_keyword(
+                        entry.get_tags()
+                    )
         else:
             for entry in temp_db.entries():
                 try:

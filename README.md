@@ -68,6 +68,7 @@ bibmgr CMD [options]
 where `CMD` is one of the following:
 
  * `add`,
+ * `autofill`,
  * `clear`,
  * `delete`,
  * `filter`,
@@ -86,6 +87,9 @@ Run various commands to manipulate the contents of this cache.
 
 Use `CMD=add` to create a new entry -- either from a BibTex style string, a .bib
 file, or by manually entering data as prompted.
+
+USE `CMD=autofill` to autofill missing data for any entries in the cache via
+crossref API query.
 
 Use `CMD=clear` to clear the current cache.
 

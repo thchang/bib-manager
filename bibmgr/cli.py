@@ -104,6 +104,15 @@ class DatabaseCLI:
                 if parser.next_item.autofill(overwrite=True):
                     self._print(f"Found: {parser.next_item}")
                     if self._user_continue():
+                        try:
+                            self.database.create_entry(parser.next_item)
+                            self._print(f"Will add: {parser.next_item}")
+                        except KeyError:
+                            self._print(
+                                "found duplicate: "
+                                f"{parser.next_item.get_key()}; "
+                                "skipping..."
+                            )
                         self.database.write_yaml(self.cache_file)
                         return
             # Attempt to autofill from author, title, and year
@@ -118,6 +127,14 @@ class DatabaseCLI:
             if parser.next_item.autofill(overwrite=True):
                 self._print(f"Found: {parser.next_item}")
                 if self._user_continue():
+                    try:
+                        self.database.create_entry(parser.next_item)
+                        self._print(f"Will add: {parser.next_item}")
+                    except KeyError:
+                        self._print(
+                            f"found duplicate: {parser.next_item.get_key()}; "
+                            "skipping..."
+                        )
                     self.database.write_yaml(self.cache_file)
                     return
             # Manually fill remaining fields
